@@ -48,7 +48,7 @@ export const DualValueCards = () => {
           ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
           transition-all duration-700 ease-out
         `}>
-          {/* Publisher Label */}
+          {/* Publisher Label - matches dark card */}
           <div 
             className={`
               cursor-pointer select-none px-1
@@ -61,16 +61,16 @@ export const DualValueCards = () => {
               text-sm sm:text-base font-semibold tracking-[0.1em] uppercase
               transition-all duration-500
               ${activeCard === 'publisher' 
-                ? 'text-[#3A8BFF]' 
+                ? 'text-foreground' 
                 : activeCard === 'advertiser' 
-                  ? 'text-foreground/20' 
+                  ? 'text-foreground/15' 
                   : 'text-foreground/40'}
             `}>
               For Publishers
             </span>
           </div>
 
-          {/* Advertiser Label */}
+          {/* Advertiser Label - matches white card */}
           <div 
             className={`
               cursor-pointer select-none px-1
@@ -85,7 +85,7 @@ export const DualValueCards = () => {
               ${activeCard === 'advertiser' 
                 ? 'text-[#3A8BFF]' 
                 : activeCard === 'publisher' 
-                  ? 'text-foreground/20' 
+                  ? 'text-foreground/15' 
                   : 'text-foreground/40'}
             `}>
               For Advertisers
@@ -105,7 +105,7 @@ export const DualValueCards = () => {
           {/* Cards wrapper - Horizontal flex */}
           <div className="relative flex h-full w-full">
             
-            {/* Publisher Card */}
+            {/* Publisher Card - DARK when active */}
             <div 
               onClick={() => navigate("/publishers")}
               onMouseEnter={() => setActiveCard('publisher')}
@@ -119,14 +119,14 @@ export const DualValueCards = () => {
                     : 'flex-1 z-10'}
               `}
             >
-              {/* Background - Gradient from white (center) to dark grey (left edge) */}
+              {/* Background - Dark when active */}
               <div 
                 className="absolute inset-0 transition-all duration-700 ease-out"
                 style={{
                   background: activeCard === 'publisher'
-                    ? 'linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 50%, #dbeafe 100%)'
+                    ? 'linear-gradient(135deg, #0a0a0a 0%, #141414 50%, #1a1a1a 100%)'
                     : activeCard === 'advertiser'
-                      ? 'linear-gradient(90deg, #c8c8c8 0%, #e0e0e0 100%)'
+                      ? 'linear-gradient(90deg, #b8b8b8 0%, #d0d0d0 100%)'
                       : 'linear-gradient(90deg, #d0d0d0 0%, #e8e8e8 40%, #ffffff 100%)'
                 }}
               />
@@ -146,13 +146,13 @@ export const DualValueCards = () => {
                     text-xl sm:text-2xl lg:text-3xl font-headline font-bold leading-[1.2] mb-4
                     transition-all duration-500 ease-out
                   `}>
-                    <span className={`transition-colors duration-500 ${activeCard === 'publisher' ? 'text-foreground' : 'text-foreground/70'}`}>
+                    <span className={`transition-colors duration-500 ${activeCard === 'publisher' ? 'text-white' : 'text-foreground/70'}`}>
                       Your conversations are{' '}
                     </span>
                     <span className={`
                       transition-all duration-500
                       ${activeCard === 'publisher' 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#60a5fa]' 
+                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] to-[#93c5fd]' 
                         : 'text-foreground/50'}
                     `}>
                       worth something.
@@ -163,7 +163,7 @@ export const DualValueCards = () => {
                   <p className={`
                     text-sm sm:text-base leading-relaxed mb-5 max-w-md
                     transition-all duration-500
-                    ${activeCard === 'publisher' ? 'text-foreground/60' : 'text-foreground/40'}
+                    ${activeCard === 'publisher' ? 'text-white/60' : 'text-foreground/40'}
                   `}>
                     Integrate Gravity once. Suggestions flow naturally. Revenue flows automatically.
                   </p>
@@ -181,7 +181,7 @@ export const DualValueCards = () => {
                           px-3 py-1.5 text-[10px] sm:text-[11px] font-medium rounded-full
                           border transition-all duration-500
                           ${activeCard === 'publisher' 
-                            ? 'text-[#3A8BFF]/80 bg-[#3A8BFF]/5 border-[#3A8BFF]/20' 
+                            ? 'text-white/70 bg-white/10 border-white/20' 
                             : 'text-foreground/40 bg-foreground/[0.03] border-foreground/[0.08]'}
                         `}
                       >
@@ -195,7 +195,7 @@ export const DualValueCards = () => {
                     group inline-flex items-center gap-2
                     text-sm font-semibold
                     transition-all duration-300
-                    ${activeCard === 'publisher' ? 'text-[#3A8BFF]' : 'text-foreground/40'}
+                    ${activeCard === 'publisher' ? 'text-[#60a5fa]' : 'text-foreground/40'}
                   `}>
                     <span className="relative">
                       Become a Publisher
@@ -215,7 +215,7 @@ export const DualValueCards = () => {
                 </div>
               </div>
 
-              {/* Active glow overlay */}
+              {/* Subtle glow overlay */}
               <div 
                 className={`
                   absolute inset-0 pointer-events-none
@@ -223,7 +223,7 @@ export const DualValueCards = () => {
                   ${activeCard === 'publisher' ? 'opacity-100' : 'opacity-0'}
                 `}
                 style={{
-                  background: 'radial-gradient(ellipse at 30% 50%, rgba(58,139,255,0.08) 0%, transparent 70%)'
+                  background: 'radial-gradient(ellipse at 30% 50%, rgba(96,165,250,0.1) 0%, transparent 60%)'
                 }}
               />
             </div>
@@ -238,7 +238,7 @@ export const DualValueCards = () => {
               `}
             />
 
-            {/* Advertiser Card */}
+            {/* Advertiser Card - WHITE when active */}
             <div 
               onClick={() => navigate("/advertisers")}
               onMouseEnter={() => setActiveCard('advertiser')}
@@ -252,14 +252,14 @@ export const DualValueCards = () => {
                     : 'flex-1 z-10'}
               `}
             >
-              {/* Background - Gradient from white (center) to dark grey (right edge) */}
+              {/* Background - Bright white when active */}
               <div 
                 className="absolute inset-0 transition-all duration-700 ease-out"
                 style={{
                   background: activeCard === 'advertiser'
-                    ? 'linear-gradient(225deg, #f0f4ff 0%, #e8f0ff 50%, #dbeafe 100%)'
+                    ? 'linear-gradient(225deg, #ffffff 0%, #fafafa 50%, #f5f5f5 100%)'
                     : activeCard === 'publisher'
-                      ? 'linear-gradient(270deg, #c8c8c8 0%, #e0e0e0 100%)'
+                      ? 'linear-gradient(270deg, #b8b8b8 0%, #d0d0d0 100%)'
                       : 'linear-gradient(270deg, #d0d0d0 0%, #e8e8e8 40%, #ffffff 100%)'
                 }}
               />
@@ -285,7 +285,7 @@ export const DualValueCards = () => {
                     <span className={`
                       transition-all duration-500
                       ${activeCard === 'advertiser' 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] to-[#3A8BFF]' 
+                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#2563eb]' 
                         : 'text-foreground/50'}
                     `}>
                       deciding.
@@ -296,7 +296,7 @@ export const DualValueCards = () => {
                   <p className={`
                     text-sm sm:text-base leading-relaxed mb-5 ml-auto max-w-md
                     transition-all duration-500
-                    ${activeCard === 'advertiser' ? 'text-foreground/60' : 'text-foreground/40'}
+                    ${activeCard === 'advertiser' ? 'text-foreground/70' : 'text-foreground/40'}
                   `}>
                     High-intent moments happen in LLM chats, not just search. Reach users at the exact second they decide.
                   </p>
@@ -314,7 +314,7 @@ export const DualValueCards = () => {
                           px-3 py-1.5 text-[10px] sm:text-[11px] font-medium rounded-full
                           border transition-all duration-500
                           ${activeCard === 'advertiser' 
-                            ? 'text-[#3A8BFF]/80 bg-[#3A8BFF]/5 border-[#3A8BFF]/20' 
+                            ? 'text-[#3A8BFF] bg-[#3A8BFF]/10 border-[#3A8BFF]/30' 
                             : 'text-foreground/40 bg-foreground/[0.03] border-foreground/[0.08]'}
                         `}
                       >
@@ -348,7 +348,7 @@ export const DualValueCards = () => {
                 </div>
               </div>
 
-              {/* Active glow overlay */}
+              {/* Subtle shadow overlay for depth */}
               <div 
                 className={`
                   absolute inset-0 pointer-events-none
@@ -356,13 +356,13 @@ export const DualValueCards = () => {
                   ${activeCard === 'advertiser' ? 'opacity-100' : 'opacity-0'}
                 `}
                 style={{
-                  background: 'radial-gradient(ellipse at 70% 50%, rgba(58,139,255,0.08) 0%, transparent 70%)'
+                  boxShadow: 'inset 0 0 60px rgba(58,139,255,0.05)'
                 }}
               />
             </div>
           </div>
 
-          {/* Edge glow when active */}
+          {/* Edge glow when active - Dark for Publisher */}
           <div 
             className={`
               absolute top-0 left-0 bottom-0 w-1 rounded-l-2xl
@@ -370,10 +370,11 @@ export const DualValueCards = () => {
               ${activeCard === 'publisher' ? 'opacity-100' : 'opacity-0'}
             `}
             style={{ 
-              background: 'linear-gradient(180deg, #3A8BFF 0%, #60a5fa 100%)',
-              boxShadow: activeCard === 'publisher' ? '0 0 20px 5px rgba(58,139,255,0.3)' : 'none'
+              background: 'linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%)',
+              boxShadow: activeCard === 'publisher' ? '0 0 25px 8px rgba(96,165,250,0.4)' : 'none'
             }}
           />
+          {/* Edge glow when active - Light for Advertiser */}
           <div 
             className={`
               absolute top-0 right-0 bottom-0 w-1 rounded-r-2xl
@@ -381,8 +382,8 @@ export const DualValueCards = () => {
               ${activeCard === 'advertiser' ? 'opacity-100' : 'opacity-0'}
             `}
             style={{ 
-              background: 'linear-gradient(180deg, #60a5fa 0%, #3A8BFF 100%)',
-              boxShadow: activeCard === 'advertiser' ? '0 0 20px 5px rgba(58,139,255,0.3)' : 'none'
+              background: 'linear-gradient(180deg, #3A8BFF 0%, #2563eb 100%)',
+              boxShadow: activeCard === 'advertiser' ? '0 0 25px 8px rgba(58,139,255,0.3)' : 'none'
             }}
           />
 
