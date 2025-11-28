@@ -478,120 +478,80 @@ All colors MUST be HSL.
   }
 }
 
-/* Realistic Brushed Aluminum Button - Using Real Texture */
+/* Solid Black CTA Button */
 .metallic-button {
   position: relative;
   padding: 14px 36px;
   font-size: 15px;
   font-family: Inter, sans-serif;
   font-weight: 500;
-  color: #1a1a1a;
-
-  /* Stable, uniform metallic appearance */
-  background-image: 
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.35) 0%,
-      rgba(255,255,255,0.15) 50%,
-      rgba(0,0,0,0.05) 100%
-    ),
-    url('/textures/brushed-aluminum.png');
+  letter-spacing: -0.01em;
+  color: #ffffff;
   
-  background-size: auto, 200% 200%;
-  background-position: center, center;
-  background-repeat: no-repeat, repeat;
+  /* Solid black background */
+  background: #0a0a0a;
   
   border-radius: 9999px;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: none;
   
-  /* Consistent, stable shadows */
+  /* Subtle shadow for depth */
   box-shadow: 
-    inset 0 1px 0 0 rgba(255,255,255,0.5),
-    inset 0 -1px 0 0 rgba(0,0,0,0.2),
-    0 2px 4px rgba(0,0,0,0.15),
-    0 4px 8px rgba(0,0,0,0.1);
+    0 1px 2px rgba(0,0,0,0.1),
+    0 4px 12px rgba(0,0,0,0.15);
 
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, filter;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
 }
 
-/* Subtle shimmer effect - removed for stability */
-.metallic-button::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255,255,255,0.1) 50%,
-    transparent 100%
-  );
-  transform: translateX(-100%);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.metallic-button:hover::after {
-  opacity: 0.4;
-  animation: shimmer-slide 1.5s ease-in-out infinite;
-}
-
-/* Text content layer */
+/* Subtle shine on top edge */
 .metallic-button::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
   border-radius: inherit;
   pointer-events: none;
-  z-index: 1;
 }
 
-/* Subtle bevel (bead-blasted hardware edge) */
+/* Text wrapper */
 .metallic-button > span {
   position: relative;
   z-index: 2;
 }
 
-/* Hover state - subtle brightness increase */
+/* Hover state - lift + blue glow */
 .metallic-button:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
   box-shadow: 
-    inset 0 1px 0 0 rgba(255,255,255,0.55),
-    inset 0 -1px 0 0 rgba(0,0,0,0.2),
-    0 3px 6px rgba(0,0,0,0.2),
-    0 6px 12px rgba(0,0,0,0.15);
+    0 4px 8px rgba(0,0,0,0.2),
+    0 8px 24px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(58,139,255,0.1),
+    0 4px 20px rgba(58,139,255,0.15);
 }
 
-/* Pressed state - subtle press effect */
+/* Pressed state */
 .metallic-button:active {
-  transform: translateY(1px);
-  filter: brightness(0.95);
+  transform: translateY(0px);
   box-shadow: 
-    inset 0 2px 4px rgba(0,0,0,0.2),
-    inset 0 1px 2px rgba(0,0,0,0.15),
-    0 1px 1px rgba(0,0,0,0.1);
+    0 1px 2px rgba(0,0,0,0.2),
+    0 2px 4px rgba(0,0,0,0.15);
 }
 
-.metallic-button:active::after {
-  opacity: 0.2;
-}
-
-/* Disabled state - muted metallic */
+/* Disabled state */
 .metallic-button:disabled {
-  color: #888;
-  filter: brightness(0.85) saturate(0.5);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+  color: #666;
+  background: #2a2a2a;
   cursor: not-allowed;
   opacity: 0.6;
+  box-shadow: none;
 }
 
-.metallic-button:disabled::after {
-  display: none;
+.metallic-button:disabled:hover {
+  transform: none;
 }
 
 /* Metallic Panel - For navigation bars and headers */
