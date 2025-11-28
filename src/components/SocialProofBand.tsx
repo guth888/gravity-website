@@ -83,7 +83,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         .logo-scroll-track {
           animation: scrollLogos 80s linear infinite;
           width: max-content;
-          margin-top: -30px;
+          margin-top: -45px;
         }
         
         .logo-scroll-track:hover {
