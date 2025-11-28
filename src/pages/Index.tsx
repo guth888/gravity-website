@@ -7,17 +7,11 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 const SocialProofBand = lazy(() => import("@/components/SocialProofBand").then(m => ({
   default: m.SocialProofBand
 })));
-const DualValueCards = lazy(() => import("@/components/DualValueCards").then(m => ({
-  default: m.DualValueCards
+const DualAudienceSplit = lazy(() => import("@/components/DualAudienceSplit").then(m => ({
+  default: m.DualAudienceSplit
 })));
 const HowItWorksSimple = lazy(() => import("@/components/HowItWorksSimple").then(m => ({
   default: m.HowItWorksSimple
-})));
-const PublisherCTASection = lazy(() => import("@/components/PublisherCTASection").then(m => ({
-  default: m.PublisherCTASection
-})));
-const AdvertiserCTASection = lazy(() => import("@/components/AdvertiserCTASection").then(m => ({
-  default: m.AdvertiserCTASection
 })));
 const FAQSection = lazy(() => import("@/components/FAQSection").then(m => ({
   default: m.FAQSection
@@ -40,24 +34,14 @@ const Index = () => {
           <SocialProofBand className="-mt-8 sm:-mt-12 md:-mt-16" />
         </Suspense>
         
-        {/* Dual Value Cards - Publisher & Advertiser */}
+        {/* Dual Audience Split - Publisher & Advertiser */}
         <Suspense fallback={null}>
-          <DualValueCards />
+          <DualAudienceSplit />
         </Suspense>
         
         {/* How It Works - 3 Step Process */}
         <Suspense fallback={null}>
           <HowItWorksSimple />
-        </Suspense>
-        
-        {/* Publisher CTA Section */}
-        <Suspense fallback={null}>
-          <PublisherCTASection />
-        </Suspense>
-        
-        {/* Advertiser CTA Section */}
-        <Suspense fallback={null}>
-          <AdvertiserCTASection />
         </Suspense>
         
         {/* FAQ Section */}
