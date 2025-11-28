@@ -89,7 +89,7 @@ export const Header = ({ className }: { className?: string }) => {
             <Button 
               variant="ghost" 
               size="sm"
-              onClick={() => window.location.href = '/dashboard'}
+              onClick={() => window.location.href = '/login'}
             >
               Log In
             </Button>

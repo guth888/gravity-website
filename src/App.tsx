@@ -19,6 +19,7 @@ const Publishers = lazy(() => import("./pages/Publishers").then(m => ({ default:
 const PublishersOverview = lazy(() => import("./pages/PublishersOverview").then(m => ({ default: m.PublishersOverview })));
 const Advertisers = lazy(() => import("./pages/Advertisers").then(m => ({ default: m.Advertisers })));
 const Demo = lazy(() => import("./pages/Demo").then(m => ({ default: m.Demo })));
+const Login = lazy(() => import("./pages/Login").then(m => ({ default: m.Login })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ const App = () => (
                 <Route path="/publishers/overview" element={<PublishersOverview />} />
                 <Route path="/advertisers" element={<Advertisers />} />
                 <Route path="/demo" element={<Demo />} />
+                <Route path="/login" element={<Login />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

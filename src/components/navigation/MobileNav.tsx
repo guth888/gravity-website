@@ -51,7 +51,7 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
             <Button 
               variant="outline" 
               className="w-full"
-              onClick={() => window.location.href = '/dashboard'}
+              onClick={() => window.location.href = '/login'}
             >
               Log In
             </Button>
