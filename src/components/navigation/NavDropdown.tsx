@@ -17,9 +17,9 @@ export const NavDropdown = ({ label, items, href }: NavDropdownProps) => {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <div className="nav-link flex items-center gap-2 text-sm font-medium text-foreground hover:text-white transition-colors py-2">
+      <div className="nav-link flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors py-2">
         {href ? (
-          <a href={href} className="hover:text-white transition-colors">
+          <a href={href} className="hover:text-foreground transition-colors">
             {label}
           </a>
         ) : (
@@ -58,7 +58,7 @@ export const NavDropdown = ({ label, items, href }: NavDropdownProps) => {
             <a
               key={item.href}
               href={item.href}
-              className="dropdown-item relative block px-5 py-2.5 text-sm text-foreground hover:text-white transition-all duration-300 overflow-hidden"
+              className="dropdown-item relative block px-5 py-2.5 text-sm text-foreground/70 hover:text-foreground transition-all duration-300 overflow-hidden"
             >
               <div 
                 className="absolute left-0 top-0 bottom-0 w-0.5 bg-white -translate-x-full transition-transform duration-300"
