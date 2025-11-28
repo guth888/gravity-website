@@ -203,7 +203,7 @@ export const Publishers = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
             style={{ animationDelay: '0.3s' }}
           >
-            <Link to="/demo" className="metallic-button">
+            <Link to="/demo?type=publisher" className="metallic-button">
               <span>Start Monetizing</span>
             </Link>
             <a 
@@ -457,11 +457,11 @@ export const Publishers = () => {
             No risk, no long-term commitments.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/demo" className="metallic-button">
+            <Link to="/demo?type=publisher" className="metallic-button">
               <span>Get Started Free</span>
             </Link>
             <Link 
-              to="/demo"
+              to="/demo?type=publisher"
               className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
             >
               Schedule a Demo

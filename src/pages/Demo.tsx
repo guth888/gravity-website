@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Sparkles, TrendingUp, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,19 @@ import { MeshAnimation } from "@/components/MeshAnimation";
 import clsx from "clsx";
 type AudienceMode = "publisher" | "advertiser";
 export const Demo = () => {
-  const [mode, setMode] = useState<AudienceMode>("advertiser");
+  const [searchParams] = useSearchParams();
+  const typeParam = searchParams.get('type');
+  const initialMode: AudienceMode = typeParam === 'publisher' ? 'publisher' : 'advertiser';
+  const [mode, setMode] = useState<AudienceMode>(initialMode);
+  
+  // Update mode if URL param changes
+  useEffect(() => {
+    if (typeParam === 'publisher') {
+      setMode('publisher');
+    } else if (typeParam === 'advertiser') {
+      setMode('advertiser');
+    }
+  }, [typeParam]);
   const [formData, setFormData] = useState({
     email: "",
     field1: "",
