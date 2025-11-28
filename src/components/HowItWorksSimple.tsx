@@ -22,7 +22,7 @@ const GravityAnimation = () => {
   }, [phase]);
 
   return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto mt-20 sm:mt-24 mb-8">
+    <div className="relative w-40 h-40 sm:w-64 md:w-80 sm:h-64 md:h-80 mx-auto mt-12 sm:mt-20 md:mt-24 mb-6 sm:mb-8">
       {/* Orbital paths */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
         <defs>
@@ -238,7 +238,7 @@ const ChatBubble = ({ delay, size = 'sm' }: { delay: number; size?: 'sm' | 'md' 
 // Animated Globe with chat nodes for Step 1
 const ConversationsVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-72 h-72 sm:w-96 sm:h-96">
+    <div className="relative w-48 h-48 sm:w-72 md:w-96 sm:h-72 md:h-96">
       {/* Rotating globe container */}
       <div 
         className="absolute inset-0"
@@ -360,7 +360,7 @@ const ConversationsVisual = ({ isActive }: { isActive: boolean }) => {
 // Activation spark visual for Step 2
 const ActivationVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
+    <div className="relative w-44 h-44 sm:w-64 md:w-80 sm:h-64 md:h-80 flex items-center justify-center">
       {/* Chat interface mockup */}
       <div className="relative w-48 sm:w-56 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-foreground/5 overflow-hidden">
         {/* Chat header */}
@@ -417,7 +417,7 @@ const ActivationVisual = ({ isActive }: { isActive: boolean }) => {
 // Value unlock visual for Step 3
 const ValueVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
+    <div className="relative w-44 h-44 sm:w-64 md:w-80 sm:h-64 md:h-80 flex items-center justify-center">
       {/* Three value streams converging */}
       <div className="relative w-full h-full">
         {/* Center convergence point */}
@@ -643,6 +643,15 @@ export const HowItWorksSimple = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile for reduced scroll height
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -703,12 +712,17 @@ export const HowItWorksSimple = () => {
     return { phase: 'past', progress: 0 };
   };
 
+  // Shorter scroll on mobile for better UX
+  const sectionHeight = isMobile 
+    ? `${120 + (steps.length * 80)}vh`  // ~440vh on mobile
+    : `${150 + (steps.length * 120)}vh`; // ~630vh on desktop
+
   return (
     <section
       ref={containerRef}
       id="how-it-works"
       className="relative bg-background"
-      style={{ height: `${150 + (steps.length * 120)}vh` }}
+      style={{ height: sectionHeight }}
     >
       {/* Sticky container */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
@@ -735,7 +749,7 @@ export const HowItWorksSimple = () => {
             <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 mb-6">
               How It Works
             </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold antialiased leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-headline font-bold antialiased leading-tight px-2">
               The conversation is the context.
               <br />
               <span className="gradient">Gravity is the engine.</span>

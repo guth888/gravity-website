@@ -11,6 +11,15 @@ export const DualValueCards = () => {
   const navigate = useNavigate();
   const [isInView, setIsInView] = useState(false);
   const [activeCard, setActiveCard] = useState<'none' | 'publisher' | 'advertiser'>('none');
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -93,22 +102,33 @@ export const DualValueCards = () => {
           </div>
         </div>
 
-        {/* Unified Card Container - Fixed Height */}
+        {/* Unified Card Container - Responsive Height */}
         <div 
           className={`
-            relative overflow-hidden rounded-2xl h-[420px] sm:h-[380px]
+            relative overflow-hidden rounded-2xl min-h-[320px] sm:h-[380px]
             ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
             transition-all duration-700 ease-out delay-200
           `}
-          onMouseLeave={() => setActiveCard('none')}
+          onMouseLeave={() => !isMobile && setActiveCard('none')}
         >
           {/* Cards wrapper - Horizontal flex */}
           <div className="relative flex h-full w-full">
             
             {/* Publisher Card - DARK when active */}
             <div 
-              onClick={() => navigate("/publishers")}
-              onMouseEnter={() => setActiveCard('publisher')}
+              onClick={(e) => {
+                if (isMobile) {
+                  e.preventDefault();
+                  if (activeCard === 'publisher') {
+                    navigate("/publishers");
+                  } else {
+                    setActiveCard('publisher');
+                  }
+                } else {
+                  navigate("/publishers");
+                }
+              }}
+              onMouseEnter={() => !isMobile && setActiveCard('publisher')}
               className={`
                 relative h-full overflow-hidden cursor-pointer
                 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]
@@ -240,8 +260,19 @@ export const DualValueCards = () => {
 
             {/* Advertiser Card - WHITE when active */}
             <div 
-              onClick={() => navigate("/advertisers")}
-              onMouseEnter={() => setActiveCard('advertiser')}
+              onClick={(e) => {
+                if (isMobile) {
+                  e.preventDefault();
+                  if (activeCard === 'advertiser') {
+                    navigate("/advertisers");
+                  } else {
+                    setActiveCard('advertiser');
+                  }
+                } else {
+                  navigate("/advertisers");
+                }
+              }}
+              onMouseEnter={() => !isMobile && setActiveCard('advertiser')}
               className={`
                 relative h-full overflow-hidden cursor-pointer
                 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]
@@ -397,7 +428,8 @@ export const DualValueCards = () => {
           transition-all duration-500
           ${activeCard === 'none' ? 'opacity-100' : 'opacity-0'}
         `}>
-          Hover to explore each side
+          <span className="hidden sm:inline">Hover to explore each side</span>
+          <span className="sm:hidden">Tap to explore · tap again to visit</span>
         </p>
       </div>
     </section>

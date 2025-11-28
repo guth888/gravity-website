@@ -5,6 +5,15 @@ export const AudienceCTA = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
   const [hoveredSide, setHoveredSide] = useState<'none' | 'publisher' | 'advertiser'>('none');
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,7 +66,7 @@ export const AudienceCTA = () => {
       </div>
 
       {/* Two-column layout */}
-      <div className="flex flex-col lg:flex-row min-h-[70vh] lg:min-h-[85vh]">
+      <div className="flex flex-col lg:flex-row min-h-[50vh] sm:min-h-[60vh] lg:min-h-[85vh]">
         
         {/* Publishers Side - Dark with aurora gradient */}
         <div 
@@ -66,8 +75,9 @@ export const AudienceCTA = () => {
             transition-all duration-700 ease-out
             ${hoveredSide === 'publisher' ? 'lg:flex-[1.08]' : hoveredSide === 'advertiser' ? 'lg:flex-[0.92]' : 'flex-1'}
           `}
-          onMouseEnter={() => setHoveredSide('publisher')}
-          onMouseLeave={() => setHoveredSide('none')}
+          onMouseEnter={() => !isMobile && setHoveredSide('publisher')}
+          onMouseLeave={() => !isMobile && setHoveredSide('none')}
+          onClick={() => isMobile && setHoveredSide(hoveredSide === 'publisher' ? 'none' : 'publisher')}
           style={{
             background: 'linear-gradient(135deg, #0a0a0f 0%, #0d1117 50%, #0a0a0f 100%)',
           }}
@@ -238,11 +248,11 @@ export const AudienceCTA = () => {
               </svg>
             </Link>
 
-            {/* Stats */}
+            {/* Stats - Always visible on mobile, hover-dependent on desktop */}
             <div className={`
               flex items-center justify-center gap-10 mt-12
               transition-all duration-500
-              ${hoveredSide === 'publisher' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+              ${isMobile || hoveredSide === 'publisher' ? 'opacity-100 translate-y-0' : 'lg:opacity-0 lg:translate-y-6'}
             `}>
               <div className="text-center">
                 <div className="text-2xl font-bold text-white font-mono tracking-tight">3x</div>
@@ -280,8 +290,9 @@ export const AudienceCTA = () => {
             transition-all duration-700 ease-out
             ${hoveredSide === 'advertiser' ? 'lg:flex-[1.08]' : hoveredSide === 'publisher' ? 'lg:flex-[0.92]' : 'flex-1'}
           `}
-          onMouseEnter={() => setHoveredSide('advertiser')}
-          onMouseLeave={() => setHoveredSide('none')}
+          onMouseEnter={() => !isMobile && setHoveredSide('advertiser')}
+          onMouseLeave={() => !isMobile && setHoveredSide('none')}
+          onClick={() => isMobile && setHoveredSide(hoveredSide === 'advertiser' ? 'none' : 'advertiser')}
           style={{
             background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)',
           }}
@@ -442,11 +453,11 @@ export const AudienceCTA = () => {
               </svg>
             </Link>
 
-            {/* Stats */}
+            {/* Stats - Always visible on mobile, hover-dependent on desktop */}
             <div className={`
               flex items-center justify-center gap-10 mt-12
               transition-all duration-500
-              ${hoveredSide === 'advertiser' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
+              ${isMobile || hoveredSide === 'advertiser' ? 'opacity-100 translate-y-0' : 'lg:opacity-0 lg:translate-y-6'}
             `}>
               <div className="text-center">
                 <div className="text-2xl font-bold text-[#0a0a0f] font-mono tracking-tight">12%</div>

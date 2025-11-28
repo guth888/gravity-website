@@ -52,19 +52,19 @@ export const Footer = ({ className }: { className?: string }) => {
           </p>
         </div>
 
-        {/* Links Grid - Minimal */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 sm:mb-20 max-w-3xl mx-auto text-center">
+        {/* Links Grid - Minimal, single column on very small screens */}
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 sm:mb-20 max-w-3xl mx-auto text-center">
           {/* For Publishers */}
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-foreground/30 mb-4">
               Publishers
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.publishers.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-foreground/50 hover:text-foreground transition-colors"
+                    className="inline-block py-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -78,12 +78,12 @@ export const Footer = ({ className }: { className?: string }) => {
             <p className="text-xs uppercase tracking-[0.15em] text-foreground/30 mb-4">
               Advertisers
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.advertisers.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-foreground/50 hover:text-foreground transition-colors"
+                    className="inline-block py-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -97,12 +97,12 @@ export const Footer = ({ className }: { className?: string }) => {
             <p className="text-xs uppercase tracking-[0.15em] text-foreground/30 mb-4">
               Company
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-foreground/50 hover:text-foreground transition-colors"
+                    className="inline-block py-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -116,14 +116,14 @@ export const Footer = ({ className }: { className?: string }) => {
             <p className="text-xs uppercase tracking-[0.15em] text-foreground/30 mb-4">
               Legal
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               <li>
-                <Link to="/privacy" className="text-sm text-foreground/50 hover:text-foreground transition-colors">
+                <Link to="/privacy" className="inline-block py-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors">
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-sm text-foreground/50 hover:text-foreground transition-colors">
+                <Link to="/terms" className="inline-block py-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors">
                   Terms
                 </Link>
               </li>
