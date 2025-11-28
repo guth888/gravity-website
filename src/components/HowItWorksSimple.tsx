@@ -5,6 +5,184 @@ const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
   default: m.MeshAnimation
 })));
 
+// Gravity Animation - Planets transforming into shopping bags, gravity well into user
+const GravityAnimation = () => {
+  const [phase, setPhase] = useState<'planets' | 'morphing' | 'bags'>('planets');
+  
+  useEffect(() => {
+    const timer1 = setTimeout(() => setPhase('morphing'), 2000);
+    const timer2 = setTimeout(() => setPhase('bags'), 3500);
+    const timer3 = setTimeout(() => setPhase('planets'), 7000);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [phase]);
+
+  return (
+    <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto mt-12 mb-8">
+      {/* Orbital paths */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+        {/* Orbit rings */}
+        <ellipse cx="100" cy="100" rx="70" ry="70" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="4 2" className="animate-spin" style={{ animationDuration: '20s' }} />
+        <ellipse cx="100" cy="100" rx="50" ry="50" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="3 2" className="animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }} />
+        <ellipse cx="100" cy="100" rx="30" ry="30" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="2 2" className="animate-spin" style={{ animationDuration: '10s' }} />
+      </svg>
+
+      {/* Center - Gravity Well / User Icon */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className={`
+          relative transition-all duration-1000 ease-out
+          ${phase === 'bags' ? 'scale-110' : 'scale-100'}
+        `}>
+          {/* Gravity well (default) */}
+          <div className={`
+            absolute inset-0 flex items-center justify-center
+            transition-all duration-700
+            ${phase === 'bags' ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}
+          `}>
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3A8BFF]/20 to-[#4BA3FF]/10 flex items-center justify-center shadow-[0_0_40px_rgba(58,139,255,0.3)]">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3A8BFF] to-[#4BA3FF] shadow-lg animate-pulse" />
+            </div>
+          </div>
+          
+          {/* User icon (transformed) */}
+          <div className={`
+            flex items-center justify-center
+            transition-all duration-700
+            ${phase === 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}
+          `}>
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3A8BFF]/20 to-[#4BA3FF]/10 flex items-center justify-center shadow-[0_0_40px_rgba(58,139,255,0.3)]">
+              <svg className="w-7 h-7 text-[#3A8BFF]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Orbiting objects */}
+      {[0, 1, 2, 3, 4].map((i) => {
+        const angle = (i * 72) + (phase === 'planets' ? 0 : 0);
+        const radius = i % 2 === 0 ? 70 : 50;
+        const duration = 8 + i * 2;
+        const delay = i * 0.5;
+        
+        return (
+          <div
+            key={i}
+            className="absolute top-1/2 left-1/2 w-0 h-0"
+            style={{
+              animation: `orbit${radius} ${duration}s linear infinite`,
+              animationDelay: `${delay}s`,
+            }}
+          >
+            {/* Planet (default) */}
+            <div className={`
+              absolute -translate-x-1/2 -translate-y-1/2
+              transition-all duration-700 ease-out
+              ${phase !== 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
+            `}>
+              <div 
+                className="rounded-full shadow-lg"
+                style={{
+                  width: 12 + (i * 2),
+                  height: 12 + (i * 2),
+                  background: `linear-gradient(135deg, ${['#3A8BFF', '#60a5fa', '#4BA3FF', '#93c5fd', '#3b82f6'][i]} 0%, ${['#2563eb', '#3A8BFF', '#2563eb', '#60a5fa', '#1d4ed8'][i]} 100%)`,
+                  boxShadow: `0 0 ${10 + i * 3}px ${['rgba(58,139,255,0.4)', 'rgba(96,165,250,0.4)', 'rgba(75,163,255,0.4)', 'rgba(147,197,253,0.4)', 'rgba(59,130,246,0.4)'][i]}`,
+                }}
+              />
+            </div>
+            
+            {/* Shopping bag (transformed) */}
+            <div className={`
+              absolute -translate-x-1/2 -translate-y-1/2
+              transition-all duration-700 ease-out
+              ${phase === 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
+            `}>
+              <div className="relative">
+                <svg 
+                  className="text-[#3A8BFF]" 
+                  style={{ width: 16 + (i * 3), height: 16 + (i * 3) }}
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/>
+                </svg>
+                {/* Glow effect */}
+                <div 
+                  className="absolute inset-0 blur-md opacity-50"
+                  style={{ 
+                    background: `radial-gradient(circle, ${['#3A8BFF', '#60a5fa', '#4BA3FF', '#93c5fd', '#3b82f6'][i]} 0%, transparent 70%)` 
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Pull lines when morphing/bags */}
+      <svg 
+        className={`
+          absolute inset-0 w-full h-full pointer-events-none
+          transition-opacity duration-500
+          ${phase === 'bags' ? 'opacity-100' : 'opacity-0'}
+        `} 
+        viewBox="0 0 200 200"
+      >
+        <defs>
+          <linearGradient id="pullGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0" />
+            <stop offset="50%" stopColor="#3A8BFF" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#3A8BFF" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {/* Magnetic pull lines */}
+        <line x1="100" y1="100" x2="170" y2="100" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
+          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="100" x2="130" y2="30" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
+          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.6s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="100" x2="30" y2="100" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
+          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="100" x2="70" y2="170" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
+          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.7s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="100" x2="150" y2="150" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
+          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.55s" repeatCount="indefinite" />
+        </line>
+      </svg>
+
+      {/* CSS for orbit animations */}
+      <style>{`
+        @keyframes orbit70 {
+          from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
+          to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
+        }
+        @keyframes orbit50 {
+          from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+          to { transform: rotate(-360deg) translateX(50px) rotate(360deg); }
+        }
+        @keyframes orbit30 {
+          from { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+          to { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 const steps = [
   {
     number: "01",
@@ -562,6 +740,9 @@ export const HowItWorksSimple = () => {
               <br />
               <span className="gradient">Gravity is the engine.</span>
             </h2>
+            
+            {/* Gravity Animation - Planets → Shopping Bags */}
+            <GravityAnimation />
           </div>
 
           {/* Steps Container */}
