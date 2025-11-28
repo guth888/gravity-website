@@ -13,18 +13,18 @@ export interface NavData {
 
 export const navData: NavData = {
   forPublishers: [
-    { label: 'Integration', href: '/publishers/integration', description: 'SDK docs, code samples' },
-    { label: 'Documentation', href: '/publishers/docs' },
-    { label: 'Features', href: '/publishers/features', description: 'Privacy, Real-time insights' },
-    { label: 'Pricing', href: '/publishers/pricing' },
-    { label: 'FAQ', href: '/publishers/faq' },
+    { label: 'Network Overview', href: '/publishers#network', description: 'How the network works' },
+    { label: 'Revenue Estimator', href: '/publishers#revenue', description: 'See your earning potential' },
+    { label: 'Live Demo', href: '/publishers#demo', description: 'See how suggestions appear' },
+    { label: 'Integration', href: '/publishers#integration', description: 'SDK docs, 3 lines of code' },
+    { label: 'Demand Partners', href: '/publishers#partners', description: '50+ premium partners' },
   ],
   forAdvertisers: [
-    { label: 'Campaign Setup', href: '/advertisers/campaigns' },
-    { label: 'DSP Integration', href: '/advertisers/dsp' },
-    { label: 'Case Studies', href: '/advertisers/results' },
-    { label: 'Pricing', href: '/advertisers/pricing' },
-    { label: 'FAQ', href: '/advertisers/faq' },
+    { label: 'Browse Inventory', href: '/advertisers#inventory', description: 'Explore available conversations' },
+    { label: 'Targeting & Intent', href: '/advertisers#targeting', description: 'Intent-based targeting' },
+    { label: 'Ad Formats', href: '/advertisers#formats', description: 'Native formats that convert' },
+    { label: 'How It Works', href: '/advertisers#how-it-works', description: 'From brief to live in 48hrs' },
+    { label: 'Pricing', href: '/advertisers#pricing', description: 'Transparent CPM rates' },
   ],
   resources: [
     { label: 'Blog', href: '/blog' },

@@ -302,7 +302,7 @@ export const Advertisers = () => {
       </section>
 
       {/* Inventory Browser */}
-      <section className="relative py-24 bg-[#fafafa]">
+      <section id="inventory" className="relative py-24 bg-[#fafafa]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
@@ -319,7 +319,7 @@ export const Advertisers = () => {
       </section>
 
       {/* Intent Signals + Performance */}
-      <section className="relative py-24 bg-white">
+      <section id="targeting" className="relative py-24 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Left - Intent Signals */}
@@ -356,7 +356,7 @@ export const Advertisers = () => {
       </section>
 
       {/* Ad Formats */}
-      <section className="relative py-24 bg-[#fafafa]">
+      <section id="formats" className="relative py-24 bg-[#fafafa]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
@@ -412,7 +412,7 @@ export const Advertisers = () => {
       </section>
 
       {/* How It Works */}
-      <section className="relative py-24 bg-white">
+      <section id="how-it-works" className="relative py-24 bg-white">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
@@ -452,7 +452,7 @@ export const Advertisers = () => {
       </section>
 
       {/* Pricing Preview */}
-      <section className="relative py-24 bg-[#fafafa]">
+      <section id="pricing" className="relative py-24 bg-[#fafafa]">
         <div className="max-w-4xl mx-auto px-6">
           <div className="rounded-2xl bg-white border border-black/5 shadow-[0_8px_40px_rgba(0,0,0,0.04)] p-8 sm:p-12">
             <div className="grid md:grid-cols-2 gap-8 items-center">

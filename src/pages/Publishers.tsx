@@ -358,7 +358,7 @@ export const Publishers = () => {
       </section>
 
       {/* Network Visualization */}
-      <section className="relative py-24 overflow-hidden">
+      <section id="network" className="relative py-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -391,7 +391,7 @@ export const Publishers = () => {
       </section>
 
       {/* Economics Section */}
-      <section className="relative py-24 bg-white/[0.01]">
+      <section id="revenue" className="relative py-24 bg-white/[0.01]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Left - Revenue Estimator */}
@@ -423,7 +423,7 @@ export const Publishers = () => {
       </section>
 
       {/* What Users See */}
-      <section className="relative py-24">
+      <section id="demo" className="relative py-24">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -495,7 +495,7 @@ export const Publishers = () => {
       </section>
 
       {/* Demand Partners */}
-      <section className="relative py-24 bg-white/[0.01]">
+      <section id="partners" className="relative py-24 bg-white/[0.01]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
@@ -523,7 +523,7 @@ export const Publishers = () => {
       </section>
 
       {/* Integration - Minimal */}
-      <section className="relative py-24">
+      <section id="integration" className="relative py-24">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Integration? Three lines.

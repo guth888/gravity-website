@@ -72,8 +72,8 @@ export const Header = ({ className }: { className?: string }) => {
 
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mx-auto">
-            <NavDropdown label="For Publishers" items={navData.forPublishers} />
-            <NavDropdown label="For Advertisers" items={navData.forAdvertisers} />
+            <NavDropdown label="For Publishers" items={navData.forPublishers} href="/publishers" />
+            <NavDropdown label="For Advertisers" items={navData.forAdvertisers} href="/advertisers" />
             <a 
               href="/#how-it-works" 
               className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"

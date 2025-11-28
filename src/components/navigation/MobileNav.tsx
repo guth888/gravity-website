@@ -68,17 +68,25 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
             <div className="space-y-4">
               {/* For Publishers */}
               <div>
-                <button
-                  onClick={() => toggleDropdown('publishers')}
-                  className="flex items-center justify-between w-full text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-                >
-                  For Publishers
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      openDropdown === 'publishers' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
+                <div className="flex items-center justify-between w-full py-2">
+                  <a
+                    href="/publishers"
+                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                    onClick={onClose}
+                  >
+                    For Publishers
+                  </a>
+                  <button
+                    onClick={() => toggleDropdown('publishers')}
+                    className="p-1 hover:bg-accent rounded transition-colors"
+                  >
+                    <ChevronDown 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        openDropdown === 'publishers' ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                </div>
                 <div 
                   className={`overflow-hidden transition-all duration-300 ${
                     openDropdown === 'publishers' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
@@ -101,17 +109,25 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
 
               {/* For Advertisers */}
               <div>
-                <button
-                  onClick={() => toggleDropdown('advertisers')}
-                  className="flex items-center justify-between w-full text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-                >
-                  For Advertisers
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      openDropdown === 'advertisers' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
+                <div className="flex items-center justify-between w-full py-2">
+                  <a
+                    href="/advertisers"
+                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                    onClick={onClose}
+                  >
+                    For Advertisers
+                  </a>
+                  <button
+                    onClick={() => toggleDropdown('advertisers')}
+                    className="p-1 hover:bg-accent rounded transition-colors"
+                  >
+                    <ChevronDown 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        openDropdown === 'advertisers' ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                </div>
                 <div 
                   className={`overflow-hidden transition-all duration-300 ${
                     openDropdown === 'advertisers' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
