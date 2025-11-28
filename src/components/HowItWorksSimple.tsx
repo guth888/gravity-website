@@ -318,8 +318,8 @@ const ValueVisual = ({ isActive }: { isActive: boolean }) => {
         {isActive && (
           <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-foreground/5">
-              <p className="text-[9px] text-foreground/40 mb-1">User Satisfaction</p>
-              <p className="text-sm font-bold text-foreground">+68%</p>
+              <p className="text-[9px] text-foreground/40 mb-1">Suggestion CTR</p>
+              <p className="text-sm font-bold text-foreground">12.4%</p>
               <div className="flex items-center gap-1 mt-1">
                 <div className="w-8 h-1 rounded-full bg-[#A9AAAE]/20">
                   <div className="w-5 h-1 rounded-full bg-[#A9AAAE] animate-pulse" style={{ animationDelay: '0.6s' }} />
