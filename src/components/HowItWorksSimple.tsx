@@ -189,46 +189,11 @@ export const HowItWorksSimple = () => {
                     willChange: isVisible ? 'opacity, transform, filter' : 'auto',
                   }}
                 >
-                  {/* Step Number with animated ring */}
-                  <div className="relative mb-10 sm:mb-12">
-                    {/* Large faded number */}
-                    <span className="text-[120px] sm:text-[150px] md:text-[180px] font-extralight text-foreground/[0.04] leading-none select-none">
+                  {/* Step Number */}
+                  <div className="mb-8 sm:mb-10">
+                    <span className="text-sm sm:text-base font-medium tracking-[0.3em] text-foreground/40">
                       {step.number}
                     </span>
-                    
-                    {/* Progress ring */}
-                    <svg 
-                      className="absolute top-1/2 left-1/2 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44"
-                      style={{ transform: 'translate(-50%, -50%) rotate(-90deg)' }}
-                    >
-                      <circle
-                        cx="50%"
-                        cy="50%"
-                        r="46%"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        className="text-foreground/[0.06]"
-                      />
-                      <circle
-                        cx="50%"
-                        cy="50%"
-                        r="46%"
-                        fill="none"
-                        stroke="url(#stepGradient)"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeDasharray={`${(phase === 'active' ? 1 : progress) * 290} 290`}
-                        style={{ transition: 'stroke-dasharray 0.3s ease-out' }}
-                      />
-                      <defs>
-                        <linearGradient id="stepGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#3A8BFF" />
-                          <stop offset="50%" stopColor="#4BA3FF" />
-                          <stop offset="100%" stopColor="#A9AAAE" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
                   </div>
 
                   {/* Step Title */}
