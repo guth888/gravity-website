@@ -58,8 +58,8 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
           </span>
         </div>
         
-        {/* Scrolling Logos Row - Centered container with fixed height, shifted up */}
-        <div className="w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[150px] flex items-center justify-center overflow-hidden -mt-2">
+        {/* Scrolling Logos Row - Centered container with fixed height */}
+        <div className="w-full h-[120px] sm:h-[150px] md:h-[170px] lg:h-[200px] flex items-center justify-center overflow-hidden">
           <div 
             className="logo-scroll-track flex items-center h-full"
             style={{
@@ -95,7 +95,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-item {
-          height: 80px;
+          height: 100px;
           width: auto;
           object-fit: contain;
           opacity: 0.7;
@@ -111,25 +111,25 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         
         @media (min-width: 640px) {
           .logo-item {
-            height: 100px;
+            height: 130px;
           }
         }
         
         @media (min-width: 768px) {
           .logo-item {
-            height: 110px;
+            height: 150px;
           }
         }
         
         @media (min-width: 1024px) {
           .logo-item {
-            height: 125px;
+            height: 170px;
           }
         }
         
         @media (min-width: 1440px) {
           .logo-item {
-            height: 125px;
+            height: 180px;
           }
         }
       `}</style>
