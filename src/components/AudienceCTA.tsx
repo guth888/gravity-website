@@ -26,36 +26,38 @@ export const AudienceCTA = () => {
       ref={sectionRef}
       className="relative w-full overflow-hidden"
     >
-      {/* Top curve - blends with page background */}
-      <div className="absolute top-0 left-0 right-0 h-24 z-10 pointer-events-none">
+      {/* Top curve - overlaps into section from above */}
+      <div className="absolute -top-1 left-0 right-0 h-32 z-20 pointer-events-none overflow-hidden">
         <svg 
-          className="absolute bottom-0 w-full h-24" 
-          viewBox="0 0 1440 100" 
+          className="absolute top-0 w-full h-32" 
+          viewBox="0 0 1440 120" 
           preserveAspectRatio="none"
+          style={{ transform: 'translateY(-1px)' }}
         >
           <path 
-            d="M0,100 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,100 Z" 
-            fill="hsl(var(--background))"
+            d="M0,0 L1440,0 L1440,80 Q1080,120 720,80 Q360,40 0,80 Z" 
+            fill="#f4f4f5"
           />
         </svg>
       </div>
 
-      {/* Bottom curve - blends with page background */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none">
+      {/* Bottom curve - overlaps into section from below */}
+      <div className="absolute -bottom-1 left-0 right-0 h-32 z-20 pointer-events-none overflow-hidden">
         <svg 
-          className="absolute top-0 w-full h-24" 
-          viewBox="0 0 1440 100" 
+          className="absolute bottom-0 w-full h-32" 
+          viewBox="0 0 1440 120" 
           preserveAspectRatio="none"
+          style={{ transform: 'translateY(1px)' }}
         >
           <path 
-            d="M0,0 L0,60 Q360,100 720,60 Q1080,20 1440,60 L1440,0 Z" 
-            fill="hsl(var(--background))"
+            d="M0,120 L1440,120 L1440,40 Q1080,0 720,40 Q360,80 0,40 Z" 
+            fill="#f4f4f5"
           />
         </svg>
       </div>
 
       {/* Two-column layout */}
-      <div className="flex flex-col lg:flex-row min-h-[70vh] lg:min-h-[85vh] pt-16 pb-16">
+      <div className="flex flex-col lg:flex-row min-h-[70vh] lg:min-h-[85vh]">
         
         {/* Publishers Side - Dark with aurora gradient */}
         <div 
