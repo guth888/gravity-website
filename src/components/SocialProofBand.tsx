@@ -52,18 +52,18 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
       {/* Content - Centered */}
       <div className="relative z-10 w-full flex flex-col items-center justify-center">
         {/* Label - Centered above */}
-        <div className="text-center mb-4 sm:mb-5 md:mb-6">
+        <div className="text-center mb-6 sm:mb-8">
           <span className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 font-medium">
             Trusted by
           </span>
         </div>
         
-        {/* Scrolling Logos Row - Centered container */}
-        <div className="w-full flex items-center justify-center overflow-hidden">
+        {/* Scrolling Logos Row - Centered container with fixed height */}
+        <div className="w-full h-[100px] sm:h-[120px] md:h-[140px] lg:h-[150px] flex items-center justify-center overflow-hidden">
           <div 
-            className="logo-scroll-track flex items-center"
+            className="logo-scroll-track flex items-center h-full"
             style={{
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
+              gap: 'clamp(3rem, 6vw, 6rem)',
             }}
           >
             {[...allLogos, ...allLogos, ...allLogos].map((logo, index) => (
@@ -95,41 +95,41 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-item {
-          height: 24px;
+          height: 80px;
           width: auto;
           object-fit: contain;
-          opacity: 0.6;
-          filter: grayscale(20%);
+          opacity: 0.7;
+          filter: grayscale(15%);
           transition: all 0.3s ease;
         }
         
         .logo-item:hover {
-          opacity: 0.9;
+          opacity: 1;
           filter: grayscale(0%);
           transform: scale(1.05);
         }
         
         @media (min-width: 640px) {
           .logo-item {
-            height: 28px;
+            height: 100px;
           }
         }
         
         @media (min-width: 768px) {
           .logo-item {
-            height: 32px;
+            height: 110px;
           }
         }
         
         @media (min-width: 1024px) {
           .logo-item {
-            height: 36px;
+            height: 125px;
           }
         }
         
         @media (min-width: 1440px) {
           .logo-item {
-            height: 40px;
+            height: 125px;
           }
         }
       `}</style>
