@@ -9,17 +9,19 @@ export const Login = () => {
         <img 
           src={gravityLogo} 
           alt="Gravity" 
-          className="h-20 sm:h-24 opacity-90 hover:opacity-100 transition-opacity"
+          className="h-40 sm:h-48 opacity-90 hover:opacity-100 transition-opacity"
         />
       </Link>
 
       {/* Heading */}
-      <h1 className="text-2xl sm:text-3xl font-semibold text-black/80 mb-3 text-center">
-        Welcome back
-      </h1>
-      <p className="text-sm text-black/40 mb-12 text-center">
-        Choose your portal to sign in
-      </p>
+      <div className="text-center">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-black/80 mb-3">
+          Welcome back
+        </h1>
+        <p className="text-sm text-black/40 mb-12">
+          Choose your portal to sign in
+        </p>
+      </div>
 
       {/* Buttons */}
       <div className="flex items-center gap-4">
