@@ -49,8 +49,8 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         </div>
       </Suspense>
 
-      {/* Content */}
-      <div className="relative z-10 w-full">
+      {/* Content - Centered */}
+      <div className="relative z-10 w-full flex flex-col items-center justify-center">
         {/* Label - Centered above */}
         <div className="text-center mb-10 sm:mb-12 md:mb-14">
           <span className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 font-medium">
@@ -58,13 +58,12 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
           </span>
         </div>
         
-        {/* Scrolling Logos Row - Full width, centered */}
-        <div className="w-full overflow-hidden">
+        {/* Scrolling Logos Row - Centered container */}
+        <div className="w-full flex items-center justify-center overflow-hidden">
           <div 
-            className="flex items-center justify-start gap-16 sm:gap-20 md:gap-24 lg:gap-28"
+            className="logo-scroll-track flex items-center"
             style={{
-              animation: 'scrollLogos 60s linear infinite',
-              width: 'max-content',
+              gap: 'clamp(3rem, 6vw, 7rem)',
             }}
           >
             {[...allLogos, ...allLogos, ...allLogos].map((logo, index) => (
@@ -72,30 +71,66 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
                 key={index} 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="h-12 sm:h-16 md:h-20 lg:h-24 xl:h-28 w-auto object-contain opacity-70 hover:opacity-100 transition-all duration-300 flex-shrink-0"
-                style={{
-                  filter: 'grayscale(10%)',
-                  minWidth: '100px',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = 'grayscale(0%)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = 'grayscale(10%)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
+                className="logo-item flex-shrink-0"
               />
             ))}
           </div>
         </div>
       </div>
 
-      {/* Keyframes */}
+      {/* Styles */}
       <style>{`
+        .logo-scroll-track {
+          animation: scrollLogos 80s linear infinite;
+          width: max-content;
+        }
+        
+        .logo-scroll-track:hover {
+          animation-play-state: paused;
+        }
+        
         @keyframes scrollLogos {
           0% { transform: translateX(0); }
           100% { transform: translateX(calc(-100% / 3)); }
+        }
+        
+        .logo-item {
+          height: 72px;
+          width: auto;
+          object-fit: contain;
+          opacity: 0.75;
+          filter: grayscale(10%);
+          transition: all 0.3s ease;
+        }
+        
+        .logo-item:hover {
+          opacity: 1;
+          filter: grayscale(0%);
+          transform: scale(1.08);
+        }
+        
+        @media (min-width: 640px) {
+          .logo-item {
+            height: 96px;
+          }
+        }
+        
+        @media (min-width: 768px) {
+          .logo-item {
+            height: 120px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .logo-item {
+            height: 144px;
+          }
+        }
+        
+        @media (min-width: 1440px) {
+          .logo-item {
+            height: 168px;
+          }
         }
       `}</style>
     </section>
