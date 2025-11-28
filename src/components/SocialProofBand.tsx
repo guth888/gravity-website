@@ -83,6 +83,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         .logo-scroll-track {
           animation: scrollLogos 80s linear infinite;
           width: max-content;
+          margin-top: -30px;
         }
         
         .logo-scroll-track:hover {
@@ -95,7 +96,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-item {
-          height: 60px;
+          height: 120px;
           width: auto;
           object-fit: contain;
           opacity: 0.65;
@@ -106,30 +107,30 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         .logo-item:hover {
           opacity: 1;
           filter: grayscale(0%);
-          transform: scale(1.08);
+          transform: scale(1.08) translateY(-15px);
         }
         
         @media (min-width: 640px) {
           .logo-item {
-            height: 75px;
+            height: 150px;
           }
         }
         
         @media (min-width: 768px) {
           .logo-item {
-            height: 90px;
+            height: 180px;
           }
         }
         
         @media (min-width: 1024px) {
           .logo-item {
-            height: 110px;
+            height: 220px;
           }
         }
         
         @media (min-width: 1440px) {
           .logo-item {
-            height: 120px;
+            height: 240px;
           }
         }
       `}</style>
