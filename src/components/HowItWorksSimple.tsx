@@ -868,19 +868,6 @@ export const HowItWorksSimple = () => {
             })}
           </div>
 
-          {/* Scroll hint */}
-          <div 
-            className="fixed bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700 z-10"
-            style={{ 
-              opacity: scrollProgress < 0.05 ? 0.6 : 0,
-              transform: `translateY(${scrollProgress > 0.05 ? 20 : 0}px)`,
-            }}
-          >
-            <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/30">Scroll to explore</span>
-            <div className="w-5 h-8 rounded-full border border-foreground/20 flex items-start justify-center p-1.5">
-              <div className="w-1 h-2 rounded-full bg-foreground/30 animate-bounce" />
-            </div>
-          </div>
         </div>
       </div>
     </section>
