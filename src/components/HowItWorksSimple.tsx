@@ -26,118 +26,149 @@ const steps = [
   },
 ];
 
+// Chat bubble component
+const ChatBubble = ({ delay, size = 'sm' }: { delay: number; size?: 'sm' | 'md' | 'lg' }) => {
+  const sizeClasses = {
+    sm: 'px-1.5 py-0.5',
+    md: 'px-2 py-1',
+    lg: 'px-2.5 py-1.5',
+  };
+  const dotSizes = {
+    sm: 'w-0.5 h-0.5',
+    md: 'w-1 h-1',
+    lg: 'w-1 h-1',
+  };
+  
+  return (
+    <div 
+      className={`bg-white/95 backdrop-blur-sm rounded-full shadow-lg ${sizeClasses[size]} flex gap-0.5 items-center`}
+      style={{ animationDelay: `${delay}s` }}
+    >
+      <div className={`${dotSizes[size]} rounded-full bg-[#3A8BFF] animate-bounce`} style={{ animationDelay: `${delay}s` }} />
+      <div className={`${dotSizes[size]} rounded-full bg-[#4BA3FF] animate-bounce`} style={{ animationDelay: `${delay + 0.1}s` }} />
+      <div className={`${dotSizes[size]} rounded-full bg-[#A9AAAE] animate-bounce`} style={{ animationDelay: `${delay + 0.2}s` }} />
+    </div>
+  );
+};
+
 // Animated Globe with chat nodes for Step 1
 const ConversationsVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80">
-      {/* Globe outline */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
-        {/* Globe circles */}
-        <ellipse cx="100" cy="100" rx="80" ry="80" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-foreground/10" />
-        <ellipse cx="100" cy="100" rx="80" ry="30" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-foreground/10" />
-        <ellipse cx="100" cy="100" rx="30" ry="80" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-foreground/10" />
-        
-        {/* Latitude lines */}
-        <ellipse cx="100" cy="60" rx="65" ry="20" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-foreground/5" />
-        <ellipse cx="100" cy="140" rx="65" ry="20" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-foreground/5" />
-      </svg>
+    <div className="relative w-72 h-72 sm:w-96 sm:h-96">
+      {/* Rotating globe container */}
+      <div 
+        className="absolute inset-0"
+        style={{ 
+          animation: isActive ? 'spin 30s linear infinite' : 'none',
+        }}
+      >
+        {/* Globe SVG */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="globeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.1" />
+              <stop offset="50%" stopColor="#4BA3FF" stopOpacity="0.05" />
+              <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.1" />
+            </linearGradient>
+          </defs>
+          
+          {/* Globe fill */}
+          <circle cx="100" cy="100" r="75" fill="url(#globeGradient)" />
+          
+          {/* Main circle */}
+          <circle cx="100" cy="100" r="75" fill="none" stroke="#3A8BFF" strokeWidth="1" opacity="0.3" />
+          
+          {/* Equator */}
+          <ellipse cx="100" cy="100" rx="75" ry="25" fill="none" stroke="#3A8BFF" strokeWidth="0.5" opacity="0.2" />
+          
+          {/* Meridians */}
+          <ellipse cx="100" cy="100" rx="25" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.15" />
+          <ellipse cx="100" cy="100" rx="50" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.15" />
+          <ellipse cx="100" cy="100" rx="75" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.1" 
+            transform="rotate(60 100 100)" />
+          <ellipse cx="100" cy="100" rx="75" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.1" 
+            transform="rotate(-60 100 100)" />
+          
+          {/* Latitude lines */}
+          <ellipse cx="100" cy="55" rx="60" ry="18" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.2" />
+          <ellipse cx="100" cy="145" rx="60" ry="18" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.2" />
+          <ellipse cx="100" cy="75" rx="70" ry="22" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.15" />
+          <ellipse cx="100" cy="125" rx="70" ry="22" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.15" />
+        </svg>
+      </div>
       
-      {/* Animated chat nodes */}
+      {/* Chat nodes - These don't rotate */}
       {isActive && (
-        <>
-          {/* Node 1 - Top right */}
-          <div className="absolute top-[15%] right-[20%] animate-pulse" style={{ animationDelay: '0s' }}>
-            <div className="relative">
-              <div className="w-3 h-3 rounded-full bg-[#3A8BFF] shadow-[0_0_20px_rgba(58,139,255,0.6)]" />
-              <div className="absolute -top-6 -right-2 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg">
-                <div className="flex gap-0.5">
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.2s' }} />
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="absolute inset-0">
+          {/* Ring 1 - Outer nodes */}
+          <div className="absolute top-[5%] left-[45%] animate-pulse"><ChatBubble delay={0} size="md" /></div>
+          <div className="absolute top-[12%] right-[15%] animate-pulse" style={{ animationDelay: '0.3s' }}><ChatBubble delay={0.3} size="sm" /></div>
+          <div className="absolute top-[25%] right-[5%] animate-pulse" style={{ animationDelay: '0.6s' }}><ChatBubble delay={0.6} size="md" /></div>
+          <div className="absolute top-[45%] right-[2%] animate-pulse" style={{ animationDelay: '0.9s' }}><ChatBubble delay={0.9} size="lg" /></div>
+          <div className="absolute top-[65%] right-[8%] animate-pulse" style={{ animationDelay: '1.2s' }}><ChatBubble delay={1.2} size="sm" /></div>
+          <div className="absolute top-[80%] right-[20%] animate-pulse" style={{ animationDelay: '1.5s' }}><ChatBubble delay={1.5} size="md" /></div>
+          <div className="absolute bottom-[5%] left-[45%] animate-pulse" style={{ animationDelay: '1.8s' }}><ChatBubble delay={1.8} size="sm" /></div>
+          <div className="absolute top-[80%] left-[15%] animate-pulse" style={{ animationDelay: '2.1s' }}><ChatBubble delay={2.1} size="md" /></div>
+          <div className="absolute top-[65%] left-[3%] animate-pulse" style={{ animationDelay: '2.4s' }}><ChatBubble delay={2.4} size="lg" /></div>
+          <div className="absolute top-[45%] left-[0%] animate-pulse" style={{ animationDelay: '2.7s' }}><ChatBubble delay={2.7} size="sm" /></div>
+          <div className="absolute top-[25%] left-[5%] animate-pulse" style={{ animationDelay: '3s' }}><ChatBubble delay={3} size="md" /></div>
+          <div className="absolute top-[12%] left-[18%] animate-pulse" style={{ animationDelay: '3.3s' }}><ChatBubble delay={3.3} size="sm" /></div>
           
-          {/* Node 2 - Left */}
-          <div className="absolute top-[40%] left-[10%] animate-pulse" style={{ animationDelay: '0.5s' }}>
-            <div className="relative">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#4BA3FF] shadow-[0_0_15px_rgba(75,163,255,0.5)]" />
-              <div className="absolute -top-5 -left-1 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg">
-                <div className="flex gap-0.5">
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.3s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.4s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.5s' }} />
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Ring 2 - Inner nodes */}
+          <div className="absolute top-[20%] left-[35%] animate-pulse" style={{ animationDelay: '0.5s' }}><ChatBubble delay={0.5} size="sm" /></div>
+          <div className="absolute top-[30%] right-[25%] animate-pulse" style={{ animationDelay: '1s' }}><ChatBubble delay={1} size="md" /></div>
+          <div className="absolute top-[55%] right-[22%] animate-pulse" style={{ animationDelay: '1.5s' }}><ChatBubble delay={1.5} size="sm" /></div>
+          <div className="absolute top-[70%] left-[35%] animate-pulse" style={{ animationDelay: '2s' }}><ChatBubble delay={2} size="md" /></div>
+          <div className="absolute top-[55%] left-[20%] animate-pulse" style={{ animationDelay: '2.5s' }}><ChatBubble delay={2.5} size="sm" /></div>
+          <div className="absolute top-[35%] left-[22%] animate-pulse" style={{ animationDelay: '3s' }}><ChatBubble delay={3} size="md" /></div>
           
-          {/* Node 3 - Bottom */}
-          <div className="absolute bottom-[25%] left-[35%] animate-pulse" style={{ animationDelay: '1s' }}>
-            <div className="relative">
-              <div className="w-2 h-2 rounded-full bg-[#A9AAAE] shadow-[0_0_12px_rgba(169,170,174,0.5)]" />
-              <div className="absolute -bottom-5 -left-1 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg">
-                <div className="flex gap-0.5">
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.6s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.7s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.8s' }} />
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Glowing dots on globe surface */}
+          <div className="absolute top-[18%] left-[48%] w-2 h-2 rounded-full bg-[#3A8BFF] shadow-[0_0_10px_rgba(58,139,255,0.8)] animate-ping" style={{ animationDuration: '2s' }} />
+          <div className="absolute top-[35%] right-[28%] w-1.5 h-1.5 rounded-full bg-[#4BA3FF] shadow-[0_0_8px_rgba(75,163,255,0.7)] animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
+          <div className="absolute top-[50%] right-[18%] w-2 h-2 rounded-full bg-[#3A8BFF] shadow-[0_0_10px_rgba(58,139,255,0.8)] animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }} />
+          <div className="absolute top-[65%] left-[30%] w-1.5 h-1.5 rounded-full bg-[#A9AAAE] shadow-[0_0_8px_rgba(169,170,174,0.7)] animate-ping" style={{ animationDuration: '2s', animationDelay: '1.5s' }} />
+          <div className="absolute top-[50%] left-[25%] w-2 h-2 rounded-full bg-[#4BA3FF] shadow-[0_0_10px_rgba(75,163,255,0.8)] animate-ping" style={{ animationDuration: '2.5s', animationDelay: '2s' }} />
+          <div className="absolute top-[30%] left-[32%] w-1.5 h-1.5 rounded-full bg-[#3A8BFF] shadow-[0_0_8px_rgba(58,139,255,0.7)] animate-ping" style={{ animationDuration: '3s', animationDelay: '2.5s' }} />
           
-          {/* Node 4 - Right */}
-          <div className="absolute top-[60%] right-[15%] animate-pulse" style={{ animationDelay: '1.5s' }}>
-            <div className="relative">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#3A8BFF] shadow-[0_0_15px_rgba(58,139,255,0.5)]" />
-              <div className="absolute -top-5 -right-1 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 shadow-lg">
-                <div className="flex gap-0.5">
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '0.9s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '1s' }} />
-                  <div className="w-1 h-1 rounded-full bg-foreground/30 animate-bounce" style={{ animationDelay: '1.1s' }} />
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Connection lines */}
+          {/* Connection arcs */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 200">
-            <path 
-              d="M 140 35 Q 100 80 35 85" 
-              fill="none" 
-              stroke="url(#lineGradient)" 
-              strokeWidth="0.5" 
-              strokeDasharray="4 2"
-              className="animate-pulse"
-            />
-            <path 
-              d="M 35 85 Q 70 120 75 150" 
-              fill="none" 
-              stroke="url(#lineGradient)" 
-              strokeWidth="0.5" 
-              strokeDasharray="4 2"
-              className="animate-pulse"
-              style={{ animationDelay: '0.5s' }}
-            />
-            <path 
-              d="M 75 150 Q 120 140 165 125" 
-              fill="none" 
-              stroke="url(#lineGradient)" 
-              strokeWidth="0.5" 
-              strokeDasharray="4 2"
-              className="animate-pulse"
-              style={{ animationDelay: '1s' }}
-            />
             <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.3" />
+              <linearGradient id="arcGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.2" />
               </linearGradient>
             </defs>
+            
+            {/* Curved connection lines */}
+            <path d="M 50 40 Q 100 20 150 50" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.5">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M 160 70 Q 180 100 160 140" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.5s" repeatCount="indefinite" />
+            </path>
+            <path d="M 140 160 Q 100 180 60 155" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.5">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3s" repeatCount="indefinite" />
+            </path>
+            <path d="M 40 130 Q 20 100 45 60" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
+              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2s" repeatCount="indefinite" />
+            </path>
+            <path d="M 70 50 Q 100 80 130 55" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-15" dur="1.5s" repeatCount="indefinite" />
+            </path>
+            <path d="M 80 140 Q 100 110 125 145" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.3">
+              <animate attributeName="stroke-dashoffset" from="0" to="-15" dur="1.8s" repeatCount="indefinite" />
+            </path>
           </svg>
-        </>
+        </div>
       )}
+      
+      {/* CSS for rotation */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
