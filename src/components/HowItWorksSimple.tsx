@@ -27,95 +27,234 @@ const steps = [
 ];
 
 export const HowItWorksSimple = () => {
-  const [visibleSteps, setVisibleSteps] = useState<number[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isInView, setIsInView] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isInView) {
-          setIsInView(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    return () => observer.disconnect();
-  }, [isInView]);
+    const container = containerRef.current;
+    if (!container) return;
 
-  useEffect(() => {
-    if (isInView) {
-      steps.forEach((_, index) => {
-        setTimeout(() => {
-          setVisibleSteps((prev) => [...prev, index]);
-        }, index * 300);
-      });
-    }
-  }, [isInView]);
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate how far we've scrolled through the container
+      // Container starts when its top hits viewport top
+      // Container ends when its bottom leaves viewport bottom
+      const scrollableDistance = containerHeight - viewportHeight;
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+      
+      setScrollProgress(progress);
+      
+      // Determine active step based on progress
+      const stepProgress = progress * steps.length;
+      const newActiveStep = Math.min(Math.floor(stepProgress), steps.length - 1);
+      setActiveStep(newActiveStep);
+      
+      // Check if in view
+      if (rect.top < viewportHeight && rect.bottom > 0) {
+        setIsInView(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Calculate individual step progress (0-1 for each step)
+  const getStepProgress = (stepIndex: number) => {
+    const stepSize = 1 / steps.length;
+    const stepStart = stepIndex * stepSize;
+    const stepEnd = (stepIndex + 1) * stepSize;
+    
+    if (scrollProgress < stepStart) return 0;
+    if (scrollProgress > stepEnd) return 1;
+    return (scrollProgress - stepStart) / stepSize;
+  };
 
   return (
     <section
-      ref={sectionRef}
+      ref={containerRef}
       id="how-it-works"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background py-24 sm:py-32 md:py-40"
+      className="relative bg-background"
+      style={{ height: `${100 + (steps.length * 100)}vh` }} // Extra scroll room
     >
-      {/* Mesh Animation Background - Same as Hero */}
-      <Suspense fallback={null}>
-        <div className="absolute inset-0 opacity-60">
-          <MeshAnimation className="w-full h-full" />
-        </div>
-      </Suspense>
+      {/* Sticky container - stays fixed while scrolling */}
+      <div
+        ref={stickyRef}
+        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
+      >
+        {/* Mesh Animation Background */}
+        <Suspense fallback={null}>
+          <div className="absolute inset-0 opacity-60">
+            <MeshAnimation className="w-full h-full" />
+          </div>
+        </Suspense>
 
-      {/* Content */}
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1100px] xl:max-w-[1200px] mx-auto">
-        {/* Header - Hero-style typography */}
-        <div className={`
-          text-center mb-20 sm:mb-28 md:mb-36
-          ${isInView ? "opacity-100" : "opacity-0"}
-          transition-opacity duration-700
-        `}>
-          <h2 className="hero-headline font-headline font-bold antialiased">
-            The conversation is the context.
-            <br />
-            <span className="gradient">Gravity is the engine.</span>
-          </h2>
-        </div>
+        {/* Content */}
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1100px] xl:max-w-[1200px] mx-auto">
+          
+          {/* Header - Fades out as scrolling starts */}
+          <div 
+            className="text-center mb-20 sm:mb-28 md:mb-36 transition-all duration-500"
+            style={{
+              opacity: scrollProgress < 0.05 ? 1 : Math.max(0, 1 - scrollProgress * 3),
+              transform: `translateY(${scrollProgress * -50}px)`,
+            }}
+          >
+            <h2 className="hero-headline font-headline font-bold antialiased">
+              The conversation is the context.
+              <br />
+              <span className="gradient">Gravity is the engine.</span>
+            </h2>
+          </div>
 
-        {/* Steps */}
-        <div className="space-y-24 sm:space-y-32 md:space-y-40">
-          {steps.map((step, index) => {
-            const isVisible = visibleSteps.includes(index);
-            
-            return (
-              <div
-                key={step.number}
-                className={`
-                  text-center max-w-3xl mx-auto
-                  ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                  transition-all duration-700 ease-out
-                `}
-                style={{ transitionDelay: `${index * 150}ms` }}
-              >
-                {/* Step Number */}
-                <span className="inline-block text-sm font-medium text-foreground/30 tracking-widest mb-6">
-                  {step.number}
-                </span>
+          {/* Steps - Stacked and animated */}
+          <div className="relative h-[400px] sm:h-[450px] md:h-[500px]">
+            {steps.map((step, index) => {
+              const stepProgress = getStepProgress(index);
+              const isActive = activeStep === index;
+              const isPast = activeStep > index;
+              const isFuture = activeStep < index;
+              
+              // Calculate transforms
+              let opacity = 0;
+              let translateY = 100;
+              let scale = 0.8;
+              let blur = 10;
+              
+              if (isActive) {
+                // Active step: fade in from bottom, scale up
+                const enterProgress = Math.min(stepProgress * 2, 1); // First half: enter
+                const exitProgress = Math.max((stepProgress - 0.5) * 2, 0); // Second half: exit
+                
+                opacity = enterProgress - exitProgress * 0.8;
+                translateY = (1 - enterProgress) * 80 - exitProgress * 80;
+                scale = 0.85 + enterProgress * 0.15 - exitProgress * 0.1;
+                blur = (1 - enterProgress) * 8;
+              } else if (isPast) {
+                // Past steps: faded out above
+                opacity = 0;
+                translateY = -150;
+                scale = 0.7;
+                blur = 15;
+              } else {
+                // Future steps: waiting below
+                opacity = 0;
+                translateY = 150;
+                scale = 0.8;
+                blur = 15;
+              }
 
-                {/* Step Title */}
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-foreground mb-6 leading-tight">
-                  {step.title} <span className="gradient">{step.titleAccent}</span>
-                </h3>
+              return (
+                <div
+                  key={step.number}
+                  className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                  style={{
+                    opacity,
+                    transform: `translateY(${translateY}px) scale(${scale})`,
+                    filter: `blur(${blur}px)`,
+                    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out, filter 0.1s ease-out',
+                    pointerEvents: isActive ? 'auto' : 'none',
+                  }}
+                >
+                  {/* Step Number - Animated ring */}
+                  <div className="relative mb-8">
+                    <span className="text-7xl sm:text-8xl md:text-9xl font-extralight text-foreground/10 leading-none">
+                      {step.number}
+                    </span>
+                    {/* Animated progress ring */}
+                    <svg 
+                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40"
+                      style={{ transform: 'translate(-50%, -50%) rotate(-90deg)' }}
+                    >
+                      <circle
+                        cx="50%"
+                        cy="50%"
+                        r="45%"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        className="text-foreground/5"
+                      />
+                      <circle
+                        cx="50%"
+                        cy="50%"
+                        r="45%"
+                        fill="none"
+                        stroke="url(#stepGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeDasharray={`${stepProgress * 283} 283`}
+                        className="transition-all duration-100"
+                      />
+                      <defs>
+                        <linearGradient id="stepGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#3A8BFF" />
+                          <stop offset="100%" stopColor="#A9AAAE" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
 
-                {/* Step Description */}
-                <p className="text-base sm:text-lg text-foreground/60 leading-relaxed max-w-2xl mx-auto">
-                  {step.description}
-                </p>
-              </div>
-            );
-          })}
+                  {/* Step Title */}
+                  <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-foreground mb-6 leading-tight">
+                    {step.title} <span className="gradient">{step.titleAccent}</span>
+                  </h3>
+
+                  {/* Step Description */}
+                  <p className="text-base sm:text-lg md:text-xl text-foreground/50 leading-relaxed max-w-2xl mx-auto">
+                    {step.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Progress Dots */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-3">
+            {steps.map((_, index) => {
+              const isActive = activeStep === index;
+              const isPast = activeStep > index;
+              
+              return (
+                <div
+                  key={index}
+                  className="relative"
+                >
+                  {/* Dot */}
+                  <div
+                    className={`
+                      w-2 h-2 rounded-full transition-all duration-300
+                      ${isActive ? 'bg-gradient-to-r from-[#3A8BFF] to-[#A9AAAE] scale-150' : ''}
+                      ${isPast ? 'bg-foreground/30' : ''}
+                      ${!isActive && !isPast ? 'bg-foreground/10' : ''}
+                    `}
+                  />
+                  {/* Active glow */}
+                  {isActive && (
+                    <div className="absolute inset-0 w-2 h-2 rounded-full bg-[#3A8BFF] blur-md animate-pulse" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Scroll hint - shows at beginning */}
+          <div 
+            className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-500"
+            style={{ opacity: scrollProgress < 0.1 ? 0.5 : 0 }}
+          >
+            <span className="text-xs uppercase tracking-widest text-foreground/30">Scroll</span>
+            <div className="w-px h-8 bg-gradient-to-b from-foreground/20 to-transparent animate-pulse" />
+          </div>
         </div>
       </div>
     </section>
