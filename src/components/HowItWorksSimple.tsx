@@ -826,8 +826,15 @@ export const HowItWorksSimple = () => {
             })}
           </div>
 
-          {/* Progress indicator */}
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+          {/* Progress indicator - only visible when in How It Works section */}
+          <div 
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20 transition-all duration-500"
+            style={{
+              opacity: scrollProgress > 0.08 && scrollProgress < 0.95 ? 1 : 0,
+              transform: `translateX(-50%) translateY(${scrollProgress > 0.08 && scrollProgress < 0.95 ? 0 : 20}px)`,
+              pointerEvents: scrollProgress > 0.08 && scrollProgress < 0.95 ? 'auto' : 'none',
+            }}
+          >
             {steps.map((_, index) => {
               const { phase } = getStepVisibility(index);
               const isActive = phase === 'active' || phase === 'entering' || phase === 'exiting';
