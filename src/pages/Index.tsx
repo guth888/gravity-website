@@ -34,7 +34,7 @@ const Index = () => {
         
         {/* Social Proof - Logo Marquee */}
         <Suspense fallback={null}>
-          <SocialProofBand className="-mt-8 sm:-mt-12 md:-mt-16" />
+          <SocialProofBand className="mt-4 sm:mt-6 md:mt-8" />
         </Suspense>
         
         {/* Dual Value Cards - Publisher & Advertiser */}
