@@ -1,9 +1,5 @@
-import { lazy, Suspense, useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
-  default: m.MeshAnimation
-})));
 
 export const AudienceCTA = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -33,66 +29,129 @@ export const AudienceCTA = () => {
       {/* Two-column layout */}
       <div className="flex flex-col lg:flex-row min-h-[70vh] lg:min-h-[85vh]">
         
-        {/* Publishers Side */}
+        {/* Publishers Side - Dark with aurora gradient */}
         <div 
           className={`
             relative flex-1 flex items-center justify-center overflow-hidden
-            bg-[#08080a] transition-all duration-700 ease-out
+            transition-all duration-700 ease-out
             ${hoveredSide === 'publisher' ? 'lg:flex-[1.08]' : hoveredSide === 'advertiser' ? 'lg:flex-[0.92]' : 'flex-1'}
           `}
           onMouseEnter={() => setHoveredSide('publisher')}
           onMouseLeave={() => setHoveredSide('none')}
+          style={{
+            background: 'linear-gradient(135deg, #0a0a0f 0%, #0d1117 50%, #0a0a0f 100%)',
+          }}
         >
-          {/* Mesh Background */}
-          <Suspense fallback={null}>
-            <div className={`
-              absolute inset-0 transition-opacity duration-700
-              ${hoveredSide === 'publisher' ? 'opacity-30' : 'opacity-15'}
-            `}>
-              <MeshAnimation className="w-full h-full" />
-            </div>
-          </Suspense>
+          {/* Animated gradient blob */}
+          <div 
+            className={`
+              absolute w-[800px] h-[800px] rounded-full blur-[120px]
+              transition-all duration-1000 ease-out
+              ${hoveredSide === 'publisher' ? 'opacity-40 scale-110' : 'opacity-20 scale-100'}
+            `}
+            style={{
+              background: 'radial-gradient(circle, rgba(58,139,255,0.4) 0%, rgba(99,102,241,0.2) 40%, transparent 70%)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              animation: 'blob-float 8s ease-in-out infinite',
+            }}
+          />
 
-          {/* Gradient orb */}
-          <div className={`
-            absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-[500px] h-[500px] rounded-full
-            bg-gradient-to-br from-[#3A8BFF]/10 via-transparent to-transparent
-            blur-3xl transition-all duration-700
-            ${hoveredSide === 'publisher' ? 'opacity-60 scale-110' : 'opacity-30 scale-100'}
-          `} />
+          {/* Secondary blob */}
+          <div 
+            className={`
+              absolute w-[400px] h-[400px] rounded-full blur-[80px]
+              transition-all duration-1000 ease-out
+              ${hoveredSide === 'publisher' ? 'opacity-30' : 'opacity-10'}
+            `}
+            style={{
+              background: 'radial-gradient(circle, rgba(139,92,246,0.5) 0%, transparent 70%)',
+              top: '30%',
+              right: '20%',
+              animation: 'blob-float 6s ease-in-out infinite reverse',
+            }}
+          />
 
-          {/* Floating particles */}
-          <div className={`
-            absolute inset-0 pointer-events-none transition-opacity duration-500
-            ${hoveredSide === 'publisher' ? 'opacity-100' : 'opacity-0'}
-          `}>
-            {[...Array(8)].map((_, i) => (
+          {/* Subtle grid pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px',
+            }}
+          />
+
+          {/* Floating geometric shapes */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Rings */}
+            <div 
+              className={`
+                absolute w-32 h-32 border border-white/5 rounded-full
+                transition-all duration-700
+                ${hoveredSide === 'publisher' ? 'border-[#3A8BFF]/20 scale-110' : ''}
+              `}
+              style={{ top: '15%', left: '10%', animation: 'float-slow 12s ease-in-out infinite' }}
+            />
+            <div 
+              className={`
+                absolute w-20 h-20 border border-white/5 rounded-full
+                transition-all duration-700
+                ${hoveredSide === 'publisher' ? 'border-[#3A8BFF]/15 scale-110' : ''}
+              `}
+              style={{ bottom: '20%', left: '15%', animation: 'float-slow 10s ease-in-out infinite reverse' }}
+            />
+            <div 
+              className={`
+                absolute w-40 h-40 border border-white/[0.03] rounded-full
+                transition-all duration-700
+                ${hoveredSide === 'publisher' ? 'border-white/10' : ''}
+              `}
+              style={{ top: '60%', right: '5%', animation: 'float-slow 14s ease-in-out infinite' }}
+            />
+            
+            {/* Small dots */}
+            {[...Array(5)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 rounded-full bg-[#3A8BFF]/50"
+                className={`
+                  absolute w-1.5 h-1.5 rounded-full bg-white/10
+                  transition-all duration-500
+                  ${hoveredSide === 'publisher' ? 'bg-[#3A8BFF]/40 scale-150' : ''}
+                `}
                 style={{
-                  left: `${15 + (i * 10)}%`,
-                  top: `${20 + (i % 3) * 25}%`,
-                  animation: `float-particle ${4 + (i % 3)}s ease-in-out infinite`,
-                  animationDelay: `${i * 0.4}s`,
+                  top: `${20 + i * 15}%`,
+                  left: `${5 + i * 8}%`,
+                  animation: `twinkle ${3 + i}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.5}s`,
                 }}
               />
             ))}
           </div>
+
+          {/* Noise texture overlay */}
+          <div 
+            className="absolute inset-0 opacity-[0.015] mix-blend-overlay pointer-events-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            }}
+          />
 
           {/* Content */}
           <div className={`
             relative z-10 text-center px-6 sm:px-10 lg:px-14 py-20 lg:py-0 max-w-xl mx-auto
             transition-all duration-700 ease-out
             ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-            ${hoveredSide === 'advertiser' ? 'lg:opacity-60 lg:scale-[0.98]' : 'opacity-100 scale-100'}
+            ${hoveredSide === 'advertiser' ? 'lg:opacity-50 lg:scale-[0.97]' : 'opacity-100 scale-100'}
           `}>
             {/* Label */}
             <p className={`
-              text-[10px] sm:text-xs uppercase tracking-[0.25em] mb-8
-              transition-all duration-500
-              ${hoveredSide === 'publisher' ? 'text-[#3A8BFF]' : 'text-white/30'}
+              text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-8
+              transition-all duration-500 font-medium
+              ${hoveredSide === 'publisher' ? 'text-[#3A8BFF]' : 'text-white/25'}
             `}>
               For Publishers
             </p>
@@ -104,9 +163,9 @@ export const AudienceCTA = () => {
               conversation into
               <br />
               <span className={`
-                inline-block transition-all duration-500
+                inline-block transition-all duration-500 relative
                 ${hoveredSide === 'publisher' 
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] via-[#60a5fa] to-[#3A8BFF] bg-[length:200%_auto] animate-gradient-shift' 
+                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] via-[#818cf8] to-[#3A8BFF] bg-[length:200%_auto] animate-gradient-shift' 
                   : 'text-[#3A8BFF]'
                 }
               `}>
@@ -118,7 +177,7 @@ export const AudienceCTA = () => {
             <p className={`
               text-sm sm:text-[15px] leading-relaxed mb-10 max-w-md mx-auto
               transition-all duration-500
-              ${hoveredSide === 'publisher' ? 'text-white/60' : 'text-white/40'}
+              ${hoveredSide === 'publisher' ? 'text-white/60' : 'text-white/35'}
             `}>
               You built the space where conversations happen. We built the engine to 
               monetize them—without compromising UX or user trust.
@@ -128,11 +187,11 @@ export const AudienceCTA = () => {
             <Link 
               to="/publishers"
               className={`
-                group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full
-                bg-white text-black font-medium text-sm
+                group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full
+                bg-white text-[#0a0a0f] font-semibold text-sm
                 transition-all duration-500 ease-out
-                hover:shadow-[0_0_50px_rgba(255,255,255,0.25)]
-                ${hoveredSide === 'publisher' ? 'scale-105' : 'scale-100'}
+                hover:shadow-[0_0_60px_rgba(255,255,255,0.3)]
+                ${hoveredSide === 'publisher' ? 'scale-[1.02]' : 'scale-100'}
               `}
             >
               <span>Become a Publisher</span>
@@ -142,82 +201,140 @@ export const AudienceCTA = () => {
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
 
-            {/* Stats - visible on hover */}
+            {/* Stats */}
             <div className={`
               flex items-center justify-center gap-10 mt-12
               transition-all duration-500
-              ${hoveredSide === 'publisher' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+              ${hoveredSide === 'publisher' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
             `}>
               <div className="text-center">
-                <div className="text-2xl font-bold text-white font-mono">3x</div>
-                <div className="text-[10px] uppercase tracking-wider text-white/30">Higher RPM</div>
+                <div className="text-2xl font-bold text-white font-mono tracking-tight">3x</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/30 mt-1">Higher RPM</div>
               </div>
-              <div className="w-px h-8 bg-white/10" />
+              <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
               <div className="text-center">
-                <div className="text-2xl font-bold text-white font-mono">95%</div>
-                <div className="text-[10px] uppercase tracking-wider text-white/30">Fill Rate</div>
+                <div className="text-2xl font-bold text-white font-mono tracking-tight">95%</div>
+                <div className="text-[10px] uppercase tracking-widest text-white/30 mt-1">Fill Rate</div>
               </div>
             </div>
           </div>
 
-          {/* Right edge glow */}
+          {/* Right edge */}
           <div className={`
-            hidden lg:block absolute right-0 top-0 bottom-0 w-[2px]
+            hidden lg:block absolute right-0 top-0 bottom-0 w-px
             transition-all duration-500
             ${hoveredSide === 'publisher' 
-              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/60 to-transparent shadow-[0_0_20px_rgba(58,139,255,0.4)]' 
-              : 'bg-gradient-to-b from-transparent via-white/5 to-transparent'
+              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/50 to-transparent' 
+              : 'bg-gradient-to-b from-transparent via-white/10 to-transparent'
             }
           `} />
         </div>
 
-        {/* Advertisers Side */}
+        {/* Advertisers Side - Light with soft shapes */}
         <div 
           className={`
             relative flex-1 flex items-center justify-center overflow-hidden
-            bg-[#f8f9fa] transition-all duration-700 ease-out
+            transition-all duration-700 ease-out
             ${hoveredSide === 'advertiser' ? 'lg:flex-[1.08]' : hoveredSide === 'publisher' ? 'lg:flex-[0.92]' : 'flex-1'}
           `}
           onMouseEnter={() => setHoveredSide('advertiser')}
           onMouseLeave={() => setHoveredSide('none')}
+          style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%)',
+          }}
         >
-          {/* Mesh Background */}
-          <Suspense fallback={null}>
-            <div className={`
-              absolute inset-0 transition-opacity duration-700
-              ${hoveredSide === 'advertiser' ? 'opacity-40' : 'opacity-20'}
-            `}>
-              <MeshAnimation className="w-full h-full" />
-            </div>
-          </Suspense>
+          {/* Animated gradient blob */}
+          <div 
+            className={`
+              absolute w-[700px] h-[700px] rounded-full blur-[100px]
+              transition-all duration-1000 ease-out
+              ${hoveredSide === 'advertiser' ? 'opacity-50 scale-110' : 'opacity-20 scale-100'}
+            `}
+            style={{
+              background: 'radial-gradient(circle, rgba(58,139,255,0.15) 0%, rgba(147,197,253,0.1) 40%, transparent 70%)',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              animation: 'blob-float 10s ease-in-out infinite',
+            }}
+          />
 
-          {/* Gradient orb */}
-          <div className={`
-            absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-[500px] h-[500px] rounded-full
-            bg-gradient-to-br from-[#3A8BFF]/5 via-transparent to-transparent
-            blur-3xl transition-all duration-700
-            ${hoveredSide === 'advertiser' ? 'opacity-80 scale-110' : 'opacity-30 scale-100'}
-          `} />
+          {/* Secondary accent blob */}
+          <div 
+            className={`
+              absolute w-[300px] h-[300px] rounded-full blur-[60px]
+              transition-all duration-1000 ease-out
+              ${hoveredSide === 'advertiser' ? 'opacity-40' : 'opacity-10'}
+            `}
+            style={{
+              background: 'radial-gradient(circle, rgba(96,165,250,0.3) 0%, transparent 70%)',
+              bottom: '30%',
+              left: '20%',
+              animation: 'blob-float 7s ease-in-out infinite reverse',
+            }}
+          />
 
-          {/* Floating particles */}
-          <div className={`
-            absolute inset-0 pointer-events-none transition-opacity duration-500
-            ${hoveredSide === 'advertiser' ? 'opacity-100' : 'opacity-0'}
-          `}>
-            {[...Array(8)].map((_, i) => (
+          {/* Dot pattern */}
+          <div 
+            className={`
+              absolute inset-0 transition-opacity duration-500
+              ${hoveredSide === 'advertiser' ? 'opacity-[0.4]' : 'opacity-[0.2]'}
+            `}
+            style={{
+              backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px)`,
+              backgroundSize: '24px 24px',
+            }}
+          />
+
+          {/* Floating shapes */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Soft rectangles */}
+            <div 
+              className={`
+                absolute w-24 h-24 rounded-2xl bg-gradient-to-br from-[#3A8BFF]/5 to-transparent
+                border border-[#3A8BFF]/10 backdrop-blur-sm
+                transition-all duration-700
+                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/20 scale-110' : ''}
+              `}
+              style={{ top: '20%', right: '15%', animation: 'float-slow 11s ease-in-out infinite', transform: 'rotate(12deg)' }}
+            />
+            <div 
+              className={`
+                absolute w-16 h-16 rounded-xl bg-gradient-to-br from-black/[0.02] to-transparent
+                border border-black/5
+                transition-all duration-700
+                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/15 scale-110' : ''}
+              `}
+              style={{ bottom: '25%', right: '10%', animation: 'float-slow 9s ease-in-out infinite reverse', transform: 'rotate(-8deg)' }}
+            />
+            <div 
+              className={`
+                absolute w-20 h-20 rounded-full bg-gradient-to-br from-[#3A8BFF]/[0.03] to-transparent
+                border border-[#3A8BFF]/5
+                transition-all duration-700
+                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/15' : ''}
+              `}
+              style={{ top: '60%', left: '8%', animation: 'float-slow 13s ease-in-out infinite' }}
+            />
+
+            {/* Accent dots */}
+            {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 rounded-full bg-[#3A8BFF]/30"
+                className={`
+                  absolute w-2 h-2 rounded-full bg-[#3A8BFF]/10
+                  transition-all duration-500
+                  ${hoveredSide === 'advertiser' ? 'bg-[#3A8BFF]/30 scale-125' : ''}
+                `}
                 style={{
-                  left: `${15 + (i * 10)}%`,
-                  top: `${20 + (i % 3) * 25}%`,
-                  animation: `float-particle ${4 + (i % 3)}s ease-in-out infinite`,
-                  animationDelay: `${i * 0.4}s`,
+                  top: `${25 + i * 18}%`,
+                  right: `${8 + i * 6}%`,
+                  animation: `twinkle ${4 + i}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.7}s`,
                 }}
               />
             ))}
@@ -228,19 +345,19 @@ export const AudienceCTA = () => {
             relative z-10 text-center px-6 sm:px-10 lg:px-14 py-20 lg:py-0 max-w-xl mx-auto
             transition-all duration-700 ease-out delay-100
             ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-            ${hoveredSide === 'publisher' ? 'lg:opacity-60 lg:scale-[0.98]' : 'opacity-100 scale-100'}
+            ${hoveredSide === 'publisher' ? 'lg:opacity-50 lg:scale-[0.97]' : 'opacity-100 scale-100'}
           `}>
             {/* Label */}
             <p className={`
-              text-[10px] sm:text-xs uppercase tracking-[0.25em] mb-8
-              transition-all duration-500
-              ${hoveredSide === 'advertiser' ? 'text-[#3A8BFF]' : 'text-black/30'}
+              text-[10px] sm:text-xs uppercase tracking-[0.3em] mb-8
+              transition-all duration-500 font-medium
+              ${hoveredSide === 'advertiser' ? 'text-[#3A8BFF]' : 'text-black/25'}
             `}>
               For Advertisers
             </p>
 
             {/* Headline */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-bold text-black leading-[1.15] mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-bold text-[#0a0a0f] leading-[1.15] mb-6">
               Your buyers are having
               <br />
               <span className={`
@@ -258,7 +375,7 @@ export const AudienceCTA = () => {
             <p className={`
               text-sm sm:text-[15px] leading-relaxed mb-10 max-w-md mx-auto
               transition-all duration-500
-              ${hoveredSide === 'advertiser' ? 'text-black/60' : 'text-black/40'}
+              ${hoveredSide === 'advertiser' ? 'text-black/60' : 'text-black/35'}
             `}>
               High-intent moments happen in LLM chats, not just search. Gravity reaches 
               users at the exact second they're deciding.
@@ -268,11 +385,11 @@ export const AudienceCTA = () => {
             <Link 
               to="/advertisers"
               className={`
-                group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full
-                bg-black text-white font-medium text-sm
+                group inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full
+                bg-[#0a0a0f] text-white font-semibold text-sm
                 transition-all duration-500 ease-out
-                hover:shadow-[0_0_50px_rgba(0,0,0,0.25)]
-                ${hoveredSide === 'advertiser' ? 'scale-105' : 'scale-100'}
+                hover:shadow-[0_0_60px_rgba(0,0,0,0.2)]
+                ${hoveredSide === 'advertiser' ? 'scale-[1.02]' : 'scale-100'}
               `}
             >
               <span>Explore Placements</span>
@@ -282,35 +399,35 @@ export const AudienceCTA = () => {
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
 
-            {/* Stats - visible on hover */}
+            {/* Stats */}
             <div className={`
               flex items-center justify-center gap-10 mt-12
               transition-all duration-500
-              ${hoveredSide === 'advertiser' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+              ${hoveredSide === 'advertiser' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
             `}>
               <div className="text-center">
-                <div className="text-2xl font-bold text-black font-mono">12%</div>
-                <div className="text-[10px] uppercase tracking-wider text-black/30">Avg CTR</div>
+                <div className="text-2xl font-bold text-[#0a0a0f] font-mono tracking-tight">12%</div>
+                <div className="text-[10px] uppercase tracking-widest text-black/30 mt-1">Avg CTR</div>
               </div>
-              <div className="w-px h-8 bg-black/10" />
+              <div className="w-px h-10 bg-gradient-to-b from-transparent via-black/15 to-transparent" />
               <div className="text-center">
-                <div className="text-2xl font-bold text-black font-mono">$24</div>
-                <div className="text-[10px] uppercase tracking-wider text-black/30">Avg CPA</div>
+                <div className="text-2xl font-bold text-[#0a0a0f] font-mono tracking-tight">$24</div>
+                <div className="text-[10px] uppercase tracking-widest text-black/30 mt-1">Avg CPA</div>
               </div>
             </div>
           </div>
 
-          {/* Left edge glow */}
+          {/* Left edge */}
           <div className={`
-            hidden lg:block absolute left-0 top-0 bottom-0 w-[2px]
+            hidden lg:block absolute left-0 top-0 bottom-0 w-px
             transition-all duration-500
             ${hoveredSide === 'advertiser' 
-              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/40 to-transparent shadow-[0_0_20px_rgba(58,139,255,0.3)]' 
-              : 'bg-gradient-to-b from-transparent via-black/5 to-transparent'
+              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/30 to-transparent' 
+              : 'bg-gradient-to-b from-transparent via-black/10 to-transparent'
             }
           `} />
         </div>
@@ -318,23 +435,20 @@ export const AudienceCTA = () => {
 
       {/* Animations */}
       <style>{`
-        @keyframes float-particle {
-          0%, 100% { 
-            transform: translateY(0) translateX(0) scale(1); 
-            opacity: 0.4; 
-          }
-          25% {
-            transform: translateY(-15px) translateX(5px) scale(1.2);
-            opacity: 0.8;
-          }
-          50% { 
-            transform: translateY(-25px) translateX(-5px) scale(1); 
-            opacity: 0.6; 
-          }
-          75% {
-            transform: translateY(-10px) translateX(8px) scale(1.3);
-            opacity: 1;
-          }
+        @keyframes blob-float {
+          0%, 100% { transform: translate(-50%, -50%) scale(1); }
+          33% { transform: translate(-48%, -52%) scale(1.02); }
+          66% { transform: translate(-52%, -48%) scale(0.98); }
+        }
+        
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-15px) rotate(3deg); }
+        }
+        
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.3); }
         }
         
         @keyframes gradient-shift {
