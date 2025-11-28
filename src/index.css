@@ -1630,13 +1630,38 @@ html {
 }
 
 /* ============ GRADIENT WORDS SETUP ============ */
-.hero-headline .gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+/* ============ SIGNATURE GRADIENT TEXT - The Gravity Look ============ */
+/* Used for emphasized words throughout the site */
+.gradient, .gradient-text-signature {
+  background: linear-gradient(135deg, #2D8B7A 0%, #4AA89A 50%, #2D8B7A 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  display: inline-block;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  display: inline;
+}
+
+/* Non-italic version for specific uses */
+.gradient-accent {
+  background: linear-gradient(135deg, #2D8B7A 0%, #4AA89A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-headline .gradient {
+  background: linear-gradient(135deg, #2D8B7A 0%, #4AA89A 50%, #2D8B7A 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  display: inline;
   padding: 0.1em 0;
   
   /* Clip-path reveal (the Dia effect) */
