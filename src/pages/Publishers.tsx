@@ -7,444 +7,567 @@ const MeshAnimation = lazy(() => import("../components/MeshAnimation").then(m =>
   default: m.MeshAnimation
 })));
 
-// Animated counter component
-const AnimatedNumber = ({ value, suffix = "", duration = 2000 }: { value: number; suffix?: string; duration?: number }) => {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
-
+// Live counter that continuously increments
+const LiveCounter = ({ baseValue, incrementPerSecond }: { baseValue: number; incrementPerSecond: number }) => {
+  const [value, setValue] = useState(baseValue);
+  
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let start = 0;
-          const end = value;
-          const increment = end / (duration / 16);
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= end) {
-              setCount(end);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
-        }
-      },
-      { threshold: 0.5 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [value, duration, hasAnimated]);
+    const interval = setInterval(() => {
+      setValue(v => v + Math.floor(Math.random() * incrementPerSecond * 2));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [incrementPerSecond]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return (
+    <span className="font-mono tabular-nums">
+      {value.toLocaleString()}
+    </span>
+  );
 };
 
-// Feature card component
-const FeatureCard = ({ 
-  icon, 
-  title, 
-  description, 
-  delay 
-}: { 
-  icon: React.ReactNode; 
-  title: string; 
-  description: string; 
-  delay: number;
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+// Simulated live suggestion feed
+const LiveSuggestionFeed = () => {
+  const suggestions = [
+    { query: "Best CRM for startups?", suggestion: "HubSpot", vertical: "SaaS", rpm: "$42" },
+    { query: "Compare running shoes", suggestion: "Nike Pegasus 40", vertical: "Retail", rpm: "$28" },
+    { query: "Project management tools", suggestion: "Linear", vertical: "SaaS", rpm: "$38" },
+    { query: "Best travel credit card?", suggestion: "Chase Sapphire", vertical: "Finance", rpm: "$85" },
+    { query: "CRM with Slack integration", suggestion: "Pipedrive", vertical: "SaaS", rpm: "$45" },
+    { query: "Productivity apps 2024", suggestion: "Notion", vertical: "SaaS", rpm: "$32" },
+    { query: "Best mattress for back pain", suggestion: "Purple Mattress", vertical: "DTC", rpm: "$52" },
+    { query: "Cloud hosting comparison", suggestion: "Vercel", vertical: "Tech", rpm: "$38" },
+  ];
+
+  const [feed, setFeed] = useState(suggestions.slice(0, 4));
+  const [fadeIndex, setFadeIndex] = useState(-1);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    const interval = setInterval(() => {
+      setFadeIndex(0);
+      setTimeout(() => {
+        setFeed(prev => {
+          const newItem = suggestions[Math.floor(Math.random() * suggestions.length)];
+          return [newItem, ...prev.slice(0, 3)];
+        });
+        setFadeIndex(-1);
+      }, 300);
+    }, 2500);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className={`
-        group relative p-8 rounded-2xl bg-white/[0.03] border border-white/10
-        hover:border-[#3A8BFF]/40 hover:shadow-[0_8px_40px_rgba(58,139,255,0.1)]
-        transition-all duration-500 ease-out
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
-      `}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <div className="w-12 h-12 rounded-xl bg-[#3A8BFF]/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#3A8BFF]/30 transition-all duration-300">
-        {icon}
-      </div>
-      <h3 className="text-lg font-semibold text-white mb-3">{title}</h3>
-      <p className="text-white/50 text-sm leading-relaxed">{description}</p>
+    <div className="space-y-2">
+      {feed.map((item, i) => (
+        <div 
+          key={i}
+          className={`
+            flex items-center gap-4 p-3 rounded-lg bg-white/[0.03] border border-white/5
+            transition-all duration-300
+            ${i === fadeIndex ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}
+            ${i === 0 && fadeIndex === -1 ? 'border-[#3A8BFF]/30 bg-[#3A8BFF]/5' : ''}
+          `}
+        >
+          <div className={`w-2 h-2 rounded-full ${i === 0 ? 'bg-green-500 animate-pulse' : 'bg-white/20'}`} />
+          <div className="flex-1 min-w-0">
+            <div className="text-xs text-white/40 truncate">"{item.query}"</div>
+            <div className="text-sm text-white/80 truncate">→ {item.suggestion}</div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-white/30">{item.vertical}</div>
+            <div className="text-sm font-mono text-[#3A8BFF]">{item.rpm}</div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
 
-// Step component for integration
-const IntegrationStep = ({ 
-  number, 
-  title, 
-  description, 
-  code,
-  delay 
-}: { 
-  number: string; 
-  title: string; 
-  description: string;
-  code: string;
-  delay: number;
-}) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+// Network visualization component
+const NetworkVisualization = () => {
+  return (
+    <div className="relative w-full h-[300px] sm:h-[400px]">
+      <svg className="w-full h-full" viewBox="0 0 800 400">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.1" />
+            <stop offset="50%" stopColor="#3A8BFF" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#3A8BFF" stopOpacity="0.1" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+        {/* Demand side (left) */}
+        <g className="demand-nodes">
+          {[
+            { y: 80, label: "DSP 1" },
+            { y: 160, label: "DSP 2" },
+            { y: 240, label: "Direct" },
+            { y: 320, label: "Agency" },
+          ].map((node, i) => (
+            <g key={i}>
+              {/* Connection line to center */}
+              <line 
+                x1="120" y1={node.y} x2="380" y2="200" 
+                stroke="url(#lineGradient)" 
+                strokeWidth="2"
+                className="animate-pulse"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+              {/* Data packet animation */}
+              <circle r="4" fill="#3A8BFF" filter="url(#glow)">
+                <animateMotion 
+                  dur={`${2 + i * 0.3}s`} 
+                  repeatCount="indefinite"
+                  path={`M120,${node.y} L380,200`}
+                />
+              </circle>
+              {/* Node */}
+              <rect x="40" y={node.y - 15} width="80" height="30" rx="4" fill="white" fillOpacity="0.05" stroke="white" strokeOpacity="0.1" />
+              <text x="80" y={node.y + 4} textAnchor="middle" fill="white" fillOpacity="0.5" fontSize="11" fontFamily="monospace">{node.label}</text>
+            </g>
+          ))}
+        </g>
+
+        {/* Center - Gravity */}
+        <g className="gravity-core">
+          <circle cx="400" cy="200" r="60" fill="#3A8BFF" fillOpacity="0.1" stroke="#3A8BFF" strokeOpacity="0.3" strokeWidth="2" />
+          <circle cx="400" cy="200" r="45" fill="#3A8BFF" fillOpacity="0.2" stroke="#3A8BFF" strokeOpacity="0.5" strokeWidth="2">
+            <animate attributeName="r" values="45;50;45" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="400" cy="200" r="8" fill="#3A8BFF" filter="url(#glow)" />
+          <text x="400" y="280" textAnchor="middle" fill="white" fontSize="14" fontWeight="600">GRAVITY</text>
+          <text x="400" y="298" textAnchor="middle" fill="white" fillOpacity="0.4" fontSize="10">NETWORK</text>
+        </g>
+
+        {/* Supply side (right) - Publishers */}
+        <g className="supply-nodes">
+          {[
+            { y: 100, label: "Your App" },
+            { y: 200, label: "AI Chat" },
+            { y: 300, label: "Agent" },
+          ].map((node, i) => (
+            <g key={i}>
+              {/* Connection line from center */}
+              <line 
+                x1="420" y1="200" x2="680" y2={node.y} 
+                stroke="url(#lineGradient)" 
+                strokeWidth="2"
+                className="animate-pulse"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+              {/* Data packet animation */}
+              <circle r="4" fill="#10b981" filter="url(#glow)">
+                <animateMotion 
+                  dur={`${1.5 + i * 0.2}s`} 
+                  repeatCount="indefinite"
+                  path={`M420,200 L680,${node.y}`}
+                />
+              </circle>
+              {/* Node */}
+              <rect x="680" y={node.y - 15} width="80" height="30" rx="4" fill="white" fillOpacity="0.05" stroke="#10b981" strokeOpacity="0.3" />
+              <text x="720" y={node.y + 4} textAnchor="middle" fill="white" fillOpacity="0.7" fontSize="11" fontFamily="monospace">{node.label}</text>
+            </g>
+          ))}
+        </g>
+
+        {/* Labels */}
+        <text x="80" y="30" textAnchor="middle" fill="white" fillOpacity="0.3" fontSize="10" fontWeight="500" letterSpacing="0.1em">DEMAND</text>
+        <text x="720" y="30" textAnchor="middle" fill="white" fillOpacity="0.3" fontSize="10" fontWeight="500" letterSpacing="0.1em">SUPPLY</text>
+      </svg>
+    </div>
+  );
+};
+
+// Revenue estimator component
+const RevenueEstimator = () => {
+  const [conversations, setConversations] = useState(100000);
+  const [vertical, setVertical] = useState("tech");
+
+  const rpms: Record<string, number> = {
+    tech: 32,
+    finance: 85,
+    travel: 45,
+    retail: 28,
+    health: 52,
+    education: 22,
+  };
+
+  const estimatedRevenue = Math.round((conversations / 1000) * rpms[vertical]);
 
   return (
-    <div
-      ref={ref}
-      className={`
-        flex flex-col md:flex-row gap-8 items-start
-        transition-all duration-700 ease-out
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-      `}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <div className="flex-shrink-0">
-        <div className="w-12 h-12 rounded-full bg-[#3A8BFF] text-white flex items-center justify-center text-lg font-bold">
-          {number}
+    <div className="p-6 rounded-xl bg-white/[0.02] border border-white/10">
+      <div className="text-sm text-white/40 uppercase tracking-wider mb-6">Revenue Estimator</div>
+      
+      <div className="space-y-6">
+        <div>
+          <label className="block text-sm text-white/60 mb-2">Monthly Conversations</label>
+          <input 
+            type="range" 
+            min="10000" 
+            max="10000000" 
+            step="10000"
+            value={conversations}
+            onChange={(e) => setConversations(Number(e.target.value))}
+            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#3A8BFF]"
+          />
+          <div className="text-2xl font-mono text-white mt-2">{conversations.toLocaleString()}</div>
         </div>
-      </div>
-      <div className="flex-1">
-        <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-        <p className="text-white/50 mb-4">{description}</p>
-        <div className="bg-white/[0.05] border border-white/10 rounded-xl p-4 font-mono text-sm text-[#60a5fa] overflow-x-auto">
-          <code>{code}</code>
+
+        <div>
+          <label className="block text-sm text-white/60 mb-2">Primary Vertical</label>
+          <select 
+            value={vertical}
+            onChange={(e) => setVertical(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#3A8BFF]/50"
+          >
+            <option value="tech">Technology & SaaS</option>
+            <option value="finance">Finance & Insurance</option>
+            <option value="travel">Travel & Hospitality</option>
+            <option value="retail">Retail & E-commerce</option>
+            <option value="health">Health & Wellness</option>
+            <option value="education">Education</option>
+          </select>
+        </div>
+
+        <div className="pt-6 border-t border-white/10">
+          <div className="text-sm text-white/40 mb-1">Estimated Monthly Revenue</div>
+          <div className="text-4xl font-bold text-[#3A8BFF]">${estimatedRevenue.toLocaleString()}</div>
+          <div className="text-sm text-white/40 mt-1">
+            Based on ${rpms[vertical]} avg RPM for {vertical.charAt(0).toUpperCase() + vertical.slice(1)}
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+// RPM by vertical table
+const RPMTable = () => {
+  const data = [
+    { vertical: "Finance & Insurance", rpm: "$85", fill: "92%", trend: "+12%" },
+    { vertical: "Technology & SaaS", rpm: "$42", fill: "95%", trend: "+8%" },
+    { vertical: "Travel & Hospitality", rpm: "$45", fill: "88%", trend: "+15%" },
+    { vertical: "Health & Wellness", rpm: "$52", fill: "85%", trend: "+6%" },
+    { vertical: "Retail & E-commerce", rpm: "$28", fill: "97%", trend: "+4%" },
+    { vertical: "Education", rpm: "$22", fill: "82%", trend: "+18%" },
+  ];
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead>
+          <tr className="border-b border-white/10">
+            <th className="text-left py-3 px-4 text-xs text-white/40 font-medium uppercase tracking-wider">Vertical</th>
+            <th className="text-right py-3 px-4 text-xs text-white/40 font-medium uppercase tracking-wider">Avg RPM</th>
+            <th className="text-right py-3 px-4 text-xs text-white/40 font-medium uppercase tracking-wider">Fill Rate</th>
+            <th className="text-right py-3 px-4 text-xs text-white/40 font-medium uppercase tracking-wider">30d Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, i) => (
+            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+              <td className="py-3 px-4 text-sm text-white/80">{row.vertical}</td>
+              <td className="py-3 px-4 text-sm text-right font-mono text-[#3A8BFF]">{row.rpm}</td>
+              <td className="py-3 px-4 text-sm text-right font-mono text-white/60">{row.fill}</td>
+              <td className="py-3 px-4 text-sm text-right font-mono text-green-500">{row.trend}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+// Demand partners
+const demandPartners = [
+  "The Trade Desk", "DV360", "Amazon DSP", "Xandr", "MediaMath", 
+  "Verizon Media", "Adobe Advertising", "Criteo", "RTB House"
+];
 
 export const Publishers = () => {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#0a0a0b] text-white">
       <Header />
       
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         <Suspense fallback={null}>
           <div className="absolute inset-0 opacity-20">
             <MeshAnimation className="w-full h-full" />
           </div>
         </Suspense>
 
-        {/* Floating elements for depth */}
-        <div 
-          className="absolute top-20 left-[10%] w-64 h-64 bg-[#3A8BFF]/10 rounded-full blur-3xl"
-          style={{ transform: `translateY(${scrollY * 0.1}px)` }}
-        />
-        <div 
-          className="absolute bottom-20 right-[10%] w-96 h-96 bg-[#3A8BFF]/5 rounded-full blur-3xl"
-          style={{ transform: `translateY(${scrollY * -0.1}px)` }}
-        />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left - Copy */}
+            <div>
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-xs font-medium text-white/60 uppercase tracking-wider">Network Live</span>
+                <span className="text-xs font-mono text-white/40">|</span>
+                <span className="text-xs font-mono text-[#3A8BFF]">
+                  <LiveCounter baseValue={12847293} incrementPerSecond={47} /> suggestions served
+                </span>
+              </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 animate-fade-in-up">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-medium text-white/60 uppercase tracking-wider">For LLM Publishers</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-6">
+                Your AI conversations.
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#60a5fa]">
+                  Our demand.
+                </span>
+              </h1>
+
+              <p className="text-lg text-white/50 max-w-xl mb-8">
+                Connect to the Gravity network and start monetizing high-intent conversations 
+                with native suggestions from premium advertisers. No banners. No pop-ups. 
+                Just revenue that flows.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/demo?type=publisher" className="metallic-button">
+                  <span>Join the Network</span>
+                </Link>
+                <a 
+                  href="https://www.npmjs.com/package/@iris-technologies/react" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-white/60 hover:text-white border border-white/10 rounded-full transition-colors"
+                >
+                  View SDK Docs
+                </a>
+              </div>
+            </div>
+
+            {/* Right - Live Feed */}
+            <div className="lg:pl-8">
+              <div className="text-xs text-white/30 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                Live Suggestion Feed
+              </div>
+              <LiveSuggestionFeed />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Network Visualization */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              You're not buying software.
+              <span className="text-white/30"> You're joining infrastructure.</span>
+            </h2>
+            <p className="text-white/50 max-w-2xl mx-auto">
+              Gravity connects your LLM product to premium demand sources—DSPs, direct advertisers, 
+              and agency trading desks—all competing for your inventory in real-time.
+            </p>
           </div>
 
-          {/* Main Headline */}
-          <h1 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 animate-fade-in-up"
-            style={{ animationDelay: '0.1s' }}
-          >
-            Your conversations are
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#60a5fa]">
-              already valuable.
-            </span>
-          </h1>
+          <NetworkVisualization />
 
-          {/* Subheadline */}
-          <p 
-            className="text-lg sm:text-xl text-white/50 max-w-2xl mx-auto mb-10 animate-fade-in-up"
-            style={{ animationDelay: '0.2s' }}
-          >
-            You built the space where high-intent conversations happen.
-            We built the engine to turn them into revenue—without compromising 
-            your UX or your users' trust.
+          {/* Stats under network */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+            {[
+              { value: "50+", label: "Demand Partners" },
+              { value: "12.4%", label: "Avg CTR" },
+              { value: "95%", label: "Fill Rate" },
+              { value: "<50ms", label: "Latency" },
+            ].map((stat, i) => (
+              <div key={i} className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
+                <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{stat.value}</div>
+                <div className="text-sm text-white/40 mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Economics Section */}
+      <section className="relative py-24 bg-white/[0.01]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Left - Revenue Estimator */}
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+                See what you're leaving on the table.
+              </h2>
+              <p className="text-white/50 mb-8">
+                Publishers on the Gravity network see 3-5x higher RPMs than traditional display. 
+                Estimate your potential revenue below.
+              </p>
+              <RevenueEstimator />
+            </div>
+
+            {/* Right - RPM Table */}
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">
+                RPM by Vertical
+              </h3>
+              <p className="text-white/50 mb-6 text-sm">
+                Average revenue per thousand suggestions, updated in real-time based on network data.
+              </p>
+              <div className="rounded-xl bg-white/[0.02] border border-white/10 overflow-hidden">
+                <RPMTable />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What Users See */}
+      <section className="relative py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              What your users actually see.
+            </h2>
+            <p className="text-white/50 max-w-2xl mx-auto">
+              Native suggestions that feel like the LLM's own recommendations. 
+              No jarring ads. No trust erosion.
+            </p>
+          </div>
+
+          {/* Chat mockup */}
+          <div className="max-w-2xl mx-auto">
+            <div className="rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden">
+              {/* Chat header */}
+              <div className="px-6 py-4 border-b border-white/10 flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full bg-red-500/60" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
+                <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                <span className="text-sm text-white/40 ml-2">AI Assistant</span>
+              </div>
+              
+              {/* Chat content */}
+              <div className="p-6 space-y-6">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="bg-[#3A8BFF] rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                    <p className="text-white text-sm">What's the best project management tool for a remote team?</p>
+                  </div>
+                </div>
+
+                {/* AI response */}
+                <div className="space-y-4">
+                  <div className="bg-white/5 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[90%]">
+                    <p className="text-white/80 text-sm leading-relaxed">
+                      For remote teams, I'd recommend looking at tools that excel in async communication and 
+                      visibility. Here are some top options:
+                    </p>
+                    <ul className="mt-3 space-y-2 text-white/70 text-sm">
+                      <li>• <strong>Notion</strong> - Best for docs + light PM</li>
+                      <li>• <strong>Asana</strong> - Best for complex workflows</li>
+                      <li>• <strong>Monday.com</strong> - Best for visual planning</li>
+                    </ul>
+                  </div>
+
+                  {/* Native suggestion - highlighted */}
+                  <div className="bg-gradient-to-r from-[#3A8BFF]/10 to-transparent border border-[#3A8BFF]/20 rounded-xl px-4 py-3 max-w-[90%]">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-xs font-bold">Li</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-white/80 text-sm">
+                          <strong className="text-white">Linear</strong> is worth checking out too—it's built 
+                          specifically for fast-moving teams and has excellent async features.
+                        </p>
+                        <span className="text-[10px] text-white/30 mt-1 block">Sponsored</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-white/30 text-sm mt-4">
+              ↑ The highlighted suggestion is a Gravity placement. Native. Contextual. Non-intrusive.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Demand Partners */}
+      <section className="relative py-24 bg-white/[0.01]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+              Connected to premium demand.
+            </h2>
+            <p className="text-white/50 max-w-xl mx-auto">
+              Your inventory is exposed to 50+ demand partners competing in real-time auctions.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {demandPartners.map((partner, i) => (
+              <div 
+                key={i}
+                className="px-5 py-3 rounded-lg bg-white/[0.03] border border-white/10 text-white/50 text-sm"
+              >
+                {partner}
+              </div>
+            ))}
+            <div className="px-5 py-3 rounded-lg bg-[#3A8BFF]/10 border border-[#3A8BFF]/20 text-[#3A8BFF] text-sm">
+              +40 more
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Integration - Minimal */}
+      <section className="relative py-24">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+            Integration? Three lines.
+          </h2>
+          <p className="text-white/50 mb-8">
+            We handle the complexity. You just render suggestions.
           </p>
 
-          {/* CTAs */}
-          <div 
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
-            style={{ animationDelay: '0.3s' }}
-          >
-            <Link to="/demo?type=publisher" className="metallic-button">
-              <span>Start Monetizing</span>
-            </Link>
+          <div className="rounded-xl bg-white/[0.03] border border-white/10 p-6 text-left font-mono text-sm overflow-x-auto">
+            <div className="text-white/40">// 1. Install</div>
+            <div className="text-[#3A8BFF] mb-4">npm install @iris-technologies/react</div>
+            
+            <div className="text-white/40">// 2. Wrap your app</div>
+            <div className="text-white/80 mb-4">
+              <span className="text-purple-400">{"<GravityProvider"}</span>
+              <span className="text-[#3A8BFF]"> publisherId</span>
+              <span className="text-white/60">="your-id"</span>
+              <span className="text-purple-400">{">"}</span>
+            </div>
+
+            <div className="text-white/40">// 3. Render suggestions</div>
+            <div className="text-white/80">
+              <span className="text-purple-400">{"<GravitySuggestion"}</span>
+              <span className="text-[#3A8BFF]"> context</span>
+              <span className="text-white/60">={"{conversation}"}</span>
+              <span className="text-purple-400">{" />"}</span>
+            </div>
+          </div>
+
+          <div className="mt-8">
             <a 
               href="https://www.npmjs.com/package/@iris-technologies/react" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-white/70 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-[#3A8BFF] hover:text-[#60a5fa] transition-colors text-sm"
             >
-              View Documentation
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
+              Full documentation →
             </a>
-          </div>
-
-          {/* Stats */}
-          <div 
-            className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 mt-16 pt-16 border-t border-white/10 animate-fade-in-up"
-            style={{ animationDelay: '0.4s' }}
-          >
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-white">
-                <AnimatedNumber value={3} suffix="x" />
-              </div>
-              <div className="text-sm text-white/40 mt-1">Higher RPM vs Display</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-white">
-                <AnimatedNumber value={12} suffix="%" />
-              </div>
-              <div className="text-sm text-white/40 mt-1">Average CTR</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-bold text-white">
-                <AnimatedNumber value={5} suffix=" min" />
-              </div>
-              <div className="text-sm text-white/40 mt-1">Integration Time</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Problem → Solution Section */}
-      <section className="relative py-24 sm:py-32 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            {/* Problem */}
-            <div className="space-y-6">
-              <div className="inline-block px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-medium uppercase tracking-wider">
-                The Problem
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Every conversation is full of intent.
-                <span className="text-white/30"> You're just not capturing it.</span>
-              </h2>
-              <p className="text-white/50 text-lg leading-relaxed">
-                Your users ask questions, compare options, and make decisions—all within your LLM interface. 
-                That's commercial intent at its purest. Right now, that value disappears into thin air.
-              </p>
-              <ul className="space-y-3">
-                {['Users asking "Which CRM is best for startups?"', 'Comparing products in real-time', 'Ready-to-buy moments, every session'].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-white/60">
-                    <svg className="w-5 h-5 text-red-400/60 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Solution */}
-            <div className="space-y-6">
-              <div className="inline-block px-3 py-1 rounded-full bg-[#3A8BFF]/20 text-[#60a5fa] text-xs font-medium uppercase tracking-wider">
-                The Solution
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight">
-                Gravity captures value
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#60a5fa]"> without breaking flow.</span>
-              </h2>
-              <p className="text-white/50 text-lg leading-relaxed">
-                We insert native, contextual suggestions that feel like your LLM's own insights—not interruptions. 
-                Your users get helpful recommendations. You get revenue. Everyone wins.
-              </p>
-              <ul className="space-y-3">
-                {['Suggestions appear naturally in responses', 'Zero impact on conversation quality', 'Revenue flows automatically'].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-white/60">
-                    <svg className="w-5 h-5 text-[#60a5fa] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="relative py-24 sm:py-32 bg-white/[0.02]">
-        <Suspense fallback={null}>
-          <div className="absolute inset-0 opacity-10">
-            <MeshAnimation className="w-full h-full" />
-          </div>
-        </Suspense>
-
-        <div className="relative z-10 max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Built for LLM platforms.
-              <span className="text-white/30"> Not retrofitted.</span>
-            </h2>
-            <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              Every feature designed specifically for conversational AI monetization.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>}
-              title="Real-Time Contextual Matching"
-              description="Our AI analyzes conversation context in milliseconds to surface only the most relevant suggestions."
-              delay={0}
-            />
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>}
-              title="Privacy-First Design"
-              description="No personal data collection. No tracking. Just contextual relevance based on the conversation itself."
-              delay={100}
-            />
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>}
-              title="Flexible Ad Formats"
-              description="Native suggestions, inline recommendations, and sponsored responses—all designed to feel organic."
-              delay={200}
-            />
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>}
-              title="Transparent Reporting"
-              description="Real-time dashboards showing impressions, clicks, revenue, and user engagement metrics."
-              delay={300}
-            />
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
-              title="Premium Demand Partners"
-              description="Access to top-tier advertisers through our curated marketplace. No remnant inventory."
-              delay={400}
-            />
-            <FeatureCard
-              icon={<svg className="w-6 h-6 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>}
-              title="Full Control"
-              description="Block categories, set floor prices, approve creatives. Your platform, your rules."
-              delay={500}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Integration Section */}
-      <section className="relative py-24 sm:py-32">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-block px-3 py-1 rounded-full bg-white/5 text-white/60 text-xs font-medium uppercase tracking-wider mb-4">
-              Integration
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Live in 5 minutes.
-              <span className="text-white/30"> Seriously.</span>
-            </h2>
-            <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              Three lines of code. That's all it takes to start monetizing your LLM platform.
-            </p>
-          </div>
-
-          <div className="space-y-12">
-            <IntegrationStep
-              number="1"
-              title="Install the SDK"
-              description="Add our lightweight package to your project."
-              code="npm install @iris-technologies/react"
-              delay={0}
-            />
-            <IntegrationStep
-              number="2"
-              title="Initialize Gravity"
-              description="Configure with your publisher ID."
-              code={`import { GravityProvider } from '@iris-technologies/react';\n\n<GravityProvider publisherId="your-id">\n  <App />\n</GravityProvider>`}
-              delay={150}
-            />
-            <IntegrationStep
-              number="3"
-              title="Render suggestions"
-              description="Display contextual suggestions in your responses."
-              code={`import { GravitySuggestion } from '@iris-technologies/react';\n\n<GravitySuggestion context={conversationContext} />`}
-              delay={300}
-            />
-          </div>
-
-          <div className="text-center mt-16">
-            <a 
-              href="https://www.npmjs.com/package/@iris-technologies/react" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 text-white/70 text-sm font-medium transition-colors"
-            >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              View Full Documentation
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial / Social Proof */}
-      <section className="relative py-24 sm:py-32 bg-white/[0.02]">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="relative">
-            <svg className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 text-white/5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-            </svg>
-            <blockquote className="text-2xl sm:text-3xl font-medium text-white leading-relaxed mb-8">
-              "We integrated Gravity in an afternoon. Within a week, our RPM increased by 280%—without a single user complaint about the experience."
-            </blockquote>
-            <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#3A8BFF] to-[#60a5fa]" />
-              <div className="text-left">
-                <div className="font-semibold text-white">Sarah Chen</div>
-                <div className="text-sm text-white/50">Head of Product, AI Search Startup</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-32 sm:py-40 overflow-hidden">
+      <section className="relative py-32 overflow-hidden">
         <Suspense fallback={null}>
           <div className="absolute inset-0 opacity-20">
             <MeshAnimation className="w-full h-full" />
@@ -452,22 +575,21 @@ export const Publishers = () => {
         </Suspense>
 
         <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
-            Ready to unlock the value in every conversation?
+          <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
+            Start monetizing your AI conversations.
           </h2>
           <p className="text-lg text-white/50 mb-10 max-w-xl mx-auto">
-            Join the publishers already monetizing their LLM platforms with Gravity. 
-            No risk, no long-term commitments.
+            Join the network. Access premium demand. Keep your UX intact.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link to="/demo?type=publisher" className="metallic-button">
-              <span>Get Started Free</span>
+              <span>Join the Network</span>
             </Link>
             <Link 
               to="/demo?type=publisher"
               className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-medium text-white/70 hover:text-white transition-colors"
             >
-              Schedule a Demo
+              Get Revenue Estimate
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
