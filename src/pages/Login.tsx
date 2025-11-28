@@ -5,7 +5,7 @@ export const Login = () => {
   return (
     <div className="min-h-screen bg-[#f4f4f5] flex flex-col items-center justify-center px-6">
       {/* Logo */}
-      <Link to="/" className="mb-6">
+      <Link to="/" className="mb-2">
         <img 
           src={gravityLogo} 
           alt="Gravity" 
