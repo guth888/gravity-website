@@ -41,7 +41,7 @@ const allLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background pt-2 pb-2 sm:pt-3 sm:pb-3 md:pt-4 md:pb-4 ${className}`}>
+    <section className={`relative bg-background pt-8 pb-2 sm:pt-10 sm:pb-3 md:pt-12 md:pb-4 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">
@@ -59,7 +59,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         </div>
         
         {/* Scrolling Logos Row - Centered container with fixed height */}
-        <div className="w-full h-[120px] sm:h-[150px] md:h-[170px] lg:h-[200px] flex items-center justify-center overflow-hidden">
+        <div className="w-full h-[120px] sm:h-[150px] md:h-[170px] lg:h-[200px] flex items-center justify-center overflow-x-clip">
           <div 
             className="logo-scroll-track flex items-center h-full"
             style={{
