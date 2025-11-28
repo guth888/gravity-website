@@ -16,115 +16,115 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Light Mode - Clean, Professional, High Contrast */
-    --background: 0 0% 100%; /* Pure white background */
-    --foreground: 0 0% 10%; /* Near black for text */
+    /* Light Mode - Electric Plasma / Chrome Steel Palette */
+    --background: 240 5% 96%; /* Soft White Glow #F3F3F6 */
+    --foreground: 220 10% 4%; /* Graphite Black #0B0C0E */
     
     /* Light Mode Surface Colors */
-    --cosmic-void: 0 0% 98%;      /* Very light grey for subtle backgrounds */
-    --cosmic-surface: 0 0% 97%;   /* Light cards */
-    --cosmic-elevated: 0 0% 96%;  /* Slightly elevated surfaces */
+    --cosmic-void: 240 3% 97%;
+    --cosmic-surface: 240 3% 95%;
+    --cosmic-elevated: 240 3% 93%;
 
-    --card: 0 0% 100%; /* White cards */
-    --card-foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 10% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 10%;
+    --popover-foreground: 220 10% 4%;
 
-    --primary: 18 100% 50%; /* Nebula Orange */
+    --primary: 214 100% 61%; /* Electric Plasma Blue #3A8BFF */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%; /* Light grey for secondary surfaces */
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 220 4% 14%; /* Bead-Blasted Steel #232427 */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%; /* Medium grey for muted text */
+    --muted: 240 3% 95%;
+    --muted-foreground: 220 3% 42%; /* Liquid Chrome Silver */
 
-    --accent: 171 100% 40%; /* Slightly darker teal for light mode */
+    --accent: 214 100% 65%; /* Electric Plasma Blue lighter #4BA3FF */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%; /* Red for errors */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%; /* Light grey borders */
-    --input: 0 0% 100%; /* White inputs */
-    --ring: 18 100% 50%; /* Orange focus ring */
+    --border: 220 3% 85%;
+    --input: 0 0% 100%;
+    --ring: 214 100% 61%; /* Electric Plasma Blue */
 
     --radius: 0.5rem;
 
-    /* Gravity Light Mode Palette */
-    --gravity-black: 0 0% 10%; /* Dark text */
-    --gravity-orange: 18 100% 50%; /* #FF4D00 - Nebula Orange */
-    --gravity-purple: 265 100% 54%; /* #7B16FF - Singularity Purple */
-    --gravity-teal: 171 100% 40%; /* Darker teal for light mode */
-    --gravity-white: 0 0% 100%; /* Pure white */
-    --gravity-void: 0 0% 96%; /* Light grey surface */
-    --gravity-red: 0 84% 60%; /* #F44336 - Error red */
-    --gravity-grey: 0 0% 55%; /* Medium grey */
+    /* Gravity Light Mode Palette - Electric Plasma */
+    --gravity-black: 220 10% 4%; /* Graphite Black #0B0C0E */
+    --gravity-blue: 214 100% 61%; /* Electric Plasma Blue #3A8BFF */
+    --gravity-blue-light: 214 100% 65%; /* #4BA3FF */
+    --gravity-chrome: 220 2% 67%; /* Liquid Chrome Silver #A9AAAE */
+    --gravity-white: 240 5% 96%; /* Soft White Glow #F3F3F6 */
+    --gravity-steel: 220 4% 14%; /* Bead-Blasted Steel #232427 */
+    --gravity-steel-dark: 220 6% 11%; /* #1B1C1F */
+    --gravity-grey: 220 3% 42%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 10%;
-    --sidebar-primary: 18 100% 50%;
+    --sidebar-background: 240 3% 97%;
+    --sidebar-foreground: 220 10% 4%;
+    --sidebar-primary: 214 100% 61%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 96%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 18 100% 50%;
+    --sidebar-accent: 240 3% 95%;
+    --sidebar-accent-foreground: 220 10% 4%;
+    --sidebar-border: 220 3% 85%;
+    --sidebar-ring: 214 100% 61%;
   }
 
   .dark {
-    /* Gravity Black - Default dark mode - COSMIC FUTURE */
-    --background: 0 0% 0%; /* #000000 - Pure Black (Outer Space) */
-    --foreground: 0 0% 99%; /* Event-Horizon White */
+    /* Dark Mode - Electric Plasma / Graphite Steel Palette */
+    --background: 220 10% 4%; /* Graphite Black #0B0C0E */
+    --foreground: 240 5% 96%; /* Soft White Glow #F3F3F6 */
 
-    --card: 0 0% 6%; /* #0F1016 - Cosmic Surface */
-    --card-foreground: 0 0% 99%;
+    --card: 220 6% 11%; /* Bead-Blasted Steel Dark #1B1C1F */
+    --card-foreground: 240 5% 96%;
     
-    /* Cosmic Blacks - Unified System */
-    --cosmic-void: 0 0% 0%; /* #000000 - Pure Black */
-    --cosmic-surface: 0 0% 6%;
-    --cosmic-elevated: 0 0% 7.5%;
+    /* Dark Surfaces */
+    --cosmic-void: 220 10% 4%;
+    --cosmic-surface: 220 6% 11%;
+    --cosmic-elevated: 220 4% 14%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 99%;
+    --popover: 220 4% 14%;
+    --popover-foreground: 240 5% 96%;
 
-    --primary: 18 100% 50%; /* Nebula Orange */
-    --primary-foreground: 0 0% 99%;
+    --primary: 214 100% 61%; /* Electric Plasma Blue #3A8BFF */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 8%; /* Deep Void */
-    --secondary-foreground: 0 0% 99%;
+    --secondary: 220 4% 14%; /* Bead-Blasted Steel #232427 */
+    --secondary-foreground: 240 5% 96%;
 
-    --muted: 0 0% 8%;
-    --muted-foreground: 240 2% 65%; /* Quantum Grey */
+    --muted: 220 6% 11%;
+    --muted-foreground: 220 2% 67%; /* Liquid Chrome Silver #A9AAAE */
 
-    --accent: 171 100% 45%; /* Antimatter Teal */
-    --accent-foreground: 0 0% 4.3%;
+    --accent: 214 100% 65%; /* Electric Plasma Blue lighter #4BA3FF */
+    --accent-foreground: 220 10% 4%;
 
-    --destructive: 342 100% 59%; /* Plasma Red */
-    --destructive-foreground: 0 0% 99%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 2% 65% / 0.2; /* Quantum Grey with opacity */
-    --input: 0 0% 8%;
-    --ring: 18 100% 50%; /* Nebula Orange */
+    --border: 220 2% 67% / 0.15; /* Chrome Silver with opacity */
+    --input: 220 6% 11%;
+    --ring: 214 100% 61%; /* Electric Plasma Blue */
 
-    /* Gravity Cosmic Dominance Palette - Dark Mode */
-    --gravity-black: 0 0% 4.3%;
-    --gravity-orange: 18 100% 50%;
-    --gravity-purple: 265 100% 54%;
-    --gravity-teal: 171 100% 45%;
-    --gravity-white: 0 0% 99%;
-    --gravity-void: 0 0% 8%;
-    --gravity-red: 342 100% 59%;
-    --gravity-grey: 240 2% 65%;
+    /* Gravity Dark Mode Palette - Electric Plasma */
+    --gravity-black: 220 10% 4%; /* Graphite Black #0B0C0E */
+    --gravity-blue: 214 100% 61%; /* Electric Plasma Blue #3A8BFF */
+    --gravity-blue-light: 214 100% 65%; /* #4BA3FF */
+    --gravity-chrome: 220 2% 67%; /* Liquid Chrome Silver #A9AAAE */
+    --gravity-white: 240 5% 96%; /* Soft White Glow #F3F3F6 */
+    --gravity-steel: 220 4% 14%; /* Bead-Blasted Steel #232427 */
+    --gravity-steel-dark: 220 6% 11%; /* #1B1C1F */
+    --gravity-grey: 220 2% 67%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 220 6% 11%;
+    --sidebar-foreground: 240 5% 96%;
+    --sidebar-primary: 214 100% 61%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 220 4% 14%;
+    --sidebar-accent-foreground: 240 5% 96%;
+    --sidebar-border: 220 2% 67% / 0.15;
+    --sidebar-ring: 214 100% 61%;
   }
 }
 
@@ -1630,9 +1630,9 @@ html {
 }
 
 /* ============ UNIVERSAL GRADIENT TEXT - Hero DNA ============ */
-/* Use this class for gradient words throughout the site */
+/* Electric Plasma Blue → Liquid Chrome Silver gradient */
 .gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  background: linear-gradient(135deg, #3A8BFF 0%, #4BA3FF 40%, #A9AAAE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1641,7 +1641,7 @@ html {
 
 /* ============ GRADIENT WORDS SETUP ============ */
 .hero-headline .gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  background: linear-gradient(135deg, #3A8BFF 0%, #4BA3FF 40%, #A9AAAE 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1686,11 +1686,11 @@ html {
 /* ============ CONTINUOUS GLOW PULSE AFTER REVEAL ============ */
 @keyframes gradientPulse {
   0%, 100% {
-    filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.15));
+    filter: drop-shadow(0 0 15px rgba(58, 139, 255, 0.2));
     background-position: 0% 50%;
   }
   50% {
-    filter: drop-shadow(0 0 30px hsl(var(--primary) / 0.3));
+    filter: drop-shadow(0 0 30px rgba(58, 139, 255, 0.35));
     background-position: 100% 50%;
   }
 }
