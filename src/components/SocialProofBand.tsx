@@ -59,7 +59,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         </div>
         
         {/* Scrolling Logos Row */}
-        <div className="w-full h-[40px] sm:h-[100px] md:h-[130px] lg:h-[160px] flex items-center overflow-hidden">
+        <div className="w-full h-[70px] sm:h-[100px] md:h-[130px] lg:h-[160px] flex items-center overflow-hidden">
           <div className="logo-scroll-track flex items-center">
             {[...allLogos, ...allLogos, ...allLogos].map((logo, index) => (
               <img 
@@ -105,11 +105,11 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-item {
-          height: 28px;
+          height: 55px;
           width: auto;
           object-fit: contain;
-          opacity: 0.5;
-          filter: grayscale(30%);
+          opacity: 0.55;
+          filter: grayscale(25%);
           transition: all 0.3s ease;
         }
         
