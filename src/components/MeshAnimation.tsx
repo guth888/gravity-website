@@ -9,7 +9,6 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
   const animationFrameRef = useRef<number>();
   const timeRef = useRef(0);
   const mouseRef = useRef({ x: 0, y: 0, prevX: 0, prevY: 0, isHovering: false });
-  const scrollRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -71,13 +70,7 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseleave", handleMouseLeave);
 
-    // Scroll handler for morphing effects
-    const handleScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current = Math.min(window.scrollY / Math.max(maxScroll, 1), 1);
-    };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initialize
+    // Scroll handler removed - no scroll-based effects
 
     // Network configuration
     const nodeCount = 24;
@@ -136,90 +129,37 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
       timeRef.current += 0.016;
       const time = timeRef.current;
 
-      // Phase transitions
+      // Simple phase: just fade in, then stable
       if (time < 1.5) {
-        phase = 0; // Nodes appearing
-      } else if (time < 4) {
-        phase = 1; // Gravity distortion + pulsing
+        phase = 0; // Nodes appearing (fade in)
       } else {
-        phase = 2; // Stabilized breathing
+        phase = 2; // Stable, calm breathing
       }
 
-      // Calculate distortion based on phase
-      let distortionAmount = 0;
-      if (phase === 1) {
-        const t = (time - 1.5) / 2.5;
-        distortionAmount = Math.sin(t * Math.PI) * 0.12;
-      } else if (phase === 2) {
-        distortionAmount = Math.sin(time * 0.3) * 0.02;
-      }
-
-      // Update node positions with gravity effect + mouse interaction + scroll morphing + ambient motion
-      const centerX = width / 2;
-      const mouse = mouseRef.current;
-      const scrollProgress = scrollRef.current;
-      
+      // Update node positions - simple, calm ambient motion only
       nodes.forEach((node, i) => {
-        // Base gravity distortion
-        const distanceFromCenter = Math.abs(node.baseX - centerX);
-        const maxDistance = width / 2 - padding;
-        const normalizedDistance = 1 - distanceFromCenter / maxDistance;
-        
-        const pull = normalizedDistance * distortionAmount * 40;
         const isTopRow = i < nodeCount;
-        let targetY = node.baseY + (isTopRow ? pull : -pull);
+        let targetY = node.baseY;
         let targetX = node.baseX;
 
-        // Ambient floating motion (always active for organic feel)
-        const floatTime = time * 0.8 + (node.phaseOffset || 0);
-        const floatX = Math.sin(floatTime) * (node.floatAmplitude || 2);
-        const floatY = Math.cos(floatTime * 0.7) * (node.floatAmplitude || 2);
+        // Gentle floating motion (very slow, subtle)
+        const floatTime = time * 0.3 + (node.phaseOffset || 0);
+        const floatX = Math.sin(floatTime) * (node.floatAmplitude || 1.5) * 0.5;
+        const floatY = Math.cos(floatTime * 0.5) * (node.floatAmplitude || 1.5) * 0.5;
         targetX += floatX;
         targetY += floatY;
 
-        // Wave pattern across mesh (continuous ambient animation)
+        // Very subtle wave (barely perceptible)
         const waveProgress = (i % nodeCount) / nodeCount;
-        const wave = Math.sin(time * 1.2 + waveProgress * Math.PI * 2) * 8;
-        targetY += wave * (isTopRow ? 1 : -1) * 0.5;
+        const wave = Math.sin(time * 0.4 + waveProgress * Math.PI * 2) * 2;
+        targetY += wave * (isTopRow ? 1 : -1) * 0.3;
 
-        // Scroll-triggered morphing patterns
-        if (scrollProgress > 0.1) {
-          // Pattern 1: Spiral transformation (scroll 10-40%)
-          if (scrollProgress < 0.4) {
-            const spiralProgress = (scrollProgress - 0.1) / 0.3;
-            const angle = (i % nodeCount) / nodeCount * Math.PI * 2;
-            const radius = spiralProgress * 50;
-            targetX += Math.cos(angle + spiralProgress * Math.PI * 2) * radius;
-            targetY += Math.sin(angle + spiralProgress * Math.PI * 2) * radius * (isTopRow ? 1 : -1);
-          }
-          
-          // Pattern 2: Diamond formation (scroll 40-70%)
-          else if (scrollProgress < 0.7) {
-            const diamondProgress = (scrollProgress - 0.4) / 0.3;
-            const progress = (i % nodeCount) / nodeCount;
-            const diamondY = Math.abs(progress - 0.5) * 2;
-            targetY += (isTopRow ? 1 : -1) * diamondY * 60 * diamondProgress;
-            targetX += (progress - 0.5) * 40 * diamondProgress;
-          }
-          
-          // Pattern 3: Convergence to center (scroll 70-100%)
-          else {
-            const convergeProgress = (scrollProgress - 0.7) / 0.3;
-            const pullToCenter = (centerX - node.baseX) * convergeProgress * 0.6;
-            const verticalPull = (200 - node.baseY) * convergeProgress * 0.4;
-            targetX += pullToCenter;
-            targetY += verticalPull;
-          }
-        }
-
-        // No mouse interaction on mesh - gravitational pull removed
-
-        // Smooth easing to target position
-        const easing = 0.15;
+        // Smooth easing to target position (slower, calmer)
+        const easing = 0.08;
         node.vx += (targetX - node.x) * easing;
         node.vy += (targetY - node.y) * easing;
-        node.vx *= 0.85; // Damping
-        node.vy *= 0.85;
+        node.vx *= 0.92; // More damping = smoother
+        node.vy *= 0.92;
         node.x += node.vx;
         node.y += node.vy;
       });
@@ -239,15 +179,12 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
           
           let lineAlpha = 0.18;
           
-          // Opacity based on phase and pulse
+          // Simple opacity: fade in, then very subtle breathing
           if (phase === 0) {
             lineAlpha = Math.min((time / 1.5) * 0.18, 0.18);
-          } else if (phase === 1) {
-            const pulseT = (time - 1.5) / 2.5;
-            const pulse = Math.sin(pulseT * Math.PI * 4 + (i + j) * 0.1) * 0.09;
-            lineAlpha = 0.18 + pulse;
           } else {
-            const pulse = Math.sin(time * 0.5 + (i + j) * 0.1) * 0.04;
+            // Very subtle breathing pulse
+            const pulse = Math.sin(time * 0.25 + (i + j) * 0.05) * 0.015;
             lineAlpha = 0.18 + pulse;
           }
 
@@ -307,7 +244,6 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
 
     return () => {
       window.removeEventListener("resize", updateSize);
-      window.removeEventListener("scroll", handleScroll);
       canvas.removeEventListener("mousemove", handleMouseMove);
       canvas.removeEventListener("mouseleave", handleMouseLeave);
       if (animationFrameRef.current) {
