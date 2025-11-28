@@ -53,7 +53,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
       <div className="relative z-10 w-full flex flex-col items-center justify-center">
         {/* Label - Centered above */}
         <div className="text-center mb-4 sm:mb-6">
-          <span className="text-sm sm:text-base uppercase tracking-[0.25em] text-foreground/60 font-medium">
+          <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-foreground/60 font-medium">
             Trusted by
           </span>
         </div>
