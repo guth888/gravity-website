@@ -106,7 +106,7 @@ export const HowItWorksSimple = () => {
       style={{ height: `${150 + (steps.length * 120)}vh` }} // More scroll room per step
     >
       {/* Sticky container */}
-      <div className="sticky top-0 h-screen flex items-start justify-center overflow-hidden pt-[12vh] sm:pt-[10vh]">
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         {/* Mesh Animation Background */}
         <Suspense fallback={null}>
           <div className="absolute inset-0 opacity-50">
@@ -119,11 +119,12 @@ export const HowItWorksSimple = () => {
           
           {/* Header - Fades out gently */}
           <div 
-            className="text-center mb-16 sm:mb-20 transition-all duration-700 ease-out"
+            className="absolute inset-0 flex flex-col items-center justify-center text-center transition-all duration-700 ease-out"
             style={{
               opacity: scrollProgress < 0.08 ? 1 : Math.max(0, 1 - (scrollProgress - 0.08) * 8),
-              transform: `translateY(${Math.min(scrollProgress * 80, 40)}px)`,
-              filter: `blur(${Math.min(scrollProgress * 30, 8)}px)`,
+              transform: `translateY(${Math.min(scrollProgress * 60, 30)}px)`,
+              filter: `blur(${Math.min(scrollProgress * 20, 6)}px)`,
+              pointerEvents: scrollProgress < 0.1 ? 'auto' : 'none',
             }}
           >
             <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 mb-6">
@@ -137,7 +138,7 @@ export const HowItWorksSimple = () => {
           </div>
 
           {/* Steps Container */}
-          <div className="relative min-h-[50vh] flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center">
             {steps.map((step, index) => {
               const { phase, progress } = getStepVisibility(index);
               const isVisible = phase === 'entering' || phase === 'active' || phase === 'exiting';
@@ -179,7 +180,7 @@ export const HowItWorksSimple = () => {
               return (
                 <div
                   key={step.number}
-                  className="absolute inset-0 flex flex-col items-center justify-center text-center"
+                  className="absolute inset-x-0 flex flex-col items-center justify-center text-center px-4"
                   style={{
                     opacity,
                     transform: `translateY(${translateY}px) scale(${scale})`,
