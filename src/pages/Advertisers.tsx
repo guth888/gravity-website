@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Header } from "@/components/Header";
 
 const MeshAnimation = lazy(() => import("@/components/MeshAnimation").then(m => ({ default: m.MeshAnimation })));
 
@@ -140,6 +141,8 @@ export const Advertisers = () => {
 
   return (
     <div className="min-h-screen bg-white text-black">
+      <Header />
+      
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <Suspense fallback={null}>
