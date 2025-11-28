@@ -8,27 +8,28 @@ import { TestimonialCard } from "@/components/TestimonialCard";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { FinalCTA } from "@/components/FinalCTA";
 
-// Logo imports
-import perplexityLogo from "@/assets/logos/perplexity.svg";
-import cursorLogo from "@/assets/logos/cursor.svg";
-import otterLogo from "@/assets/logos/otter.svg";
-import notionLogo from "@/assets/logos/notion.svg";
-import grammarlyLogo from "@/assets/logos/grammarly.svg";
-import jasperLogo from "@/assets/logos/jasper.svg";
+// Logo imports - Publishers
+import cladlabsLogo from "@/assets/publishers/cladlabs.png";
+import deepaiLogo from "@/assets/publishers/deepai.png";
+import iaskLogo from "@/assets/publishers/iask.png";
+// Logo imports - Advertisers
+import doordashLogo from "@/assets/advertisers/doordash.png";
+import flaxlabsLogo from "@/assets/advertisers/flaxlabs.png";
+import verveLogo from "@/assets/advertisers/verve.png";
 
 const logos = [
-  { src: perplexityLogo, alt: "Perplexity" },
-  { src: cursorLogo, alt: "Cursor" },
-  { src: otterLogo, alt: "Otter" },
-  { src: notionLogo, alt: "Notion" },
-  { src: grammarlyLogo, alt: "Grammarly" },
-  { src: jasperLogo, alt: "Jasper" },
+  { src: cladlabsLogo, alt: "CladLabs" },
+  { src: deepaiLogo, alt: "DeepAI" },
+  { src: iaskLogo, alt: "iAsk" },
+  { src: doordashLogo, alt: "DoorDash" },
+  { src: flaxlabsLogo, alt: "FlaxLabs" },
+  { src: verveLogo, alt: "Verve" },
 ];
 
 // Case studies data
 const caseStudies = [
   {
-    companyLogo: perplexityLogo,
+    companyLogo: cladlabsLogo,
     companyName: "AI Search Platform",
     result: "Increased RPM by 3x while maintaining user satisfaction",
     quote: "The suggestions feel so natural that users actually thank us for them.",
@@ -36,7 +37,7 @@ const caseStudies = [
     link: "#"
   },
   {
-    companyLogo: cursorLogo,
+    companyLogo: deepaiLogo,
     companyName: "Developer Tools",
     result: "Generated $50K monthly revenue from day one",
     quote: "Integration took 30 minutes. Revenue started flowing immediately.",
@@ -44,7 +45,7 @@ const caseStudies = [
     link: "#"
   },
   {
-    companyLogo: notionLogo,
+    companyLogo: doordashLogo,
     companyName: "E-commerce Brand",
     result: "Achieved 14% CTR with 45% lower CAC",
     quote: "We shifted 30% of our search budget to Gravity.",
@@ -52,7 +53,7 @@ const caseStudies = [
     link: "#"
   },
   {
-    companyLogo: grammarlyLogo,
+    companyLogo: flaxlabsLogo,
     companyName: "SaaS Company",
     result: "4x conversion rate vs traditional display",
     quote: "The intent signals are unmatched.",
@@ -60,7 +61,7 @@ const caseStudies = [
     link: "#"
   },
   {
-    companyLogo: jasperLogo,
+    companyLogo: iaskLogo,
     companyName: "Content Platform",
     result: "95% fill rate with premium demand",
     quote: "Finally monetizing without destroying UX.",
@@ -68,7 +69,7 @@ const caseStudies = [
     link: "#"
   },
   {
-    companyLogo: otterLogo,
+    companyLogo: verveLogo,
     companyName: "Travel Tech",
     result: "2.8x ROI compared to search ads",
     quote: "Users are so much more qualified when we reach them mid-conversation.",

@@ -7,21 +7,21 @@ import { TestimonialCard } from "@/components/TestimonialCard";
 import { BenefitCard } from "@/components/BenefitCard";
 import { FinalCTA } from "@/components/FinalCTA";
 
-// Logo imports
-import perplexityLogo from "@/assets/logos/perplexity.svg";
-import cursorLogo from "@/assets/logos/cursor.svg";
-import otterLogo from "@/assets/logos/otter.svg";
-import notionLogo from "@/assets/logos/notion.svg";
-import grammarlyLogo from "@/assets/logos/grammarly.svg";
-import jasperLogo from "@/assets/logos/jasper.svg";
+// Logo imports - Publishers
+import cladlabsLogo from "@/assets/publishers/cladlabs.png";
+import deepaiLogo from "@/assets/publishers/deepai.png";
+import iaskLogo from "@/assets/publishers/iask.png";
+import presearchLogo from "@/assets/publishers/presearch.png";
+import rampLogo from "@/assets/publishers/ramp.png";
+import sourcegraphLogo from "@/assets/publishers/sourcegraph.png";
 
 const logos = [
-  { src: perplexityLogo, alt: "Perplexity" },
-  { src: cursorLogo, alt: "Cursor" },
-  { src: otterLogo, alt: "Otter" },
-  { src: notionLogo, alt: "Notion" },
-  { src: grammarlyLogo, alt: "Grammarly" },
-  { src: jasperLogo, alt: "Jasper" },
+  { src: cladlabsLogo, alt: "CladLabs" },
+  { src: deepaiLogo, alt: "DeepAI" },
+  { src: iaskLogo, alt: "iAsk" },
+  { src: presearchLogo, alt: "Presearch" },
+  { src: rampLogo, alt: "Ramp" },
+  { src: sourcegraphLogo, alt: "Sourcegraph" },
 ];
 
 const Index = () => {
