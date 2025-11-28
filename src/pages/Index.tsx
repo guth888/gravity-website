@@ -13,11 +13,8 @@ const DualValueCards = lazy(() => import("@/components/DualValueCards").then(m =
 const HowItWorksSimple = lazy(() => import("@/components/HowItWorksSimple").then(m => ({
   default: m.HowItWorksSimple
 })));
-const PublisherCTASection = lazy(() => import("@/components/PublisherCTASection").then(m => ({
-  default: m.PublisherCTASection
-})));
-const AdvertiserCTASection = lazy(() => import("@/components/AdvertiserCTASection").then(m => ({
-  default: m.AdvertiserCTASection
+const AudienceCTA = lazy(() => import("@/components/AudienceCTA").then(m => ({
+  default: m.AudienceCTA
 })));
 const FAQSection = lazy(() => import("@/components/FAQSection").then(m => ({
   default: m.FAQSection
@@ -50,14 +47,9 @@ const Index = () => {
           <HowItWorksSimple />
         </Suspense>
         
-        {/* Publisher CTA Section */}
+        {/* Publisher & Advertiser CTA - Side by Side */}
         <Suspense fallback={null}>
-          <PublisherCTASection />
-        </Suspense>
-        
-        {/* Advertiser CTA Section */}
-        <Suspense fallback={null}>
-          <AdvertiserCTASection />
+          <AudienceCTA />
         </Suspense>
         
         {/* FAQ Section */}
