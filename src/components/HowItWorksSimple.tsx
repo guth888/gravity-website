@@ -22,7 +22,7 @@ const GravityAnimation = () => {
   }, [phase]);
 
   return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto mt-12 mb-8">
+    <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto mt-20 sm:mt-24 mb-8">
       {/* Orbital paths */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
         <defs>
