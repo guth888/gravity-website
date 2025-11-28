@@ -41,7 +41,7 @@ const allLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background py-12 sm:py-16 md:py-20 ${className}`}>
+    <section className={`relative overflow-hidden bg-background py-16 sm:py-20 md:py-24 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">
@@ -50,109 +50,52 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
       </Suspense>
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 w-full">
         {/* Label - Centered above */}
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+        <div className="text-center mb-10 sm:mb-12 md:mb-14">
           <span className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 font-medium">
             Trusted by
           </span>
         </div>
         
-        {/* Scrolling Logos Row */}
-        <div className="overflow-hidden">
-          <div className="logo-row-single">
-            {[...allLogos, ...allLogos].map((logo, index) => (
+        {/* Scrolling Logos Row - Full width, centered */}
+        <div className="w-full overflow-hidden">
+          <div 
+            className="flex items-center justify-start gap-16 sm:gap-20 md:gap-24 lg:gap-28"
+            style={{
+              animation: 'scrollLogos 60s linear infinite',
+              width: 'max-content',
+            }}
+          >
+            {[...allLogos, ...allLogos, ...allLogos].map((logo, index) => (
               <img 
                 key={index} 
                 src={logo.src} 
                 alt={logo.alt} 
-                className="logo-image-large" 
+                className="h-12 sm:h-16 md:h-20 lg:h-24 xl:h-28 w-auto object-contain opacity-70 hover:opacity-100 transition-all duration-300 flex-shrink-0"
+                style={{
+                  filter: 'grayscale(10%)',
+                  minWidth: '100px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = 'grayscale(0%)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = 'grayscale(10%)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               />
             ))}
           </div>
         </div>
       </div>
 
-      {/* Styles for single row animation */}
+      {/* Keyframes */}
       <style>{`
-        .logo-row-single {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 4rem;
-          animation: scrollLogos 50s linear infinite;
-          width: max-content;
-        }
-        
-        .logo-row-single:hover {
-          animation-play-state: paused;
-        }
-        
         @keyframes scrollLogos {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        
-        .logo-image-large {
-          height: 40px;
-          width: auto;
-          min-width: 80px;
-          max-width: 200px;
-          object-fit: contain;
-          opacity: 0.7;
-          filter: grayscale(15%);
-          transition: all 0.3s ease;
-          flex-shrink: 0;
-        }
-        
-        .logo-image-large:hover {
-          opacity: 1;
-          filter: grayscale(0%);
-          transform: scale(1.05);
-        }
-        
-        @media (min-width: 640px) {
-          .logo-row-single {
-            gap: 5rem;
-          }
-          .logo-image-large {
-            height: 50px;
-            min-width: 100px;
-            max-width: 220px;
-          }
-        }
-        
-        @media (min-width: 1024px) {
-          .logo-row-single {
-            gap: 6rem;
-          }
-          .logo-image-large {
-            height: 60px;
-            min-width: 120px;
-            max-width: 260px;
-          }
-        }
-        
-        @media (min-width: 1440px) {
-          .logo-row-single {
-            gap: 7rem;
-          }
-          .logo-image-large {
-            height: 70px;
-            min-width: 140px;
-            max-width: 300px;
-          }
-        }
-        
-        @media (min-width: 1920px) {
-          .logo-row-single {
-            gap: 8rem;
-          }
-          .logo-image-large {
-            height: 80px;
-            min-width: 160px;
-            max-width: 340px;
-          }
+          100% { transform: translateX(calc(-100% / 3)); }
         }
       `}</style>
     </section>
