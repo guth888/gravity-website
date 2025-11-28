@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Gravity - AI-Native Ad Platform</title>
+    <meta name="description" content="Native, high-intent sponsored suggestions inside AI conversations. The most valuable ad channel for LLM publishers and advertisers." />
+    <meta name="author" content="Gravity" />
+    
+    <!-- Performance hints -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <meta property="og:title" content="Gravity - AI-Native Ad Platform" />
+    <meta property="og:description" content="Where AI conversations become the most valuable ad channel. Native sponsored suggestions that feel natural to users and unlock revenue for LLM publishers." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    
+    <!-- Fonts with optimized loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="/src/assets/gravity-logo.png" fetchpriority="high">
+    <link rel="modulepreload" href="/src/main.tsx">
+    
+    <!-- Critical CSS for instant paint -->
+    <style>
+      * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased; 
+        -moz-osx-font-smoothing: grayscale;
+      }
+      body { 
+        opacity: 0; 
+        transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #000;
+        color: #fff;
+        overflow-x: hidden;
+      }
+      body.loaded { opacity: 1; }
+      #root { min-height: 100vh; }
+    </style>
+    <script>
+      // Instant page reveal
+      window.addEventListener('DOMContentLoaded', () => {
+        requestAnimationFrame(() => document.body.classList.add('loaded'));
+      });
+      
+      // Prefetch pages on hover
+      document.addEventListener('mouseover', (e) => {
+        const link = e.target.closest('a[href^="/"]');
+        if (link && !link.dataset.prefetched) {
+          link.dataset.prefetched = 'true';
+          const href = link.getAttribute('href');
+          if (href) {
+            const prefetch = document.createElement('link');
+            prefetch.rel = 'prefetch';
+            prefetch.href = href;
+            document.head.appendChild(prefetch);
+          }
+        }
+      }, { passive: true });
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
