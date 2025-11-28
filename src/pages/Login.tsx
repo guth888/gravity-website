@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import gravityLogo from '@/assets/gravity-logo.png';
 
 export const Login = () => {
   return (
@@ -6,7 +7,7 @@ export const Login = () => {
       {/* Logo */}
       <Link to="/" className="mb-16">
         <img 
-          src="/gravity-logo.svg" 
+          src={gravityLogo} 
           alt="Gravity" 
           className="h-8 opacity-80 hover:opacity-100 transition-opacity"
         />
