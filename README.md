@@ -32,7 +32,6 @@ Gravity turns AI conversations into a native ad channel by inserting high-intent
 **For Publishers:** Integrate Gravity. Suggestions flow naturally. Revenue flows automatically.  
 **For Advertisers:** Gravity places you at the exact moment of high intent—when users are asking, comparing, deciding.
 
-### The Duality Philosophy
 
 Two audiences, one fundamental truth: **AI conversations are the new ad channel.**
 
@@ -55,7 +54,19 @@ Think **Stripe meets TRON meets premium Apple hardware**. Not sci-fi theater—s
 | **Surfaces** | Matte, brushed metal. Not glossy. Depth through shadow, not shine. |
 | **Motion** | Micro-interactions that feel inevitable, not decorative. |
 | **Density** | Let things breathe. |
-| **Color Accents** | Orange for Publishers, Teal for Advertisers |
+
+### Duality That Becomes Unity
+
+Gravity is one platform with two faces:
+
+- **Publishers** → own the surface where conversations happen.
+- **Advertisers** → show up at the exact second intent appears.
+
+The website must make this duality obvious:
+- Split but seamless layouts
+- Mirrored sections for each side
+- Shared underlying visual language (Cosmic Hardware).
+
 
 ### Animation Philosophy
 

@@ -10,24 +10,68 @@ const SocialProofBand = lazy(() => import("@/components/SocialProofBand").then(m
 const DualValueCards = lazy(() => import("@/components/DualValueCards").then(m => ({
   default: m.DualValueCards
 })));
+const HowItWorksSimple = lazy(() => import("@/components/HowItWorksSimple").then(m => ({
+  default: m.HowItWorksSimple
+})));
+const PublisherCTASection = lazy(() => import("@/components/PublisherCTASection").then(m => ({
+  default: m.PublisherCTASection
+})));
+const AdvertiserCTASection = lazy(() => import("@/components/AdvertiserCTASection").then(m => ({
+  default: m.AdvertiserCTASection
+})));
+const FAQSection = lazy(() => import("@/components/FAQSection").then(m => ({
+  default: m.FAQSection
+})));
 const Footer = lazy(() => import("@/components/Footer").then(m => ({
   default: m.Footer
 })));
+
 const Index = () => {
-  return <ErrorBoundary>
-      <div className="min-h-screen">
+  return (
+    <ErrorBoundary>
+      <div className="min-h-screen bg-background">
         <Header />
+        
+        {/* Hero Section */}
         <Hero />
+        
+        {/* Social Proof - Logo Marquee */}
         <Suspense fallback={null}>
-          <SocialProofBand className="-mt-12 sm:-mt-14 md:-mt-16" />
+          <SocialProofBand className="-mt-8 sm:-mt-12 md:-mt-16" />
         </Suspense>
+        
+        {/* Dual Value Cards - Publisher & Advertiser */}
         <Suspense fallback={null}>
           <DualValueCards />
         </Suspense>
+        
+        {/* How It Works - 3 Step Process */}
         <Suspense fallback={null}>
-          <Footer className="px-0 mx-0 my-20 md:my-28 lg:my-32 xl:my-36" />
+          <HowItWorksSimple />
+        </Suspense>
+        
+        {/* Publisher CTA Section */}
+        <Suspense fallback={null}>
+          <PublisherCTASection />
+        </Suspense>
+        
+        {/* Advertiser CTA Section */}
+        <Suspense fallback={null}>
+          <AdvertiserCTASection />
+        </Suspense>
+        
+        {/* FAQ Section */}
+        <Suspense fallback={null}>
+          <FAQSection />
+        </Suspense>
+        
+        {/* Footer */}
+        <Suspense fallback={null}>
+          <Footer />
         </Suspense>
       </div>
-    </ErrorBoundary>;
+    </ErrorBoundary>
+  );
 };
+
 export default Index;

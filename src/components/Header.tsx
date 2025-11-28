@@ -75,7 +75,7 @@ export const Header = ({ className }: { className?: string }) => {
             <NavDropdown label="For Publishers" items={navData.forPublishers} />
             <NavDropdown label="For Advertisers" items={navData.forAdvertisers} />
             <a 
-              href="/how-it-works" 
+              href="/#how-it-works" 
               className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
             >
               How It Works
