@@ -9,7 +9,7 @@ export const Login = () => {
         <img 
           src={gravityLogo} 
           alt="Gravity" 
-          className="h-8 opacity-80 hover:opacity-100 transition-opacity"
+          className="h-20 sm:h-24 opacity-90 hover:opacity-100 transition-opacity"
         />
       </Link>
 
