@@ -44,7 +44,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
     <section className={`relative bg-background pt-4 pb-4 sm:pt-6 sm:pb-6 md:pt-8 md:pb-8 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute left-0 right-0 -top-16 -bottom-16 opacity-30">
           <MeshAnimation className="w-full h-full" />
         </div>
       </Suspense>
