@@ -226,15 +226,21 @@ export const AudienceCTA = () => {
             </div>
           </div>
 
-          {/* Right edge */}
-          <div className={`
-            hidden lg:block absolute right-0 top-0 bottom-0 w-px
-            transition-all duration-500
-            ${hoveredSide === 'publisher' 
-              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/50 to-transparent' 
-              : 'bg-gradient-to-b from-transparent via-white/10 to-transparent'
-            }
-          `} />
+          {/* Curved edge overlay */}
+          <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-24 overflow-hidden pointer-events-none">
+            <svg 
+              className="absolute right-0 h-full w-24" 
+              viewBox="0 0 100 100" 
+              preserveAspectRatio="none"
+              style={{ filter: 'drop-shadow(0 0 20px rgba(58,139,255,0.1))' }}
+            >
+              <path 
+                d="M100,0 L100,100 L0,100 Q60,50 0,0 Z" 
+                fill="#f8f9fa"
+                className="transition-all duration-700"
+              />
+            </svg>
+          </div>
         </div>
 
         {/* Advertisers Side - Light with soft shapes */}
@@ -424,15 +430,6 @@ export const AudienceCTA = () => {
             </div>
           </div>
 
-          {/* Left edge */}
-          <div className={`
-            hidden lg:block absolute left-0 top-0 bottom-0 w-px
-            transition-all duration-500
-            ${hoveredSide === 'advertiser' 
-              ? 'bg-gradient-to-b from-transparent via-[#3A8BFF]/30 to-transparent' 
-              : 'bg-gradient-to-b from-transparent via-black/10 to-transparent'
-            }
-          `} />
         </div>
       </div>
 
