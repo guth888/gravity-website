@@ -1,117 +1,60 @@
-import { useState, useEffect, useRef } from 'react';
-import { NavDropdown } from './navigation/NavDropdown';
-import { MobileNav } from './navigation/MobileNav';
-import { navData } from './navigation/navData';
-import { Button } from './ui/button';
-import { Menu } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import gravityLogo from '@/assets/gravity-logo.png';
 
 export const Header = ({ className }: { className?: string }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const headerRef = useRef<HTMLElement>(null);
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    let ticking = false;
-    
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const headline = document.querySelector('.hero-headline');
-          const header = headerRef.current;
-          
-          if (!headline || !header) return;
-          
-          const headlineRect = headline.getBoundingClientRect();
-          const headerRect = header.getBoundingClientRect();
-          
-          const headerBottom = headerRect.bottom;
-          const headlineTop = headlineRect.top;
-          
-          const isScrollingDown = currentScrollY > lastScrollY.current;
-      
-          // Hide navbar when it touches the headline (exact pixel detection)
-          if (isScrollingDown && headerBottom >= headlineTop && headlineTop < headerRect.height) {
-            setIsVisible(false);
-          } 
-          // Show navbar when scrolling up or when headline is below viewport
-          else if (!isScrollingDown || headlineTop > headerRect.height) {
-            setIsVisible(true);
-          }
-          
-          lastScrollY.current = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
       <header 
-        ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 xl:px-10 py-3 backdrop-blur-md bg-background/95 border-b border-border transition-all duration-300 ease-out ${
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        } ${className || ''}`}
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-4 bg-white/95 backdrop-blur-sm border-b border-border/50 ${className || ''}`}
       >
-        <div className="w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex items-center justify-between gap-4 lg:gap-6">
-          {/* Logo - Far Left */}
-          <a href="/" className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity shrink-0">
-            <img src={gravityLogo} alt="Gravity AI" className="h-8 sm:h-10 md:h-12 lg:h-[90px]" />
-            <span className="font-headline text-lg sm:text-xl md:text-2xl font-bold text-foreground tracking-tight antialiased">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <img src={gravityLogo} alt="Gravity" className="h-8 sm:h-10" />
+            <span className="font-bold text-xl text-foreground">
               Gravity
             </span>
-          </a>
+          </Link>
 
-          {/* Desktop Navigation - Center */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mx-auto">
-            <NavDropdown label="For Publishers" items={navData.forPublishers} href="/publishers" />
-            <NavDropdown label="For Advertisers" items={navData.forAdvertisers} href="/advertisers" />
-            <a 
-              href="/#how-it-works" 
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-            >
-              How It Works
-            </a>
-            <NavDropdown label="Resources" items={navData.resources} />
-            <NavDropdown label="Company" items={navData.company} />
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            <NavLink to="/publishers">For Publishers</NavLink>
+            <NavLink to="/advertisers">For Advertisers</NavLink>
+            <NavLink to="/#how-it-works">How It Works</NavLink>
+            <NavLink to="/customers">Customers</NavLink>
           </nav>
 
-          {/* Right Section - Desktop - Far Right */}
-          <div className="hidden lg:flex items-center gap-4 shrink-0">
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => window.location.href = '/login'}
+          {/* Right Section - Desktop */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link 
+              to="/login"
+              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
             >
               Log In
-            </Button>
-            <button 
-              className="metallic-button text-sm py-2.5 px-6"
-              onClick={() => window.location.href = '/demo'}
+            </Link>
+            <Link 
+              to="/demo"
+              className="btn-primary text-sm"
             >
-              <span>Get a Demo</span>
-            </button>
+              Get a Demo
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-3 shrink-0">
-            <button 
-              className="metallic-button text-xs py-2 px-4"
-              onClick={() => window.location.href = '/demo'}
+          <div className="flex lg:hidden items-center gap-3">
+            <Link 
+              to="/demo"
+              className="btn-primary text-sm py-2 px-4"
             >
-              <span>Get a Demo</span>
-            </button>
+              Demo
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 hover:bg-accent rounded-lg transition-colors"
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -119,8 +62,82 @@ export const Header = ({ className }: { className?: string }) => {
         </div>
       </header>
 
-      {/* Mobile Navigation */}
-      <MobileNav isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/20"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          {/* Menu Panel */}
+          <div className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white shadow-xl">
+            <div className="flex items-center justify-between p-4 border-b">
+              <span className="font-bold text-lg">Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <nav className="p-4 space-y-1">
+              <MobileNavLink to="/publishers" onClick={() => setMobileMenuOpen(false)}>
+                For Publishers
+              </MobileNavLink>
+              <MobileNavLink to="/advertisers" onClick={() => setMobileMenuOpen(false)}>
+                For Advertisers
+              </MobileNavLink>
+              <MobileNavLink to="/#how-it-works" onClick={() => setMobileMenuOpen(false)}>
+                How It Works
+              </MobileNavLink>
+              <MobileNavLink to="/customers" onClick={() => setMobileMenuOpen(false)}>
+                Customers
+              </MobileNavLink>
+              
+              <div className="pt-4 mt-4 border-t space-y-1">
+                <MobileNavLink to="/login" onClick={() => setMobileMenuOpen(false)}>
+                  Log In
+                </MobileNavLink>
+                <MobileNavLink to="/demo" onClick={() => setMobileMenuOpen(false)}>
+                  Get a Demo
+                </MobileNavLink>
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
     </>
   );
 };
+
+// Desktop nav link
+const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
+  <Link 
+    to={to}
+    className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
+  >
+    {children}
+  </Link>
+);
+
+// Mobile nav link
+const MobileNavLink = ({ 
+  to, 
+  children, 
+  onClick 
+}: { 
+  to: string; 
+  children: React.ReactNode; 
+  onClick: () => void;
+}) => (
+  <Link 
+    to={to}
+    onClick={onClick}
+    className="block py-3 px-4 text-base font-medium text-foreground hover:bg-muted rounded-lg transition-colors"
+  >
+    {children}
+  </Link>
+);
