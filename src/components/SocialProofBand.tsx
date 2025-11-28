@@ -43,7 +43,7 @@ const advertiserLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background py-16 sm:py-20 md:py-24 ${className}`}>
+    <section className={`relative overflow-hidden bg-background py-10 sm:py-12 md:py-14 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">
@@ -54,7 +54,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
       {/* Content */}
       <div className="relative z-10 logo-scroll-section">
         {/* Publishers Row */}
-        <div className="logo-row-wrapper py-6 sm:py-8 md:py-10">
+        <div className="logo-row-wrapper py-4 sm:py-5 md:py-6">
           <span className="row-label">Publishers</span>
           <div className="logo-scroll-container">
             <div className="logo-row publishers">
@@ -71,7 +71,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         </div>
 
         {/* Advertisers Row */}
-        <div className="logo-row-wrapper py-6 sm:py-8 md:py-10">
+        <div className="logo-row-wrapper py-4 sm:py-5 md:py-6">
           <span className="row-label">Advertisers</span>
           <div className="logo-scroll-container">
             <div className="logo-row advertisers">
