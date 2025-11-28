@@ -63,7 +63,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
           <div 
             className="logo-scroll-track flex items-center"
             style={{
-              gap: 'clamp(3rem, 6vw, 7rem)',
+              gap: 'clamp(2.5rem, 5vw, 5rem)',
             }}
           >
             {[...allLogos, ...allLogos, ...allLogos].map((logo, index) => (
@@ -95,41 +95,41 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-item {
-          height: 72px;
+          height: 24px;
           width: auto;
           object-fit: contain;
-          opacity: 0.75;
-          filter: grayscale(10%);
+          opacity: 0.6;
+          filter: grayscale(20%);
           transition: all 0.3s ease;
         }
         
         .logo-item:hover {
-          opacity: 1;
+          opacity: 0.9;
           filter: grayscale(0%);
-          transform: scale(1.08);
+          transform: scale(1.05);
         }
         
         @media (min-width: 640px) {
           .logo-item {
-            height: 96px;
+            height: 28px;
           }
         }
         
         @media (min-width: 768px) {
           .logo-item {
-            height: 120px;
+            height: 32px;
           }
         }
         
         @media (min-width: 1024px) {
           .logo-item {
-            height: 144px;
+            height: 36px;
           }
         }
         
         @media (min-width: 1440px) {
           .logo-item {
-            height: 168px;
+            height: 40px;
           }
         }
       `}</style>
