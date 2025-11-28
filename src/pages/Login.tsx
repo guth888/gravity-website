@@ -3,9 +3,9 @@ import gravityLogo from '@/assets/gravity-logo.png';
 
 export const Login = () => {
   return (
-    <div className="min-h-screen bg-[#f4f4f5] flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-[#f4f4f5] flex flex-col items-center justify-center px-6 pb-24">
       {/* Logo */}
-      <Link to="/" className="mb-2">
+      <Link to="/" className="-mb-2">
         <img 
           src={gravityLogo} 
           alt="Gravity" 
@@ -15,7 +15,7 @@ export const Login = () => {
 
       {/* Heading */}
       <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-black/80 mb-3">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-black/80 mb-2">
           Welcome back
         </h1>
         <p className="text-sm text-black/40 mb-12">
