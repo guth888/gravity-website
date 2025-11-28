@@ -85,48 +85,51 @@ export const AudienceCTA = () => {
             }}
           />
 
-          {/* Floating geometric shapes */}
+          {/* Floating elements - soft circles */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Rings */}
+            {/* Soft gradient circles */}
             <div 
               className={`
-                absolute w-32 h-32 border border-white/5 rounded-full
-                transition-all duration-700
-                ${hoveredSide === 'publisher' ? 'border-[#3A8BFF]/20 scale-110' : ''}
+                absolute w-36 h-36 rounded-full
+                bg-gradient-to-br from-white/[0.03] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'publisher' ? 'from-[#3A8BFF]/10 scale-110' : ''}
               `}
-              style={{ top: '15%', left: '10%', animation: 'float-slow 12s ease-in-out infinite' }}
+              style={{ top: '12%', left: '8%', animation: 'float-slow 12s ease-in-out infinite' }}
             />
             <div 
               className={`
-                absolute w-20 h-20 border border-white/5 rounded-full
-                transition-all duration-700
-                ${hoveredSide === 'publisher' ? 'border-[#3A8BFF]/15 scale-110' : ''}
+                absolute w-24 h-24 rounded-full
+                bg-gradient-to-br from-white/[0.02] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'publisher' ? 'from-[#3A8BFF]/8 scale-110' : ''}
               `}
-              style={{ bottom: '20%', left: '15%', animation: 'float-slow 10s ease-in-out infinite reverse' }}
+              style={{ bottom: '18%', left: '12%', animation: 'float-slow 10s ease-in-out infinite reverse' }}
             />
             <div 
               className={`
-                absolute w-40 h-40 border border-white/[0.03] rounded-full
-                transition-all duration-700
-                ${hoveredSide === 'publisher' ? 'border-white/10' : ''}
+                absolute w-44 h-44 rounded-full
+                bg-gradient-to-br from-white/[0.015] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'publisher' ? 'from-white/[0.04]' : ''}
               `}
-              style={{ top: '60%', right: '5%', animation: 'float-slow 14s ease-in-out infinite' }}
+              style={{ top: '55%', right: '3%', animation: 'float-slow 14s ease-in-out infinite' }}
             />
             
             {/* Small dots */}
-            {[...Array(5)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <div
                 key={i}
                 className={`
-                  absolute w-1.5 h-1.5 rounded-full bg-white/10
+                  absolute w-1 h-1 rounded-full bg-white/15
                   transition-all duration-500
-                  ${hoveredSide === 'publisher' ? 'bg-[#3A8BFF]/40 scale-150' : ''}
+                  ${hoveredSide === 'publisher' ? 'bg-[#3A8BFF]/50 scale-[2]' : ''}
                 `}
                 style={{
-                  top: `${20 + i * 15}%`,
-                  left: `${5 + i * 8}%`,
+                  top: `${18 + i * 12}%`,
+                  left: `${4 + i * 6}%`,
                   animation: `twinkle ${3 + i}s ease-in-out infinite`,
-                  animationDelay: `${i * 0.5}s`,
+                  animationDelay: `${i * 0.4}s`,
                 }}
               />
             ))}
@@ -290,51 +293,51 @@ export const AudienceCTA = () => {
             }}
           />
 
-          {/* Floating shapes */}
+          {/* Floating elements - soft circles only */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Soft rectangles */}
+            {/* Soft gradient circles */}
             <div 
               className={`
-                absolute w-24 h-24 rounded-2xl bg-gradient-to-br from-[#3A8BFF]/5 to-transparent
-                border border-[#3A8BFF]/10 backdrop-blur-sm
-                transition-all duration-700
-                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/20 scale-110' : ''}
+                absolute w-32 h-32 rounded-full
+                bg-gradient-to-br from-[#3A8BFF]/[0.08] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'advertiser' ? 'opacity-100 scale-110' : 'opacity-60'}
               `}
-              style={{ top: '20%', right: '15%', animation: 'float-slow 11s ease-in-out infinite', transform: 'rotate(12deg)' }}
+              style={{ top: '18%', right: '12%', animation: 'float-slow 11s ease-in-out infinite' }}
             />
             <div 
               className={`
-                absolute w-16 h-16 rounded-xl bg-gradient-to-br from-black/[0.02] to-transparent
-                border border-black/5
-                transition-all duration-700
-                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/15 scale-110' : ''}
+                absolute w-24 h-24 rounded-full
+                bg-gradient-to-br from-[#3A8BFF]/[0.06] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'advertiser' ? 'opacity-100 scale-110' : 'opacity-50'}
               `}
-              style={{ bottom: '25%', right: '10%', animation: 'float-slow 9s ease-in-out infinite reverse', transform: 'rotate(-8deg)' }}
+              style={{ bottom: '22%', right: '8%', animation: 'float-slow 9s ease-in-out infinite reverse' }}
             />
             <div 
               className={`
-                absolute w-20 h-20 rounded-full bg-gradient-to-br from-[#3A8BFF]/[0.03] to-transparent
-                border border-[#3A8BFF]/5
-                transition-all duration-700
-                ${hoveredSide === 'advertiser' ? 'border-[#3A8BFF]/15' : ''}
+                absolute w-20 h-20 rounded-full
+                bg-gradient-to-br from-[#3A8BFF]/[0.05] to-transparent
+                transition-all duration-700 blur-sm
+                ${hoveredSide === 'advertiser' ? 'opacity-100' : 'opacity-40'}
               `}
-              style={{ top: '60%', left: '8%', animation: 'float-slow 13s ease-in-out infinite' }}
+              style={{ top: '55%', left: '6%', animation: 'float-slow 13s ease-in-out infinite' }}
             />
 
-            {/* Accent dots */}
-            {[...Array(4)].map((_, i) => (
+            {/* Subtle accent dots */}
+            {[...Array(5)].map((_, i) => (
               <div
                 key={i}
                 className={`
-                  absolute w-2 h-2 rounded-full bg-[#3A8BFF]/10
+                  absolute w-1.5 h-1.5 rounded-full bg-[#3A8BFF]/20
                   transition-all duration-500
-                  ${hoveredSide === 'advertiser' ? 'bg-[#3A8BFF]/30 scale-125' : ''}
+                  ${hoveredSide === 'advertiser' ? 'bg-[#3A8BFF]/40 scale-150' : ''}
                 `}
                 style={{
-                  top: `${25 + i * 18}%`,
-                  right: `${8 + i * 6}%`,
+                  top: `${20 + i * 15}%`,
+                  right: `${6 + i * 5}%`,
                   animation: `twinkle ${4 + i}s ease-in-out infinite`,
-                  animationDelay: `${i * 0.7}s`,
+                  animationDelay: `${i * 0.6}s`,
                 }}
               />
             ))}
