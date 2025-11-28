@@ -41,7 +41,7 @@ const allLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background py-16 sm:py-20 md:py-24 ${className}`}>
+    <section className={`relative overflow-hidden bg-background pt-8 pb-16 sm:pt-10 sm:pb-20 md:pt-12 md:pb-24 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">
@@ -52,7 +52,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
       {/* Content - Centered */}
       <div className="relative z-10 w-full flex flex-col items-center justify-center">
         {/* Label - Centered above */}
-        <div className="text-center mb-10 sm:mb-12 md:mb-14">
+        <div className="text-center mb-6 sm:mb-8 md:mb-10">
           <span className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 font-medium">
             Trusted by
           </span>
