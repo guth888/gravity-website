@@ -41,7 +41,7 @@ const allLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background py-10 sm:py-12 md:py-16 ${className}`}>
+    <section className={`relative overflow-hidden bg-background py-12 sm:py-16 md:py-20 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">
@@ -51,27 +51,24 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Single Row */}
-        <div className="flex items-center">
-          {/* Label */}
-          <div className="flex-shrink-0 pl-6 sm:pl-10 md:pl-16 pr-8 sm:pr-12">
-            <span className="text-xs sm:text-sm uppercase tracking-[0.15em] text-foreground/40 font-medium whitespace-nowrap">
-              Trusted by
-            </span>
-          </div>
-          
-          {/* Scrolling Logos */}
-          <div className="flex-1 overflow-hidden">
-            <div className="logo-row-single">
-              {[...allLogos, ...allLogos].map((logo, index) => (
-                <img 
-                  key={index} 
-                  src={logo.src} 
-                  alt={logo.alt} 
-                  className="logo-image-large" 
-                />
-              ))}
-            </div>
+        {/* Label - Centered above */}
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <span className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 font-medium">
+            Trusted by
+          </span>
+        </div>
+        
+        {/* Scrolling Logos Row */}
+        <div className="overflow-hidden">
+          <div className="logo-row-single">
+            {[...allLogos, ...allLogos].map((logo, index) => (
+              <img 
+                key={index} 
+                src={logo.src} 
+                alt={logo.alt} 
+                className="logo-image-large" 
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -81,8 +78,9 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         .logo-row-single {
           display: flex;
           align-items: center;
-          gap: 3rem;
-          animation: scrollLogos 40s linear infinite;
+          justify-content: center;
+          gap: 4rem;
+          animation: scrollLogos 50s linear infinite;
           width: max-content;
         }
         
@@ -96,12 +94,13 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-image-large {
-          height: 28px;
+          height: 40px;
           width: auto;
-          max-width: 160px;
+          min-width: 80px;
+          max-width: 200px;
           object-fit: contain;
-          opacity: 0.65;
-          filter: grayscale(20%);
+          opacity: 0.7;
+          filter: grayscale(15%);
           transition: all 0.3s ease;
           flex-shrink: 0;
         }
@@ -109,35 +108,50 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         .logo-image-large:hover {
           opacity: 1;
           filter: grayscale(0%);
+          transform: scale(1.05);
         }
         
         @media (min-width: 640px) {
           .logo-row-single {
-            gap: 4rem;
+            gap: 5rem;
           }
           .logo-image-large {
-            height: 34px;
-            max-width: 180px;
+            height: 50px;
+            min-width: 100px;
+            max-width: 220px;
           }
         }
         
         @media (min-width: 1024px) {
           .logo-row-single {
-            gap: 5rem;
+            gap: 6rem;
           }
           .logo-image-large {
-            height: 40px;
-            max-width: 200px;
+            height: 60px;
+            min-width: 120px;
+            max-width: 260px;
           }
         }
         
         @media (min-width: 1440px) {
           .logo-row-single {
-            gap: 6rem;
+            gap: 7rem;
           }
           .logo-image-large {
-            height: 46px;
-            max-width: 220px;
+            height: 70px;
+            min-width: 140px;
+            max-width: 300px;
+          }
+        }
+        
+        @media (min-width: 1920px) {
+          .logo-row-single {
+            gap: 8rem;
+          }
+          .logo-image-large {
+            height: 80px;
+            min-width: 160px;
+            max-width: 340px;
           }
         }
       `}</style>
