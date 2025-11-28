@@ -1721,10 +1721,11 @@ html {
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   overflow: hidden;
   width: 100%;
+  max-width: 1600px;
 }
 
 /* Responsive wrapper spacing - Mobile-first */
@@ -1732,67 +1733,77 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px; /* Mobile: compact gap */
+  gap: 16px; /* Mobile: compact gap */
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   line-height: 0;
+  max-width: 1400px;
 }
 
 @media (min-width: 640px) {
   .logo-row-wrapper {
-    gap: 16px; /* Tablet: comfortable spacing */
+    gap: 20px; /* Tablet: comfortable spacing */
   }
 }
 
 @media (min-width: 1024px) {
   .logo-row-wrapper {
-    gap: 20px; /* Desktop: generous spacing */
+    gap: 28px; /* Desktop: generous spacing */
   }
 }
 
 @media (min-width: 1440px) {
   .logo-row-wrapper {
-    gap: 24px; /* Large desktop: ample breathing room */
+    gap: 36px; /* Large desktop: ample breathing room */
   }
 }
 
 /* Responsive row label sizing - Mobile-first */
 .row-label {
-  font-size: 10px; /* Mobile: compact */
+  font-size: 9px; /* Mobile: compact */
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 1.5px;
   color: hsl(var(--muted-foreground));
   white-space: nowrap;
   flex-shrink: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 8px;
   line-height: 1;
-  opacity: 0.7;
+  opacity: 0.5;
+  min-width: 80px;
+  text-align: right;
 }
 
 @media (min-width: 640px) {
   .row-label {
-    font-size: 11px;
-    letter-spacing: 1px;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    min-width: 90px;
+    padding: 0 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .row-label {
-    font-size: 13px;
+    font-size: 11px;
+    min-width: 100px;
+    padding: 0 16px;
   }
 }
 
 @media (min-width: 1440px) {
   .row-label {
-    font-size: 14px;
+    font-size: 12px;
+    min-width: 110px;
+    padding: 0 20px;
   }
 }
 
 @media (min-width: 1920px) {
   .row-label {
-    font-size: 15px;
+    font-size: 13px;
+    min-width: 120px;
   }
 }
 
@@ -1829,9 +1840,10 @@ html {
 
 .logo-row {
   display: flex;
-  gap: 20px; /* Mobile: tighter spacing */
+  align-items: center;
+  gap: 48px; /* Mobile: comfortable spacing */
   width: max-content;
-  padding: 0;
+  padding: 0 24px;
   margin: 0;
   line-height: 0;
   will-change: transform;
@@ -1841,32 +1853,37 @@ html {
 
 @media (min-width: 640px) {
   .logo-row {
-    gap: 24px; /* Tablet: slightly more space */
+    gap: 56px; /* Tablet: slightly more space */
+    padding: 0 32px;
   }
 }
 
 @media (min-width: 1024px) {
   .logo-row {
-    gap: 32px; /* Desktop: comfortable spacing */
+    gap: 72px; /* Desktop: comfortable spacing */
+    padding: 0 40px;
   }
 }
 
 @media (min-width: 1440px) {
   .logo-row {
-    gap: 40px; /* Large desktop: generous spacing */
+    gap: 88px; /* Large desktop: generous spacing */
+    padding: 0 48px;
   }
 }
 
 @media (min-width: 1920px) {
   .logo-row {
-    gap: 48px; /* Ultra-wide: maximum breathing room */
+    gap: 100px; /* Ultra-wide: maximum breathing room */
+    padding: 0 56px;
   }
 }
 
 /* Logo images - Mobile-first responsive sizing */
 .logo-image {
-  height: 48px; /* Mobile: compact logos */
+  height: 32px; /* Mobile: compact container */
   width: auto;
+  max-width: 120px;
   object-fit: contain;
   opacity: 0.6;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1875,36 +1892,59 @@ html {
   margin: 0;
   padding: 0;
   will-change: transform, opacity, filter;
+  /* Scale up the image within its bounds */
+  transform: scale(1.4);
+  transform-origin: center;
 }
 
 @media (min-width: 640px) {
   .logo-image {
-    height: 60px; /* Tablet: readable size */
+    height: 36px; /* Tablet */
+    max-width: 140px;
+    transform: scale(1.5);
   }
 }
 
 @media (min-width: 1024px) {
   .logo-image {
-    height: 100px; /* Desktop: prominent display */
+    height: 40px; /* Desktop */
+    max-width: 160px;
+    transform: scale(1.6);
   }
 }
 
 @media (min-width: 1440px) {
   .logo-image {
-    height: 120px; /* Large desktop: bold presence */
+    height: 44px; /* Large desktop */
+    max-width: 180px;
+    transform: scale(1.7);
   }
 }
 
 @media (min-width: 1920px) {
   .logo-image {
-    height: 140px; /* Ultra-wide: maximum impact */
+    height: 48px; /* Ultra-wide */
+    max-width: 200px;
+    transform: scale(1.8);
   }
 }
 
 .logo-image:hover {
   opacity: 1;
   filter: grayscale(0%);
-  transform: scale(1.05);
+  transform: scale(1.6);
+}
+
+@media (min-width: 640px) {
+  .logo-image:hover {
+    transform: scale(1.7);
+  }
+}
+
+@media (min-width: 1024px) {
+  .logo-image:hover {
+    transform: scale(1.8);
+  }
 }
 
 /* Publishers: Scroll LEFT - Enhanced Smoothness */

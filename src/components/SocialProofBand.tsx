@@ -60,29 +60,35 @@ export const SocialProofBand = ({
 }: {
   className?: string;
 }) => {
-  return <section className={`bg-background section-spacing px-4 sm:px-5 md:px-6 lg:px-8 xl:px-12 ${className}`}>
-      <div className="content-container logo-scroll-section">
-        {/* Publishers Row - Tighter spacing on mobile */}
-        <div className="logo-row-wrapper py-6 sm:py-8 md:py-10 lg:py-12">
+  return (
+    <section className={`bg-background py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 ${className}`}>
+      <div className="logo-scroll-section">
+        {/* Publishers Row */}
+        <div className="logo-row-wrapper py-6 sm:py-8 md:py-10">
           <span className="row-label">Publishers</span>
           <div className="logo-scroll-container">
             <div className="logo-row publishers">
               {/* Duplicate logos for seamless loop */}
-              {[...publisherLogos, ...publisherLogos].map((logo, index) => <img key={index} src={logo.src} alt={logo.alt} className="logo-image" />)}
+              {[...publisherLogos, ...publisherLogos].map((logo, index) => (
+                <img key={index} src={logo.src} alt={logo.alt} className="logo-image" />
+              ))}
             </div>
           </div>
         </div>
 
         {/* Advertisers Row */}
-        <div className="logo-row-wrapper py-0 sm:py-0">
+        <div className="logo-row-wrapper py-6 sm:py-8 md:py-10">
           <span className="row-label">Advertisers</span>
           <div className="logo-scroll-container">
             <div className="logo-row advertisers">
               {/* Duplicate logos for seamless loop */}
-              {[...advertiserLogos, ...advertiserLogos].map((logo, index) => <img key={index} src={logo.src} alt={logo.alt} className="logo-image" />)}
+              {[...advertiserLogos, ...advertiserLogos].map((logo, index) => (
+                <img key={index} src={logo.src} alt={logo.alt} className="logo-image" />
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
