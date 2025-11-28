@@ -28,10 +28,8 @@ const steps = [
 
 export const HowItWorksSimple = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -42,23 +40,22 @@ export const HowItWorksSimple = () => {
       const containerHeight = container.offsetHeight;
       const viewportHeight = window.innerHeight;
       
-      // Calculate how far we've scrolled through the container
-      // Container starts when its top hits viewport top
-      // Container ends when its bottom leaves viewport bottom
+      // Calculate scroll progress through the container
       const scrollableDistance = containerHeight - viewportHeight;
       const scrolled = -rect.top;
       const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
       
       setScrollProgress(progress);
       
-      // Determine active step based on progress
-      const stepProgress = progress * steps.length;
-      const newActiveStep = Math.min(Math.floor(stepProgress), steps.length - 1);
-      setActiveStep(newActiveStep);
-      
-      // Check if in view
-      if (rect.top < viewportHeight && rect.bottom > 0) {
-        setIsInView(true);
+      // Determine active step - give each step more "hold" time
+      // First 15% is header, then each step gets equal share of remaining 85%
+      const headerZone = 0.12;
+      if (progress < headerZone) {
+        setActiveStep(0);
+      } else {
+        const stepProgress = (progress - headerZone) / (1 - headerZone);
+        const newActiveStep = Math.min(Math.floor(stepProgress * steps.length), steps.length - 1);
+        setActiveStep(newActiveStep);
       }
     };
 
@@ -68,15 +65,37 @@ export const HowItWorksSimple = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Calculate individual step progress (0-1 for each step)
-  const getStepProgress = (stepIndex: number) => {
+  // Calculate individual step visibility (0-1 for each step)
+  const getStepVisibility = (stepIndex: number) => {
+    const headerZone = 0.12;
+    const contentProgress = Math.max(0, (scrollProgress - headerZone) / (1 - headerZone));
+    
     const stepSize = 1 / steps.length;
     const stepStart = stepIndex * stepSize;
     const stepEnd = (stepIndex + 1) * stepSize;
     
-    if (scrollProgress < stepStart) return 0;
-    if (scrollProgress > stepEnd) return 1;
-    return (scrollProgress - stepStart) / stepSize;
+    // Smooth entry and exit zones (20% of step for transitions)
+    const entryZone = stepSize * 0.15;
+    const exitZone = stepSize * 0.15;
+    const holdStart = stepStart + entryZone;
+    const holdEnd = stepEnd - exitZone;
+    
+    if (contentProgress < stepStart) return { phase: 'future', progress: 0 };
+    if (contentProgress < holdStart) {
+      // Entering
+      const entryProgress = (contentProgress - stepStart) / entryZone;
+      return { phase: 'entering', progress: Math.min(1, entryProgress) };
+    }
+    if (contentProgress < holdEnd) {
+      // Holding - fully visible
+      return { phase: 'active', progress: 1 };
+    }
+    if (contentProgress < stepEnd) {
+      // Exiting
+      const exitProgress = (contentProgress - holdEnd) / exitZone;
+      return { phase: 'exiting', progress: Math.max(0, 1 - exitProgress) };
+    }
+    return { phase: 'past', progress: 0 };
   };
 
   return (
@@ -84,73 +103,77 @@ export const HowItWorksSimple = () => {
       ref={containerRef}
       id="how-it-works"
       className="relative bg-background"
-      style={{ height: `${100 + (steps.length * 100)}vh` }} // Extra scroll room
+      style={{ height: `${150 + (steps.length * 120)}vh` }} // More scroll room per step
     >
-      {/* Sticky container - stays fixed while scrolling */}
-      <div
-        ref={stickyRef}
-        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
-      >
+      {/* Sticky container */}
+      <div className="sticky top-0 h-screen flex items-start justify-center overflow-hidden pt-[12vh] sm:pt-[10vh]">
         {/* Mesh Animation Background */}
         <Suspense fallback={null}>
-          <div className="absolute inset-0 opacity-60">
+          <div className="absolute inset-0 opacity-50">
             <MeshAnimation className="w-full h-full" />
           </div>
         </Suspense>
 
         {/* Content */}
-        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1100px] xl:max-w-[1200px] mx-auto">
+        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[650px] md:max-w-[800px] lg:max-w-[900px] mx-auto">
           
-          {/* Header - Fades out as scrolling starts */}
+          {/* Header - Fades out gently */}
           <div 
-            className="text-center mb-20 sm:mb-28 md:mb-36 transition-all duration-500"
+            className="text-center mb-16 sm:mb-20 transition-all duration-700 ease-out"
             style={{
-              opacity: scrollProgress < 0.05 ? 1 : Math.max(0, 1 - scrollProgress * 3),
-              transform: `translateY(${scrollProgress * -50}px)`,
+              opacity: scrollProgress < 0.08 ? 1 : Math.max(0, 1 - (scrollProgress - 0.08) * 8),
+              transform: `translateY(${Math.min(scrollProgress * 80, 40)}px)`,
+              filter: `blur(${Math.min(scrollProgress * 30, 8)}px)`,
             }}
           >
-            <h2 className="hero-headline font-headline font-bold antialiased">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 mb-6">
+              How It Works
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold antialiased leading-tight">
               The conversation is the context.
               <br />
               <span className="gradient">Gravity is the engine.</span>
             </h2>
           </div>
 
-          {/* Steps - Stacked and animated */}
-          <div className="relative h-[400px] sm:h-[450px] md:h-[500px]">
+          {/* Steps Container */}
+          <div className="relative min-h-[50vh] flex items-center justify-center">
             {steps.map((step, index) => {
-              const stepProgress = getStepProgress(index);
-              const isActive = activeStep === index;
-              const isPast = activeStep > index;
-              const isFuture = activeStep < index;
+              const { phase, progress } = getStepVisibility(index);
+              const isVisible = phase === 'entering' || phase === 'active' || phase === 'exiting';
               
-              // Calculate transforms
+              // Calculate transforms based on phase
               let opacity = 0;
-              let translateY = 100;
-              let scale = 0.8;
-              let blur = 10;
+              let translateY = 60;
+              let scale = 0.95;
+              let blur = 0;
               
-              if (isActive) {
-                // Active step: fade in from bottom, scale up
-                const enterProgress = Math.min(stepProgress * 2, 1); // First half: enter
-                const exitProgress = Math.max((stepProgress - 0.5) * 2, 0); // Second half: exit
-                
-                opacity = enterProgress - exitProgress * 0.8;
-                translateY = (1 - enterProgress) * 80 - exitProgress * 80;
-                scale = 0.85 + enterProgress * 0.15 - exitProgress * 0.1;
-                blur = (1 - enterProgress) * 8;
-              } else if (isPast) {
-                // Past steps: faded out above
+              if (phase === 'entering') {
+                opacity = progress;
+                translateY = (1 - progress) * 40;
+                scale = 0.96 + progress * 0.04;
+                blur = (1 - progress) * 4;
+              } else if (phase === 'active') {
+                opacity = 1;
+                translateY = 0;
+                scale = 1;
+                blur = 0;
+              } else if (phase === 'exiting') {
+                opacity = progress;
+                translateY = (1 - progress) * -30;
+                scale = 1 - (1 - progress) * 0.04;
+                blur = (1 - progress) * 4;
+              } else if (phase === 'past') {
                 opacity = 0;
-                translateY = -150;
-                scale = 0.7;
-                blur = 15;
+                translateY = -40;
+                scale = 0.96;
+                blur = 6;
               } else {
-                // Future steps: waiting below
+                // future
                 opacity = 0;
-                translateY = 150;
-                scale = 0.8;
-                blur = 15;
+                translateY = 50;
+                scale = 0.95;
+                blur = 6;
               }
 
               return (
@@ -160,44 +183,48 @@ export const HowItWorksSimple = () => {
                   style={{
                     opacity,
                     transform: `translateY(${translateY}px) scale(${scale})`,
-                    filter: `blur(${blur}px)`,
-                    transition: 'opacity 0.1s ease-out, transform 0.1s ease-out, filter 0.1s ease-out',
-                    pointerEvents: isActive ? 'auto' : 'none',
+                    filter: blur > 0 ? `blur(${blur}px)` : 'none',
+                    transition: 'opacity 0.4s ease-out, transform 0.4s ease-out, filter 0.4s ease-out',
+                    pointerEvents: phase === 'active' ? 'auto' : 'none',
+                    willChange: isVisible ? 'opacity, transform, filter' : 'auto',
                   }}
                 >
-                  {/* Step Number - Animated ring */}
-                  <div className="relative mb-8">
-                    <span className="text-7xl sm:text-8xl md:text-9xl font-extralight text-foreground/10 leading-none">
+                  {/* Step Number with animated ring */}
+                  <div className="relative mb-10 sm:mb-12">
+                    {/* Large faded number */}
+                    <span className="text-[120px] sm:text-[150px] md:text-[180px] font-extralight text-foreground/[0.04] leading-none select-none">
                       {step.number}
                     </span>
-                    {/* Animated progress ring */}
+                    
+                    {/* Progress ring */}
                     <svg 
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 sm:w-40 sm:h-40"
+                      className="absolute top-1/2 left-1/2 w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44"
                       style={{ transform: 'translate(-50%, -50%) rotate(-90deg)' }}
                     >
                       <circle
                         cx="50%"
                         cy="50%"
-                        r="45%"
+                        r="46%"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1"
-                        className="text-foreground/5"
+                        className="text-foreground/[0.06]"
                       />
                       <circle
                         cx="50%"
                         cy="50%"
-                        r="45%"
+                        r="46%"
                         fill="none"
                         stroke="url(#stepGradient)"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
-                        strokeDasharray={`${stepProgress * 283} 283`}
-                        className="transition-all duration-100"
+                        strokeDasharray={`${(phase === 'active' ? 1 : progress) * 290} 290`}
+                        style={{ transition: 'stroke-dasharray 0.3s ease-out' }}
                       />
                       <defs>
                         <linearGradient id="stepGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="#3A8BFF" />
+                          <stop offset="50%" stopColor="#4BA3FF" />
                           <stop offset="100%" stopColor="#A9AAAE" />
                         </linearGradient>
                       </defs>
@@ -205,12 +232,12 @@ export const HowItWorksSimple = () => {
                   </div>
 
                   {/* Step Title */}
-                  <h3 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-foreground mb-6 leading-tight">
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-headline font-bold text-foreground mb-6 sm:mb-8 leading-[1.1]">
                     {step.title} <span className="gradient">{step.titleAccent}</span>
                   </h3>
 
                   {/* Step Description */}
-                  <p className="text-base sm:text-lg md:text-xl text-foreground/50 leading-relaxed max-w-2xl mx-auto">
+                  <p className="text-sm sm:text-base md:text-lg text-foreground/50 leading-relaxed max-w-xl mx-auto px-4">
                     {step.description}
                   </p>
                 </div>
@@ -218,42 +245,62 @@ export const HowItWorksSimple = () => {
             })}
           </div>
 
-          {/* Progress Dots */}
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-3">
-            {steps.map((_, index) => {
-              const isActive = activeStep === index;
-              const isPast = activeStep > index;
+          {/* Progress indicator */}
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+            {steps.map((step, index) => {
+              const { phase } = getStepVisibility(index);
+              const isActive = phase === 'active' || phase === 'entering' || phase === 'exiting';
+              const isPast = phase === 'past';
               
               return (
-                <div
-                  key={index}
-                  className="relative"
-                >
+                <div key={index} className="flex items-center gap-4">
                   {/* Dot */}
-                  <div
+                  <button
                     className={`
-                      w-2 h-2 rounded-full transition-all duration-300
-                      ${isActive ? 'bg-gradient-to-r from-[#3A8BFF] to-[#A9AAAE] scale-150' : ''}
-                      ${isPast ? 'bg-foreground/30' : ''}
-                      ${!isActive && !isPast ? 'bg-foreground/10' : ''}
+                      relative w-2.5 h-2.5 rounded-full transition-all duration-500 ease-out
+                      ${isActive ? 'scale-125' : 'scale-100'}
                     `}
-                  />
-                  {/* Active glow */}
-                  {isActive && (
-                    <div className="absolute inset-0 w-2 h-2 rounded-full bg-[#3A8BFF] blur-md animate-pulse" />
+                    style={{
+                      background: isActive 
+                        ? 'linear-gradient(135deg, #3A8BFF, #A9AAAE)' 
+                        : isPast 
+                          ? 'rgba(var(--foreground), 0.25)' 
+                          : 'rgba(var(--foreground), 0.08)',
+                    }}
+                  >
+                    {isActive && (
+                      <span className="absolute inset-0 rounded-full bg-[#3A8BFF]/40 blur-sm animate-pulse" />
+                    )}
+                  </button>
+                  
+                  {/* Connector line (not after last) */}
+                  {index < steps.length - 1 && (
+                    <div 
+                      className="w-8 sm:w-12 h-px transition-all duration-500"
+                      style={{
+                        background: isPast 
+                          ? 'linear-gradient(90deg, rgba(58,139,255,0.3), rgba(169,170,174,0.2))' 
+                          : 'rgba(var(--foreground), 0.06)',
+                      }}
+                    />
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* Scroll hint - shows at beginning */}
+          {/* Scroll hint */}
           <div 
-            className="absolute bottom-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-opacity duration-500"
-            style={{ opacity: scrollProgress < 0.1 ? 0.5 : 0 }}
+            className="fixed bottom-28 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700 z-10"
+            style={{ 
+              opacity: scrollProgress < 0.05 ? 0.6 : 0,
+              transform: `translateY(${scrollProgress > 0.05 ? 20 : 0}px)`,
+            }}
           >
-            <span className="text-xs uppercase tracking-widest text-foreground/30">Scroll</span>
-            <div className="w-px h-8 bg-gradient-to-b from-foreground/20 to-transparent animate-pulse" />
+            <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/30">Scroll to explore</span>
+            <div className="w-5 h-8 rounded-full border border-foreground/20 flex items-start justify-center p-1.5">
+              <div className="w-1 h-2 rounded-full bg-foreground/30 animate-bounce" />
+            </div>
           </div>
         </div>
       </div>
