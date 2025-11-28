@@ -43,7 +43,7 @@ const advertiserLogos = [
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
   return (
-    <section className={`relative overflow-hidden bg-background py-16 sm:py-20 md:py-24 ${className}`}>
+    <section className={`relative overflow-hidden bg-background py-8 sm:py-10 md:py-12 ${className}`}>
       {/* Mesh Animation Background - Same as Hero, very subtle */}
       <Suspense fallback={null}>
         <div className="absolute inset-0 opacity-30">

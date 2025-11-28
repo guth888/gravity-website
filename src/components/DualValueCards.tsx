@@ -30,7 +30,7 @@ export const DualValueCards = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background py-24 sm:py-32"
+      className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background py-12 sm:py-16"
     >
       {/* Mesh Animation Background */}
       <Suspense fallback={null}>
