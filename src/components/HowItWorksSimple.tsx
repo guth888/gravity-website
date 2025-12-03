@@ -60,32 +60,57 @@ const SLOT_POSITIONS = (() => {
 // Visual 01: Problem - Death of Browsing (Looping Futuristic Glitch)
 const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
   const [showChat, setShowChat] = useState(false);
+  const [isManual, setIsManual] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!isActive) {
       setShowChat(false);
+      setIsManual(false);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       return;
     }
 
-    // Simple slideshow: show Google UI, then slide to Chat UI, loop
-    const cycle = () => {
-      setShowChat(false);
-      const t1 = setTimeout(() => setShowChat(true), 2500);
-      const t2 = setTimeout(() => setShowChat(false), 5500);
-      return [t1, t2];
+    // Don't auto-rotate if user manually clicked
+    if (isManual) return;
+
+    // Reset to Google UI first
+    setShowChat(false);
+
+    // Auto-rotate: Google UI (5s) -> Chat UI (5s) -> repeat
+    const startAutoRotate = () => {
+      // Show Google UI for 5 seconds
+      timeoutRef.current = setTimeout(() => {
+        setShowChat(true);
+        // Then show Chat UI for 5 seconds
+        timeoutRef.current = setTimeout(() => {
+          setShowChat(false);
+          // Restart cycle
+          startAutoRotate();
+        }, 5000);
+      }, 5000);
     };
 
-    let timers = cycle();
-    const loopInterval = setInterval(() => {
-      timers.forEach(clearTimeout);
-      timers = cycle();
-    }, 8000);
+    // Start the cycle
+    startAutoRotate();
 
     return () => {
-      timers.forEach(clearTimeout);
-      clearInterval(loopInterval);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isActive]);
+  }, [isActive, isManual]);
+
+  const handleDotClick = (index: number) => {
+    setIsManual(true);
+    setShowChat(index === 1); // 0 = Google, 1 = Chat
+    
+    // Resume auto-rotation after 12 seconds of manual control
+    setTimeout(() => {
+      setIsManual(false);
+    }, 12000);
+  };
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -284,23 +309,45 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             zIndex: 20
           }}
         >
-          <div 
+          <button
+            onClick={() => handleDotClick(0)}
             style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
               background: showChat ? '#d1d5db' : '#374151',
-              transition: 'background 0.3s ease'
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'background 0.3s ease, transform 0.2s ease'
             }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            aria-label="Show Google UI"
           />
-          <div 
+          <button
+            onClick={() => handleDotClick(1)}
             style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
               background: showChat ? '#374151' : '#d1d5db',
-              transition: 'background 0.3s ease'
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'background 0.3s ease, transform 0.2s ease'
             }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            aria-label="Show Chat UI"
           />
         </div>
       </div>
