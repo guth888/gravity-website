@@ -128,6 +128,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             transform: showChat ? 'translateX(-50%)' : 'translateX(0%)'
           }}
         >
+        
           {/* OLD UI - Google Search */}
           <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden">
             {/* Google Header */}
@@ -269,6 +270,38 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Dot indicators */}
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '12px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '8px',
+            zIndex: 20
+          }}
+        >
+          <div 
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: showChat ? '#d1d5db' : '#374151',
+              transition: 'background 0.3s ease'
+            }}
+          />
+          <div 
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: showChat ? '#374151' : '#d1d5db',
+              transition: 'background 0.3s ease'
+            }}
+          />
         </div>
       </div>
     </div>
