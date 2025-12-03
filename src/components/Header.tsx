@@ -58,47 +58,47 @@ export const Header = ({ className }: { className?: string }) => {
     <>
       <header 
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8 xl:px-10 py-2.5 backdrop-blur-md bg-background/95 border-b border-border transition-all duration-300 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-5 lg:px-6 py-2.5 backdrop-blur-md bg-background/95 border-b border-border transition-all duration-300 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
         } ${className || ''}`}
       >
-        <div className="w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex items-center justify-between gap-4 lg:gap-6">
+        <div className="w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex items-center justify-between gap-3 lg:gap-4">
           {/* Logo - Far Left */}
-          <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0">
+          <a href="/" className="flex items-center gap-1.5 hover:opacity-80 transition-opacity shrink-0">
             <img 
               src={gravityLogo} 
               alt="Gravity AI" 
               className="h-7 sm:h-8"
-              style={{ transform: 'scale(2.5)', transformOrigin: 'left center', marginRight: '30px' }}
+              style={{ transform: 'scale(2.5)', transformOrigin: 'left center', marginRight: '24px' }}
             />
             <span 
               className="font-headline font-bold text-foreground tracking-tight antialiased"
-              style={{ fontSize: '1.5rem', marginLeft: '10px' }}
+              style={{ fontSize: '1.5rem', marginLeft: '8px' }}
             >
               Gravity
             </span>
           </a>
 
           {/* Desktop Navigation - Center */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mx-auto">
+          <nav className="hidden lg:flex items-center gap-5 mx-auto">
             <a 
               href="/docs" 
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
+              className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
             >
               Docs
             </a>
             <a 
               href="/login" 
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
+              className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
             >
               Log in
             </a>
           </nav>
 
           {/* Right Section - Desktop - Far Right */}
-          <div className="hidden lg:flex items-center gap-4 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <button 
-              className="metallic-button text-sm py-2.5 px-6"
+              className="metallic-button text-xs py-2 px-4"
               onClick={() => window.open('https://calendly.com/zachtheoldham/iris-discovery?month=2025-11', '_blank')}
             >
               <span>Book A Demo</span>
