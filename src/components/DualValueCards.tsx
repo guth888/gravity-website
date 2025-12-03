@@ -1,10 +1,5 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Lazy load the mesh animation (same as Hero)
-const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
-  default: m.MeshAnimation
-})));
 
 export const DualValueCards = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -41,13 +36,6 @@ export const DualValueCards = () => {
       ref={sectionRef} 
       className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-background py-12 sm:py-16"
     >
-      {/* Mesh Animation Background */}
-      <Suspense fallback={null}>
-        <div className="absolute inset-0 opacity-40">
-          <MeshAnimation className="w-full h-full" />
-        </div>
-      </Suspense>
-
       {/* Content */}
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1100px] mx-auto">
         
@@ -57,12 +45,9 @@ export const DualValueCards = () => {
           ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
           transition-all duration-700 ease-out
         `}>
-          {/* Publisher Label - matches dark card */}
+          {/* Publisher Label */}
           <div 
-            className={`
-              cursor-pointer select-none px-1
-              transition-all duration-500 ease-out
-            `}
+            className="cursor-pointer select-none px-1 transition-all duration-500 ease-out"
             onClick={() => navigate("/publishers")}
             onMouseEnter={() => setActiveCard('publisher')}
           >
@@ -79,12 +64,9 @@ export const DualValueCards = () => {
             </span>
           </div>
 
-          {/* Advertiser Label - matches white card */}
+          {/* Advertiser Label */}
           <div 
-            className={`
-              cursor-pointer select-none px-1
-              transition-all duration-500 ease-out
-            `}
+            className="cursor-pointer select-none px-1 transition-all duration-500 ease-out"
             onClick={() => navigate("/advertisers")}
             onMouseEnter={() => setActiveCard('advertiser')}
           >
@@ -92,7 +74,7 @@ export const DualValueCards = () => {
               text-sm sm:text-base font-semibold tracking-[0.1em] uppercase
               transition-all duration-500
               ${activeCard === 'advertiser' 
-                ? 'text-[#3A8BFF]' 
+                ? 'text-primary' 
                 : activeCard === 'publisher' 
                   ? 'text-foreground/15' 
                   : 'text-foreground/40'}
@@ -102,7 +84,7 @@ export const DualValueCards = () => {
           </div>
         </div>
 
-        {/* Unified Card Container - Responsive Height */}
+        {/* Unified Card Container */}
         <div 
           className={`
             relative overflow-hidden rounded-2xl min-h-[320px] sm:h-[380px]
@@ -111,7 +93,7 @@ export const DualValueCards = () => {
           `}
           onMouseLeave={() => !isMobile && setActiveCard('none')}
         >
-          {/* Cards wrapper - Horizontal flex */}
+          {/* Cards wrapper */}
           <div className="relative flex h-full w-full">
             
             {/* Publisher Card - DARK when active */}
@@ -139,16 +121,15 @@ export const DualValueCards = () => {
                     : 'flex-1 z-10'}
               `}
             >
-              {/* Background - Dark when active */}
+              {/* Background - Solid colors only */}
               <div 
-                className="absolute inset-0 transition-all duration-700 ease-out"
-                style={{
-                  background: activeCard === 'publisher'
-                    ? 'linear-gradient(135deg, #0a0a0a 0%, #141414 50%, #1a1a1a 100%)'
+                className={`absolute inset-0 transition-all duration-700 ease-out ${
+                  activeCard === 'publisher'
+                    ? 'bg-[#0a0a0a]'
                     : activeCard === 'advertiser'
-                      ? 'linear-gradient(90deg, #b8b8b8 0%, #d0d0d0 100%)'
-                      : 'linear-gradient(90deg, #d0d0d0 0%, #e8e8e8 40%, #ffffff 100%)'
-                }}
+                      ? 'bg-[#d0d0d0]'
+                      : 'bg-[#e8e8e8]'
+                }`}
               />
               
               {/* Content */}
@@ -162,19 +143,11 @@ export const DualValueCards = () => {
                   ${activeCard === 'advertiser' ? 'blur-[3px] scale-95' : 'blur-0 scale-100'}
                 `}>
                   {/* Headline */}
-                  <h3 className={`
-                    text-xl sm:text-2xl lg:text-3xl font-headline font-bold leading-[1.2] mb-4
-                    transition-all duration-500 ease-out
-                  `}>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-headline font-bold leading-[1.2] mb-4 transition-all duration-500 ease-out">
                     <span className={`transition-colors duration-500 ${activeCard === 'publisher' ? 'text-white' : 'text-foreground/70'}`}>
                       Your conversations are{' '}
                     </span>
-                    <span className={`
-                      transition-all duration-500
-                      ${activeCard === 'publisher' 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] to-[#93c5fd]' 
-                        : 'text-foreground/50'}
-                    `}>
+                    <span className={`transition-all duration-500 ${activeCard === 'publisher' ? 'text-primary' : 'text-foreground/50'}`}>
                       worth something.
                     </span>
                   </h3>
@@ -215,7 +188,7 @@ export const DualValueCards = () => {
                     group inline-flex items-center gap-2
                     text-sm font-semibold
                     transition-all duration-300
-                    ${activeCard === 'publisher' ? 'text-[#60a5fa]' : 'text-foreground/40'}
+                    ${activeCard === 'publisher' ? 'text-primary' : 'text-foreground/40'}
                   `}>
                     <span className="relative">
                       Become a Publisher
@@ -234,18 +207,6 @@ export const DualValueCards = () => {
                   </button>
                 </div>
               </div>
-
-              {/* Subtle glow overlay */}
-              <div 
-                className={`
-                  absolute inset-0 pointer-events-none
-                  transition-opacity duration-500 ease-out
-                  ${activeCard === 'publisher' ? 'opacity-100' : 'opacity-0'}
-                `}
-                style={{
-                  background: 'radial-gradient(ellipse at 30% 50%, rgba(96,165,250,0.1) 0%, transparent 60%)'
-                }}
-              />
             </div>
 
             {/* Center Divider */}
@@ -283,16 +244,15 @@ export const DualValueCards = () => {
                     : 'flex-1 z-10'}
               `}
             >
-              {/* Background - Bright white when active */}
+              {/* Background - Solid colors only */}
               <div 
-                className="absolute inset-0 transition-all duration-700 ease-out"
-                style={{
-                  background: activeCard === 'advertiser'
-                    ? 'linear-gradient(225deg, #ffffff 0%, #fafafa 50%, #f5f5f5 100%)'
+                className={`absolute inset-0 transition-all duration-700 ease-out ${
+                  activeCard === 'advertiser'
+                    ? 'bg-white'
                     : activeCard === 'publisher'
-                      ? 'linear-gradient(270deg, #b8b8b8 0%, #d0d0d0 100%)'
-                      : 'linear-gradient(270deg, #d0d0d0 0%, #e8e8e8 40%, #ffffff 100%)'
-                }}
+                      ? 'bg-[#d0d0d0]'
+                      : 'bg-[#e8e8e8]'
+                }`}
               />
               
               {/* Content */}
@@ -306,19 +266,11 @@ export const DualValueCards = () => {
                   ${activeCard === 'publisher' ? 'blur-[3px] scale-95' : 'blur-0 scale-100'}
                 `}>
                   {/* Headline */}
-                  <h3 className={`
-                    text-xl sm:text-2xl lg:text-3xl font-headline font-bold leading-[1.2] mb-4
-                    transition-all duration-500 ease-out
-                  `}>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-headline font-bold leading-[1.2] mb-4 transition-all duration-500 ease-out">
                     <span className={`transition-colors duration-500 ${activeCard === 'advertiser' ? 'text-foreground' : 'text-foreground/70'}`}>
                       Be there when they're{' '}
                     </span>
-                    <span className={`
-                      transition-all duration-500
-                      ${activeCard === 'advertiser' 
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#3A8BFF] to-[#2563eb]' 
-                        : 'text-foreground/50'}
-                    `}>
+                    <span className={`transition-all duration-500 ${activeCard === 'advertiser' ? 'text-primary' : 'text-foreground/50'}`}>
                       deciding.
                     </span>
                   </h3>
@@ -345,7 +297,7 @@ export const DualValueCards = () => {
                           px-3 py-1.5 text-[10px] sm:text-[11px] font-medium rounded-full
                           border transition-all duration-500
                           ${activeCard === 'advertiser' 
-                            ? 'text-[#3A8BFF] bg-[#3A8BFF]/10 border-[#3A8BFF]/30' 
+                            ? 'text-primary bg-primary/10 border-primary/30' 
                             : 'text-foreground/40 bg-foreground/[0.03] border-foreground/[0.08]'}
                         `}
                       >
@@ -359,7 +311,7 @@ export const DualValueCards = () => {
                     group inline-flex items-center justify-end gap-2 w-full
                     text-sm font-semibold
                     transition-all duration-300
-                    ${activeCard === 'advertiser' ? 'text-[#3A8BFF]' : 'text-foreground/40'}
+                    ${activeCard === 'advertiser' ? 'text-primary' : 'text-foreground/40'}
                   `}>
                     <span className="relative">
                       Explore Placements
@@ -378,53 +330,33 @@ export const DualValueCards = () => {
                   </button>
                 </div>
               </div>
-
-              {/* Subtle shadow overlay for depth */}
-              <div 
-                className={`
-                  absolute inset-0 pointer-events-none
-                  transition-opacity duration-500 ease-out
-                  ${activeCard === 'advertiser' ? 'opacity-100' : 'opacity-0'}
-                `}
-                style={{
-                  boxShadow: 'inset 0 0 60px rgba(58,139,255,0.05)'
-                }}
-              />
             </div>
           </div>
 
-          {/* Edge glow when active - Dark for Publisher */}
+          {/* Edge accent when active - Solid color */}
           <div 
             className={`
-              absolute top-0 left-0 bottom-0 w-1 rounded-l-2xl
+              absolute top-0 left-0 bottom-0 w-1 rounded-l-2xl bg-primary
               transition-all duration-500 ease-out
               ${activeCard === 'publisher' ? 'opacity-100' : 'opacity-0'}
             `}
-            style={{ 
-              background: 'linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%)',
-              boxShadow: activeCard === 'publisher' ? '0 0 25px 8px rgba(96,165,250,0.4)' : 'none'
-            }}
           />
-          {/* Edge glow when active - Light for Advertiser */}
+          {/* Edge accent when active - Solid color */}
           <div 
             className={`
-              absolute top-0 right-0 bottom-0 w-1 rounded-r-2xl
+              absolute top-0 right-0 bottom-0 w-1 rounded-r-2xl bg-primary
               transition-all duration-500 ease-out
               ${activeCard === 'advertiser' ? 'opacity-100' : 'opacity-0'}
             `}
-            style={{ 
-              background: 'linear-gradient(180deg, #3A8BFF 0%, #2563eb 100%)',
-              boxShadow: activeCard === 'advertiser' ? '0 0 25px 8px rgba(58,139,255,0.3)' : 'none'
-            }}
           />
 
-          {/* Outer shadow/border */}
+          {/* Outer border */}
           <div className="absolute inset-0 rounded-2xl border border-foreground/5 pointer-events-none" />
         </div>
 
         {/* Hint text */}
         <p className={`
-          text-center text-xs text-foreground/30 mt-6
+          text-center text-xs text-muted-foreground mt-6
           transition-all duration-500
           ${activeCard === 'none' ? 'opacity-100' : 'opacity-0'}
         `}>

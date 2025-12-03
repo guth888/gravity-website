@@ -16,7 +16,6 @@ export const navData: NavData = {
     { label: 'Network Overview', href: '/publishers#network', description: 'How the network works' },
     { label: 'Revenue Estimator', href: '/publishers#revenue', description: 'See your earning potential' },
     { label: 'Live Demo', href: '/publishers#demo', description: 'See how suggestions appear' },
-    { label: 'Integration', href: '/publishers#integration', description: 'SDK docs, 3 lines of code' },
     { label: 'Demand Partners', href: '/publishers#partners', description: '50+ premium partners' },
   ],
   forAdvertisers: [

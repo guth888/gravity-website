@@ -30,6 +30,9 @@ export default defineConfig(({ mode }) => ({
       },
     },
     minify: 'esbuild',
+    chunkSizeWarningLimit: 1000,
+    // Optimize asset handling
+    assetsInlineLimit: 4096, // Inline small assets as base64
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

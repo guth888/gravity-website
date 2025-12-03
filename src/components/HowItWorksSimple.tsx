@@ -1,896 +1,1523 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { ChevronDown } from "lucide-react";
 
-// Lazy load the mesh animation (same as Hero)
-const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
-  default: m.MeshAnimation
-})));
-
-// Gravity Animation - Planets transforming into shopping bags, gravity well into user
-const GravityAnimation = () => {
-  const [phase, setPhase] = useState<'planets' | 'morphing' | 'bags'>('planets');
-  
-  useEffect(() => {
-    const timer1 = setTimeout(() => setPhase('morphing'), 2000);
-    const timer2 = setTimeout(() => setPhase('bags'), 3500);
-    const timer3 = setTimeout(() => setPhase('planets'), 7000);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, [phase]);
-
-  return (
-    <div className="relative w-40 h-40 sm:w-64 md:w-80 sm:h-64 md:h-80 mx-auto mt-12 sm:mt-20 md:mt-24 mb-6 sm:mb-8">
-      {/* Orbital paths */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
-        <defs>
-          <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.05" />
-          </linearGradient>
-        </defs>
-        {/* Orbit rings */}
-        <ellipse cx="100" cy="100" rx="70" ry="70" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="4 2" className="animate-spin" style={{ animationDuration: '20s' }} />
-        <ellipse cx="100" cy="100" rx="50" ry="50" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="3 2" className="animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }} />
-        <ellipse cx="100" cy="100" rx="30" ry="30" fill="none" stroke="url(#orbitGrad)" strokeWidth="0.5" strokeDasharray="2 2" className="animate-spin" style={{ animationDuration: '10s' }} />
-      </svg>
-
-      {/* Center - Gravity Well / User Icon */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-        <div className={`
-          relative transition-all duration-1000 ease-out
-          ${phase === 'bags' ? 'scale-110' : 'scale-100'}
-        `}>
-          {/* Gravity well (default) */}
-          <div className={`
-            absolute inset-0 flex items-center justify-center
-            transition-all duration-700
-            ${phase === 'bags' ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}
-          `}>
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3A8BFF]/20 to-[#4BA3FF]/10 flex items-center justify-center shadow-[0_0_40px_rgba(58,139,255,0.3)]">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3A8BFF] to-[#4BA3FF] shadow-lg animate-pulse" />
-            </div>
-          </div>
-          
-          {/* User icon (transformed) */}
-          <div className={`
-            flex items-center justify-center
-            transition-all duration-700
-            ${phase === 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}
-          `}>
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#3A8BFF]/20 to-[#4BA3FF]/10 flex items-center justify-center shadow-[0_0_40px_rgba(58,139,255,0.3)]">
-              <svg className="w-7 h-7 text-[#3A8BFF]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Orbiting objects */}
-      {[0, 1, 2, 3, 4].map((i) => {
-        const angle = (i * 72) + (phase === 'planets' ? 0 : 0);
-        const radius = i % 2 === 0 ? 70 : 50;
-        const duration = 8 + i * 2;
-        const delay = i * 0.5;
-        
-        return (
-          <div
-            key={i}
-            className="absolute top-1/2 left-1/2 w-0 h-0"
-            style={{
-              animation: `orbit${radius} ${duration}s linear infinite`,
-              animationDelay: `${delay}s`,
-            }}
-          >
-            {/* Planet (default) */}
-            <div className={`
-              absolute -translate-x-1/2 -translate-y-1/2
-              transition-all duration-700 ease-out
-              ${phase !== 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
-            `}>
-              <div 
-                className="rounded-full shadow-lg"
-                style={{
-                  width: 12 + (i * 2),
-                  height: 12 + (i * 2),
-                  background: `linear-gradient(135deg, ${['#3A8BFF', '#60a5fa', '#4BA3FF', '#93c5fd', '#3b82f6'][i]} 0%, ${['#2563eb', '#3A8BFF', '#2563eb', '#60a5fa', '#1d4ed8'][i]} 100%)`,
-                  boxShadow: `0 0 ${10 + i * 3}px ${['rgba(58,139,255,0.4)', 'rgba(96,165,250,0.4)', 'rgba(75,163,255,0.4)', 'rgba(147,197,253,0.4)', 'rgba(59,130,246,0.4)'][i]}`,
-                }}
-              />
-            </div>
-            
-            {/* Shopping bag (transformed) */}
-            <div className={`
-              absolute -translate-x-1/2 -translate-y-1/2
-              transition-all duration-700 ease-out
-              ${phase === 'bags' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
-            `}>
-              <div className="relative">
-                <svg 
-                  className="text-[#3A8BFF]" 
-                  style={{ width: 16 + (i * 3), height: 16 + (i * 3) }}
-                  fill="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/>
-                </svg>
-                {/* Glow effect */}
-                <div 
-                  className="absolute inset-0 blur-md opacity-50"
-                  style={{ 
-                    background: `radial-gradient(circle, ${['#3A8BFF', '#60a5fa', '#4BA3FF', '#93c5fd', '#3b82f6'][i]} 0%, transparent 70%)` 
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        );
-      })}
-
-      {/* Pull lines when morphing/bags */}
-      <svg 
-        className={`
-          absolute inset-0 w-full h-full pointer-events-none
-          transition-opacity duration-500
-          ${phase === 'bags' ? 'opacity-100' : 'opacity-0'}
-        `} 
-        viewBox="0 0 200 200"
-      >
-        <defs>
-          <linearGradient id="pullGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0" />
-            <stop offset="50%" stopColor="#3A8BFF" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="#3A8BFF" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        {/* Magnetic pull lines */}
-        <line x1="100" y1="100" x2="170" y2="100" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
-          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />
-        </line>
-        <line x1="100" y1="100" x2="130" y2="30" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
-          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.6s" repeatCount="indefinite" />
-        </line>
-        <line x1="100" y1="100" x2="30" y2="100" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
-          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.5s" repeatCount="indefinite" />
-        </line>
-        <line x1="100" y1="100" x2="70" y2="170" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
-          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.7s" repeatCount="indefinite" />
-        </line>
-        <line x1="100" y1="100" x2="150" y2="150" stroke="url(#pullGrad)" strokeWidth="1" strokeDasharray="4 4">
-          <animate attributeName="stroke-dashoffset" from="8" to="0" dur="0.55s" repeatCount="indefinite" />
-        </line>
-      </svg>
-
-      {/* CSS for orbit animations */}
-      <style>{`
-        @keyframes orbit70 {
-          from { transform: rotate(0deg) translateX(70px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(70px) rotate(-360deg); }
-        }
-        @keyframes orbit50 {
-          from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
-          to { transform: rotate(-360deg) translateX(50px) rotate(360deg); }
-        }
-        @keyframes orbit30 {
-          from { transform: rotate(0deg) translateX(30px) rotate(0deg); }
-          to { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
-        }
-      `}</style>
-    </div>
-  );
-};
-
+// Step data
 const steps = [
   {
     number: "01",
-    title: "Conversations",
-    titleAccent: "happen",
-    description: "Your users are already having high-intent conversations. Asking, comparing, deciding. Every prompt is a data point about what they actually want.",
+    title: "The Problem",
+    description: "The old ad formats don't fit the new world. Users no longer browse — they ask, compare, and decide inside LLMs.",
+    boldStart: "The old ad formats don't fit the new world.",
+    kpi: { value: "73%", label: "Users skip traditional ads" },
   },
   {
-    number: "02", 
-    title: "Gravity",
-    titleAccent: "activates",
-    description: "When the moment is right, Gravity surfaces a native, high-intent sponsored suggestion that feels like the LLM's own insight. Not a banner. Not an ad. A suggestion.",
+    number: "02",
+    title: "The Shift",
+    description: "Billions of high-intent micro-decisions happen inside LLM chats every day. This is where brands need to be.",
+    boldStart: "Billions of high-intent micro-decisions",
+    kpi: { value: "4B+", label: "Daily LLM queries" },
   },
   {
-    number: "03",
-    title: "Value",
-    titleAccent: "unlocks",
-    description: "Publishers get revenue. Advertisers get precision. Users get helpful suggestions they actually want. Gravity makes all three things happen simultaneously.",
+    number: "03", 
+    title: "The Solution",
+    description: "Show up inside the answer. Gravity inserts a native, high-intent suggestion right when the user is deciding.",
+    boldStart: "Show up inside the answer.",
+    kpi: { value: "12%", label: "Average CTR" },
   },
   {
     number: "04",
-    title: "Integration",
-    titleAccent: "ready",
-    description: "Get started in minutes with our production-ready SDKs. Drop-in components, type-safe APIs, and comprehensive documentation.",
+    title: "The Future",
+    description: "The next ad channel is live. Gravity lets you connect to it today.",
+    boldStart: "The next ad channel is live.",
+    kpi: { value: "40%", label: "Lower CAC" },
   },
 ];
 
-// Chat bubble component
-const ChatBubble = ({ delay, size = 'sm' }: { delay: number; size?: 'sm' | 'md' | 'lg' }) => {
-  const sizeClasses = {
-    sm: 'px-1.5 py-0.5',
-    md: 'px-2 py-1',
-    lg: 'px-2.5 py-1.5',
-  };
-  const dotSizes = {
-    sm: 'w-0.5 h-0.5',
-    md: 'w-1 h-1',
-    lg: 'w-1 h-1',
-  };
-  
+// ============================================
+// VISUAL COMPONENTS
+// ============================================
+
+const ALL_PROMPTS = [
+  "Best CRM?", "Invest 10k?", "Hotel Paris", "Top AI tools", 
+  "Compare prices", "Debug code", "Plan trip", "Recipe ideas",
+  "Chinese food", "Tokyo trip", "Write essay", "Fix resume",
+  "Wedding speech", "Buy laptop", "Movie recs", "Stock tips",
+];
+
+const SLOT_POSITIONS = (() => {
+  const positions: {x: number, y: number}[] = [];
+  const cols = [-160, -100, -40, 40, 100, 160];
+  const rows = [-70, -35, 0, 35, 70];
+  for (const y of rows) {
+    for (const x of cols) {
+      if (Math.abs(x) < 30 && Math.abs(y) < 25) continue;
+      positions.push({ x, y });
+    }
+  }
+  return positions;
+})();
+
+// Visual 01: Problem - Death of Browsing (Looping Futuristic Glitch)
+const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
+  const [showChat, setShowChat] = useState(false);
+
+  useEffect(() => {
+    if (!isActive) {
+      setShowChat(false);
+      return;
+    }
+
+    // Simple slideshow: show Google UI, then slide to Chat UI, loop
+    const cycle = () => {
+      setShowChat(false);
+      const t1 = setTimeout(() => setShowChat(true), 2500);
+      const t2 = setTimeout(() => setShowChat(false), 5500);
+      return [t1, t2];
+    };
+
+    let timers = cycle();
+    const loopInterval = setInterval(() => {
+      timers.forEach(clearTimeout);
+      timers = cycle();
+    }, 8000);
+
+    return () => {
+      timers.forEach(clearTimeout);
+      clearInterval(loopInterval);
+    };
+  }, [isActive]);
+
   return (
-    <div 
-      className={`bg-white/95 backdrop-blur-sm rounded-full shadow-lg ${sizeClasses[size]} flex gap-0.5 items-center`}
-      style={{ animationDelay: `${delay}s` }}
-    >
-      <div className={`${dotSizes[size]} rounded-full bg-[#3A8BFF] animate-bounce`} style={{ animationDelay: `${delay}s` }} />
-      <div className={`${dotSizes[size]} rounded-full bg-[#4BA3FF] animate-bounce`} style={{ animationDelay: `${delay + 0.1}s` }} />
-      <div className={`${dotSizes[size]} rounded-full bg-[#A9AAAE] animate-bounce`} style={{ animationDelay: `${delay + 0.2}s` }} />
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {/* Micro-label - PAST / FUTURE */}
+      <div 
+        className="absolute top-[4%] left-1/2 -translate-x-1/2 z-10 transition-opacity duration-500"
+        style={{
+          fontSize: '12px',
+          fontWeight: 500,
+          letterSpacing: '0.04em',
+          color: '#6b7280',
+          opacity: showChat ? 0 : 0.5,
+          textTransform: 'uppercase'
+        }}
+      >
+        Past
+      </div>
+      <div 
+        className="absolute top-[4%] left-1/2 -translate-x-1/2 z-10 transition-opacity duration-500"
+        style={{
+          fontSize: '12px',
+          fontWeight: 500,
+          letterSpacing: '0.04em',
+          color: '#6b7280',
+          opacity: showChat ? 0.5 : 0,
+          textTransform: 'uppercase'
+        }}
+      >
+        Future
+      </div>
+
+      {/* Main container */}
+      <div className="absolute inset-[10%] rounded-xl overflow-hidden shadow-xl bg-white">
+        
+        {/* Sliding wrapper - holds both UIs */}
+        <div 
+          className="flex h-full transition-transform duration-700 ease-in-out"
+          style={{ 
+            width: '200%',
+            transform: showChat ? 'translateX(-50%)' : 'translateX(0%)'
+          }}
+        >
+          {/* OLD UI - Google Search */}
+          <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden">
+            {/* Google Header */}
+            <div className="flex items-center gap-3 px-4 pt-3 pb-2 border-b border-gray-100">
+              <div className="flex items-center gap-0.5 text-sm font-medium">
+                <span className="text-blue-500">G</span>
+                <span className="text-red-500">o</span>
+                <span className="text-yellow-500">o</span>
+                <span className="text-blue-500">g</span>
+                <span className="text-green-500">l</span>
+                <span className="text-red-500">e</span>
+            </div>
+              <div className="flex-1 h-8 bg-white border border-gray-300 rounded-full flex items-center px-3 text-[10px] text-gray-600 shadow-sm">
+                best laptop for video editing
+          </div>
+            </div>
+            
+            <div className="flex h-[calc(100%-48px)]">
+              {/* Main Results */}
+              <div className="flex-1 px-4 pt-2 overflow-hidden">
+                {/* Banner Ad */}
+                <div className="p-2 bg-[#fef7e0] rounded-lg border border-amber-200/50 mb-2">
+                  <div className="flex gap-2">
+                    <div className="w-7 h-7 bg-amber-200 rounded flex items-center justify-center text-amber-700 text-[8px] font-bold">B+</div>
+                    <div>
+                      <p className="text-[10px] text-blue-700 font-medium">Best Buy® - Top Laptops for Creators</p>
+                      <p className="text-[8px] text-green-700">www.bestbuy.com/laptops</p>
+                      <p className="text-[8px] text-gray-500">Shop creator laptops. Free shipping on $35+.</p>
+                    </div>
+                    <span className="text-[7px] text-amber-600 font-bold ml-auto">Ad</span>
+                  </div>
+                </div>
+                
+                <p className="text-[8px] text-gray-400 mb-2">About 892,000,000 results (0.42 seconds)</p>
+                
+                {/* Results */}
+                <div className="space-y-2.5 text-[9px]">
+                  <div className="border-b border-gray-100 pb-2">
+                    <p className="text-[8px] text-green-700">www.tomsguide.com › best-laptops</p>
+                    <p className="text-blue-700 font-medium text-[11px]">Best Laptops for Video Editing 2024 | Tom's Guide</p>
+                    <p className="text-gray-600 text-[9px]">The MacBook Pro 16 is our top pick for video editors...</p>
+                  </div>
+                  <div className="border-b border-gray-100 pb-2">
+                    <p className="text-[8px] text-green-700">www.pcmag.com › picks</p>
+                    <p className="text-blue-700 font-medium text-[11px]">The Best Laptops for Video Editing in 2024 | PCMag</p>
+                    <p className="text-gray-600 text-[9px]">We tested 47 laptops for Premiere Pro, DaVinci Resolve...</p>
+                  </div>
+                  <div className="border-b border-gray-100 pb-2">
+                    <p className="text-[8px] text-green-700">www.techradar.com › guides</p>
+                    <p className="text-blue-700 font-medium text-[11px]">Best video editing laptops 2024: top picks</p>
+                    <p className="text-gray-600 text-[9px]">Whether you're a YouTuber or professional editor...</p>
+                  </div>
+                  <div>
+                    <p className="text-[8px] text-green-700">www.creativebloq.com › guides</p>
+                    <p className="text-blue-700 font-medium text-[11px]">Best laptops for video editing in 2024</p>
+                    <p className="text-gray-600 text-[9px]">Expert guide from budget to professional...</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Sidebar */}
+              <div className="w-24 p-2 space-y-2 border-l border-gray-100">
+                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
+                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
+                  <div className="w-full h-10 bg-gray-200 rounded mb-1 flex items-center justify-center">
+                    <span className="text-[8px] text-gray-500 font-medium">Dell XPS</span>
+                  </div>
+                </div>
+                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
+                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
+                  <div className="w-full h-10 bg-blue-50 rounded mb-1 flex items-center justify-center">
+                    <span className="text-[8px] text-blue-600 font-medium">HP ZBook</span>
+                  </div>
+                </div>
+                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
+                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
+                  <div className="w-full h-10 bg-red-50 rounded mb-1 flex items-center justify-center">
+                    <span className="text-[8px] text-red-600 font-medium">Lenovo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* NEW UI - Chat Interface (rebuilt from scratch) */}
+          <div className="w-1/2 h-full bg-white flex-shrink-0 flex flex-col overflow-hidden">
+            {/* Header */}
+            <div style={{ padding: '8px 12px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'linear-gradient(135deg, #374151, #111827)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg style={{ width: '12px', height: '12px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                </svg>
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 500, color: '#374151' }}>AI Assistant</span>
+            </div>
+            
+            {/* Chat Messages */}
+            <div style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+              {/* User Message */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ background: '#1f2937', color: 'white', padding: '8px 12px', borderRadius: '16px 16px 4px 16px', maxWidth: '75%', fontSize: '11px', lineHeight: '1.4' }}>
+                  Best laptop for video editing?
+                </div>
+              </div>
+              
+              {/* AI Response */}
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{ background: '#f3f4f6', borderRadius: '16px 16px 16px 4px', maxWidth: '85%', overflow: 'hidden' }}>
+                  {/* Main response */}
+                  <div style={{ padding: '10px 12px', fontSize: '11px', lineHeight: '1.5', color: '#374151' }}>
+                    <div>For video editing, you need powerful GPU, 32GB+ RAM, and fast SSD. Top picks:</div>
+                    <div style={{ marginTop: '4px' }}><strong>1. MacBook Pro 16"</strong> — M3 Max chip, great for Final Cut</div>
+                    <div style={{ marginTop: '2px' }}><strong>2. Dell XPS 15</strong> — RTX 4070, stunning OLED display</div>
+                    <div style={{ marginTop: '2px' }}><strong>3. ASUS ProArt</strong> — Budget-friendly, color-accurate</div>
+                  </div>
+                  {/* Sponsored */}
+                  <div style={{ borderTop: '1px solid #d1fae5', background: '#ecfdf5', padding: '8px 12px' }}>
+                    <div style={{ fontSize: '8px', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored · Gravity</div>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: '#111827', marginTop: '2px' }}>MacBook Pro 16" M3 Max</div>
+                    <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '1px' }}>Built for professional video. Up to 128GB RAM.</div>
+                    <div style={{ fontSize: '11px', color: '#374151', fontWeight: 500, marginTop: '4px' }}>Learn more →</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Input Bar */}
+            <div style={{ padding: '8px 12px', borderTop: '1px solid #e5e7eb' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ flex: 1, height: '32px', background: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb', padding: '0 12px', display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', color: '#9ca3af' }}>Ask anything...</span>
+                </div>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg style={{ width: '14px', height: '14px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-// Animated Globe with chat nodes for Step 1
-const ConversationsVisual = ({ isActive }: { isActive: boolean }) => {
+// Visual 02: Shift - Globe
+const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
+  // Expanded query set to show volume and scale
+  const queries = [
+    // High-intent purchase queries
+    { left: '18%', top: '22%', text: "Best CRM?", intent: 'purchase' },
+    { left: '15%', top: '45%', text: "Compare prices", intent: 'purchase' },
+    { left: '20%', top: '70%', text: "Buy laptop", intent: 'purchase' },
+    { left: '17%', top: '82%', text: "Movie recs", intent: 'purchase' },
+    { left: '82%', top: '25%', text: "Invest 10k?", intent: 'purchase' },
+    { left: '85%', top: '50%', text: "Plan trip", intent: 'purchase' },
+    { left: '83%', top: '75%', text: "Learn Python", intent: 'purchase' },
+    { left: '84%', top: '18%', text: "Gift ideas", intent: 'purchase' },
+    { left: '42%', top: '15%', text: "Debug code", intent: 'purchase' },
+    { left: '58%', top: '16%', text: "Diet plan", intent: 'purchase' },
+    { left: '38%', top: '85%', text: "Hotel Paris", intent: 'purchase' },
+    { left: '58%', top: '86%', text: "Stock tips", intent: 'purchase' },
+    
+    // Additional queries to show volume
+    { left: '12%', top: '30%', text: "Best phone?", intent: 'purchase' },
+    { left: '25%', top: '60%', text: "Car insurance", intent: 'purchase' },
+    { left: '22%', top: '90%', text: "Book flight", intent: 'purchase' },
+    { left: '88%', top: '35%', text: "Find dentist", intent: 'purchase' },
+    { left: '90%', top: '65%', text: "Best VPN?", intent: 'purchase' },
+    { left: '75%', top: '88%', text: "Credit card", intent: 'purchase' },
+    { left: '50%', top: '8%', text: "Software tool", intent: 'purchase' },
+    { left: '8%', top: '55%', text: "Compare deals", intent: 'purchase' },
+    { left: '92%', top: '12%', text: "Best app?", intent: 'purchase' },
+    { left: '5%', top: '75%', text: "Buy now", intent: 'purchase' },
+  ];
+
   return (
-    <div className="relative w-48 h-48 sm:w-72 md:w-96 sm:h-72 md:h-96">
-      {/* Rotating globe container */}
+    <div className="relative w-full h-full flex items-center justify-center min-h-[450px] overflow-hidden">
+      {/* Globe - reduced size for better responsiveness */}
       <div 
-        className="absolute inset-0"
-        style={{ 
-          animation: isActive ? 'spin 30s linear infinite' : 'none',
+        className={`w-[400px] h-[400px] max-w-[90%] max-h-[90%] relative flex items-center justify-center transition-all duration-1000 ${isActive ? 'animate-globe-float' : ''}`}
+        style={{
+          transform: isActive ? 'scale(1)' : 'scale(0.9)',
+          opacity: isActive ? 1 : 0.5,
+          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
         }}
       >
-        {/* Globe SVG */}
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 200">
+        <svg 
+          viewBox="0 0 400 400" 
+          className={`w-full h-full absolute inset-0 ${isActive ? 'animate-globe-rotate' : ''}`}
+          style={{
+            transformOrigin: 'center center'
+          }}
+        >
           <defs>
-            <linearGradient id="globeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.1" />
-              <stop offset="50%" stopColor="#4BA3FF" stopOpacity="0.05" />
-              <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.1" />
-            </linearGradient>
+            <radialGradient id="globeGlow" cx="30%" cy="30%" r="60%">
+              <stop offset="0%" stopColor="#3D3D3D" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#3D3D3D" stopOpacity="0" />
+            </radialGradient>
           </defs>
           
-          {/* Globe fill */}
-          <circle cx="100" cy="100" r="75" fill="url(#globeGradient)" />
+          {/* Main sphere with enhanced glow when active */}
+          <circle cx="200" cy="200" r="187" fill="url(#globeGlow)" />
+          {isActive && (
+            <circle cx="200" cy="200" r="187" fill="none" stroke="#10b981" strokeWidth="2" opacity="0.2" className="animate-globe-glow">
+              <animate attributeName="r" values="187;195;187" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite" />
+            </circle>
+          )}
+          <circle cx="200" cy="200" r="187" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.15" />
           
-          {/* Main circle */}
-          <circle cx="100" cy="100" r="75" fill="none" stroke="#3A8BFF" strokeWidth="1" opacity="0.3" />
+          {/* Latitude lines - Static */}
+          <ellipse cx="200" cy="200" rx="187" ry="67" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
+          <ellipse cx="200" cy="200" rx="187" ry="133" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
+          <line x1="13" y1="200" x2="387" y2="200" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
           
-          {/* Equator */}
-          <ellipse cx="100" cy="100" rx="75" ry="25" fill="none" stroke="#3A8BFF" strokeWidth="0.5" opacity="0.2" />
+          {/* Longitude lines - Static */}
+          <ellipse cx="200" cy="200" rx="67" ry="187" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
+          <ellipse cx="200" cy="200" rx="133" ry="187" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
+          <line x1="200" y1="13" x2="200" y2="387" stroke="#3D3D3D" strokeWidth="1" opacity="0.1" />
           
-          {/* Meridians */}
-          <ellipse cx="100" cy="100" rx="25" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.15" />
-          <ellipse cx="100" cy="100" rx="50" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.15" />
-          <ellipse cx="100" cy="100" rx="75" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.1" 
-            transform="rotate(60 100 100)" />
-          <ellipse cx="100" cy="100" rx="75" ry="75" fill="none" stroke="#4BA3FF" strokeWidth="0.5" opacity="0.1" 
-            transform="rotate(-60 100 100)" />
-          
-          {/* Latitude lines */}
-          <ellipse cx="100" cy="55" rx="60" ry="18" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.2" />
-          <ellipse cx="100" cy="145" rx="60" ry="18" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.2" />
-          <ellipse cx="100" cy="75" rx="70" ry="22" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.15" />
-          <ellipse cx="100" cy="125" rx="70" ry="22" fill="none" stroke="#A9AAAE" strokeWidth="0.3" opacity="0.15" />
+          {/* Activity dots - increased density to show volume */}
+          {isActive && (
+            <g>
+              {[
+                // Left side
+                { cx: 100, cy: 133 }, { cx: 80, cy: 187 }, 
+                { cx: 120, cy: 233 }, { cx: 93, cy: 280 },
+                
+                // Right side
+                { cx: 300, cy: 147 }, { cx: 320, cy: 200 },
+                { cx: 293, cy: 253 }, { cx: 307, cy: 100 },
+                
+                // Top/Bottom
+                { cx: 200, cy: 80 }, { cx: 200, cy: 320 },
+                { cx: 147, cy: 100 }, { cx: 253, cy: 300 },
+                
+                // Additional dots to show scale
+                { cx: 130, cy: 160 }, { cx: 70, cy: 220 },
+                { cx: 270, cy: 180 }, { cx: 330, cy: 240 },
+                { cx: 160, cy: 90 }, { cx: 240, cy: 310 },
+                { cx: 110, cy: 260 }, { cx: 290, cy: 140 },
+                { cx: 150, cy: 200 }, { cx: 250, cy: 200 },
+                { cx: 180, cy: 120 }, { cx: 220, cy: 280 }
+              ].map((pos, i) => (
+                <g key={i} style={{
+                  animation: `dot-entrance 0.5s ease-out forwards`,
+                  animationDelay: `${i * 100}ms`,
+                  opacity: 0
+                }}>
+                  {/* Outer glow ring */}
+                  <circle 
+                    cx={pos.cx} 
+                    cy={pos.cy} 
+                    r="8" 
+                    fill="#3D3D3D" 
+                    opacity="0.1"
+                    style={{
+                      animation: `pulse-ring-${i} ${2 + i * 0.15}s ease-in-out infinite`,
+                      animationDelay: `${i * 100}ms`
+                    }}
+                  >
+                    <animate attributeName="r" values="6;12;6" dur={`${2 + i * 0.15}s`} repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.15;0;0.15" dur={`${2 + i * 0.15}s`} repeatCount="indefinite" />
+                </circle>
+                  {/* Main dot */}
+                  <circle 
+                    cx={pos.cx} 
+                    cy={pos.cy} 
+                    r="4" 
+                    fill="#3D3D3D" 
+                    opacity="0.7"
+                    style={{
+                      animation: `pulse-dot-${i} ${1.8 + i * 0.2}s ease-in-out infinite`,
+                      animationDelay: `${i * 100}ms`
+                    }}
+                  >
+                    <animate attributeName="r" values="3;6.5;3" dur={`${1.8 + i * 0.2}s`} repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.7;0.2;0.7" dur={`${1.8 + i * 0.2}s`} repeatCount="indefinite" />
+                  </circle>
+                </g>
+              ))}
+            </g>
+          )}
         </svg>
       </div>
       
-      {/* Chat nodes - These don't rotate */}
+      {/* Connection lines from queries to globe - appearing sequentially with queries */}
       {isActive && (
-        <div className="absolute inset-0">
-          {/* Ring 1 - Outer nodes */}
-          <div className="absolute top-[5%] left-[45%] animate-pulse"><ChatBubble delay={0} size="md" /></div>
-          <div className="absolute top-[12%] right-[15%] animate-pulse" style={{ animationDelay: '0.3s' }}><ChatBubble delay={0.3} size="sm" /></div>
-          <div className="absolute top-[25%] right-[5%] animate-pulse" style={{ animationDelay: '0.6s' }}><ChatBubble delay={0.6} size="md" /></div>
-          <div className="absolute top-[45%] right-[2%] animate-pulse" style={{ animationDelay: '0.9s' }}><ChatBubble delay={0.9} size="lg" /></div>
-          <div className="absolute top-[65%] right-[8%] animate-pulse" style={{ animationDelay: '1.2s' }}><ChatBubble delay={1.2} size="sm" /></div>
-          <div className="absolute top-[80%] right-[20%] animate-pulse" style={{ animationDelay: '1.5s' }}><ChatBubble delay={1.5} size="md" /></div>
-          <div className="absolute bottom-[5%] left-[45%] animate-pulse" style={{ animationDelay: '1.8s' }}><ChatBubble delay={1.8} size="sm" /></div>
-          <div className="absolute top-[80%] left-[15%] animate-pulse" style={{ animationDelay: '2.1s' }}><ChatBubble delay={2.1} size="md" /></div>
-          <div className="absolute top-[65%] left-[3%] animate-pulse" style={{ animationDelay: '2.4s' }}><ChatBubble delay={2.4} size="lg" /></div>
-          <div className="absolute top-[45%] left-[0%] animate-pulse" style={{ animationDelay: '2.7s' }}><ChatBubble delay={2.7} size="sm" /></div>
-          <div className="absolute top-[25%] left-[5%] animate-pulse" style={{ animationDelay: '3s' }}><ChatBubble delay={3} size="md" /></div>
-          <div className="absolute top-[12%] left-[18%] animate-pulse" style={{ animationDelay: '3.3s' }}><ChatBubble delay={3.3} size="sm" /></div>
-          
-          {/* Ring 2 - Inner nodes */}
-          <div className="absolute top-[20%] left-[35%] animate-pulse" style={{ animationDelay: '0.5s' }}><ChatBubble delay={0.5} size="sm" /></div>
-          <div className="absolute top-[30%] right-[25%] animate-pulse" style={{ animationDelay: '1s' }}><ChatBubble delay={1} size="md" /></div>
-          <div className="absolute top-[55%] right-[22%] animate-pulse" style={{ animationDelay: '1.5s' }}><ChatBubble delay={1.5} size="sm" /></div>
-          <div className="absolute top-[70%] left-[35%] animate-pulse" style={{ animationDelay: '2s' }}><ChatBubble delay={2} size="md" /></div>
-          <div className="absolute top-[55%] left-[20%] animate-pulse" style={{ animationDelay: '2.5s' }}><ChatBubble delay={2.5} size="sm" /></div>
-          <div className="absolute top-[35%] left-[22%] animate-pulse" style={{ animationDelay: '3s' }}><ChatBubble delay={3} size="md" /></div>
-          
-          {/* Glowing dots on globe surface */}
-          <div className="absolute top-[18%] left-[48%] w-2 h-2 rounded-full bg-[#3A8BFF] shadow-[0_0_10px_rgba(58,139,255,0.8)] animate-ping" style={{ animationDuration: '2s' }} />
-          <div className="absolute top-[35%] right-[28%] w-1.5 h-1.5 rounded-full bg-[#4BA3FF] shadow-[0_0_8px_rgba(75,163,255,0.7)] animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
-          <div className="absolute top-[50%] right-[18%] w-2 h-2 rounded-full bg-[#3A8BFF] shadow-[0_0_10px_rgba(58,139,255,0.8)] animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }} />
-          <div className="absolute top-[65%] left-[30%] w-1.5 h-1.5 rounded-full bg-[#A9AAAE] shadow-[0_0_8px_rgba(169,170,174,0.7)] animate-ping" style={{ animationDuration: '2s', animationDelay: '1.5s' }} />
-          <div className="absolute top-[50%] left-[25%] w-2 h-2 rounded-full bg-[#4BA3FF] shadow-[0_0_10px_rgba(75,163,255,0.8)] animate-ping" style={{ animationDuration: '2.5s', animationDelay: '2s' }} />
-          <div className="absolute top-[30%] left-[32%] w-1.5 h-1.5 rounded-full bg-[#3A8BFF] shadow-[0_0_8px_rgba(58,139,255,0.7)] animate-ping" style={{ animationDuration: '3s', animationDelay: '2.5s' }} />
-          
-          {/* Connection arcs */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 200 200">
-            <defs>
-              <linearGradient id="arcGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.2" />
-              </linearGradient>
-            </defs>
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+          {queries.slice(0, 20).map((q, i) => {
+            // Calculate angle from query to center (50%, 50%)
+            const leftPercent = parseFloat(q.left);
+            const topPercent = parseFloat(q.top);
+            const centerX = 50;
+            const centerY = 50;
+            const distance = Math.sqrt(Math.pow(leftPercent - centerX, 2) + Math.pow(topPercent - centerY, 2));
             
-            {/* Curved connection lines */}
-            <path d="M 50 40 Q 100 20 150 50" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.5">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2s" repeatCount="indefinite" />
-            </path>
-            <path d="M 160 70 Q 180 100 160 140" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.5s" repeatCount="indefinite" />
-            </path>
-            <path d="M 140 160 Q 100 180 60 155" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.5">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3s" repeatCount="indefinite" />
-            </path>
-            <path d="M 40 130 Q 20 100 45 60" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.8" strokeDasharray="3 2" opacity="0.4">
-              <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2s" repeatCount="indefinite" />
-            </path>
-            <path d="M 70 50 Q 100 80 130 55" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.3">
-              <animate attributeName="stroke-dashoffset" from="0" to="-15" dur="1.5s" repeatCount="indefinite" />
-            </path>
-            <path d="M 80 140 Q 100 110 125 145" fill="none" stroke="url(#arcGradient1)" strokeWidth="0.5" strokeDasharray="2 2" opacity="0.3">
-              <animate attributeName="stroke-dashoffset" from="0" to="-15" dur="1.8s" repeatCount="indefinite" />
-            </path>
-          </svg>
+            // Match sequential delay pattern from queries
+            const sequentialDelay = i * 150;
+            const positionVariation = (distance / 40) * 50;
+            const totalDelay = sequentialDelay + positionVariation + 200; // Appear 200ms after query pops
+            
+            return (
+              <line
+                key={`line-${i}`}
+                x1={`${leftPercent}%`}
+                y1={`${topPercent}%`}
+                x2="50%"
+                y2="50%"
+                stroke="#3D3D3D"
+                strokeWidth="1"
+                strokeOpacity="0"
+                strokeDasharray="4 4"
+                className="animate-query-connection"
+                style={{
+                  animationDelay: `${totalDelay}ms`,
+                  animationDuration: '1.2s'
+                }}
+              />
+            );
+          })}
+        </svg>
+      )}
+      
+      {/* Floating query labels - appearing in natural flowing waves */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden" style={{ zIndex: 2 }}>
+        {isActive && queries.map((q, i) => {
+          // Calculate position relative to center for natural flow
+          const leftPercent = parseFloat(q.left);
+          const topPercent = parseFloat(q.top);
+          const centerX = 50;
+          const centerY = 50;
+          
+          // Determine which quadrant/sector the query is in
+          const angle = Math.atan2(topPercent - centerY, leftPercent - centerX) * (180 / Math.PI);
+          const distance = Math.sqrt(Math.pow(leftPercent - centerX, 2) + Math.pow(topPercent - centerY, 2));
+          
+          // Group by angle sectors for wave-like appearance
+          // Each sector gets a base delay, then queries within sector get staggered
+          let sector = 0;
+          if (angle >= -45 && angle < 45) sector = 0; // Right
+          else if (angle >= 45 && angle < 135) sector = 1; // Bottom
+          else if (angle >= 135 || angle < -135) sector = 2; // Left
+          else sector = 3; // Top
+          
+          // Continuous sequential pop-out - queries appear one after another
+          // Create a flowing sequence where each query pops in after the previous
+          const sequentialDelay = i * 150; // Each query appears 150ms after the previous one
+          
+          // Add slight variation based on position for natural flow
+          const positionVariation = (distance / 40) * 50; // Slight delay based on distance
+          const totalDelay = sequentialDelay + positionVariation;
+          
+          // Determine entrance direction based on position
+          let entranceX = 0;
+          let entranceY = 0;
+          if (leftPercent < centerX) entranceX = -30; // From left
+          else entranceX = 30; // From right
+          if (topPercent < centerY) entranceY = -20; // From top
+          else entranceY = 20; // From bottom
+          
+          return (
+          <div
+            key={i}
+              className="absolute animate-label-flow-in animate-label-float animate-query-pulse"
+            style={{ 
+              left: q.left,
+              top: q.top,
+                animationDelay: `${totalDelay}ms`,
+                transform: 'translate(-50%, -50%)',
+                '--entrance-x': `${entranceX}px`,
+                '--entrance-y': `${entranceY}px`,
+                '--float-delay': `${totalDelay * 0.01}s`,
+                '--pulse-delay': `${totalDelay * 0.015}s`
+              } as React.CSSProperties}
+            >
+            <span className={`px-3 py-1.5 backdrop-blur-sm rounded-lg border text-xs font-medium whitespace-nowrap block transition-all duration-300 animate-label-shadow-pop ${
+              q.intent === 'purchase' 
+                ? 'bg-emerald-50/90 border-emerald-200 text-emerald-700' 
+                : 'bg-white/90 border-gray-100 text-gray-600'
+            }`}
+            style={{
+              animationDelay: `${totalDelay}ms`
+            }}>
+              {q.text}
+            </span>
+          </div>
+          );
+        })}
+      </div>
+      
+      {/* Particle stream effect - flowing in waves */}
+      {isActive && (
+        <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+          {Array.from({ length: 30 }).map((_, i) => {
+            const angle = (i / 30) * Math.PI * 2;
+            const radius = 45 + (i % 3) * 5;
+            const startX = 50 + Math.cos(angle) * radius;
+            const startY = 50 + Math.sin(angle) * radius;
+            
+            // Group particles by angle sectors for wave effect
+            let sector = 0;
+            if (angle >= -Math.PI/4 && angle < Math.PI/4) sector = 0;
+            else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) sector = 1;
+            else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) sector = 2;
+            else sector = 3;
+            
+            const baseDelay = sector * 300 + (i % 3) * 150;
+            
+            return (
+              <div
+                key={`particle-${i}`}
+                className="absolute w-1 h-1 bg-emerald-400 rounded-full opacity-0 animate-particle-stream"
+                style={{
+                  left: `${startX}%`,
+                  top: `${startY}%`,
+                  animationDelay: `${baseDelay}ms`,
+                  animationDuration: `${2.5 + (i % 3) * 0.5}s`
+                }}
+              />
+            );
+          })}
         </div>
       )}
       
-      {/* CSS for rotation */}
+      {/* Volume indicator - subtle background pulse */}
+      {isActive && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 0 }}>
+          <div className="w-[500px] h-[500px] rounded-full border-2 border-emerald-200/20 animate-volume-pulse" />
+        </div>
+      )}
+      
       <style>{`
-        @keyframes spin {
+        @keyframes globe-rotate {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
-      `}</style>
-    </div>
-  );
-};
-
-// Activation spark visual for Step 2
-const ActivationVisual = ({ isActive }: { isActive: boolean }) => {
-  return (
-    <div className="relative w-44 h-44 sm:w-64 md:w-80 sm:h-64 md:h-80 flex items-center justify-center">
-      {/* Chat interface mockup */}
-      <div className="relative w-48 sm:w-56 bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-foreground/5 overflow-hidden">
-        {/* Chat header */}
-        <div className="px-4 py-3 border-b border-foreground/5 flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#3A8BFF] to-[#A9AAAE]" />
-          <span className="text-xs font-medium text-foreground/60">AI Assistant</span>
-        </div>
+        .animate-globe-rotate {
+          animation: globe-rotate 20s linear infinite;
+        }
         
-        {/* Messages */}
-        <div className="p-3 space-y-2">
-          {/* User message */}
-          <div className="flex justify-end">
-            <div className="bg-foreground/5 rounded-xl rounded-br-sm px-3 py-2 max-w-[80%]">
-              <p className="text-[10px] text-foreground/70">Best CRM for startups?</p>
-            </div>
-          </div>
-          
-          {/* AI response */}
-          <div className="flex justify-start">
-            <div className="bg-foreground/[0.02] rounded-xl rounded-bl-sm px-3 py-2 max-w-[85%]">
-              <p className="text-[10px] text-foreground/60">I'd recommend looking at...</p>
-            </div>
-          </div>
-          
-          {/* Gravity suggestion - The magic moment */}
-          {isActive && (
-            <div className="relative mt-2 animate-fade-in-up">
-              <div className="absolute -inset-2 bg-gradient-to-r from-[#3A8BFF]/20 to-[#A9AAAE]/20 rounded-xl blur-xl animate-pulse" />
-              <div className="relative bg-gradient-to-r from-[#3A8BFF]/10 to-[#A9AAAE]/10 border border-[#3A8BFF]/30 rounded-xl px-3 py-2">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#3A8BFF] animate-pulse" />
-                  <span className="text-[8px] font-medium text-[#3A8BFF]">Suggested</span>
-                </div>
-                <p className="text-[10px] text-foreground/80 font-medium">Try Salesforce Starter</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+        @keyframes globe-float {
+          0%, 100% { 
+            transform: translateY(0px) scale(1);
+          }
+          50% { 
+            transform: translateY(-8px) scale(1.02);
+          }
+        }
+        .animate-globe-float {
+          animation: globe-float 4s ease-in-out infinite;
+        }
+        
+        @keyframes label-flow-in {
+          0% { 
+            opacity: 0; 
+            transform: translate(calc(-50% + var(--entrance-x, 0px)), calc(-50% + var(--entrance-y, 0px))) scale(0) rotate(-5deg);
+            filter: blur(6px);
+          }
+          25% {
+            opacity: 0.9;
+            transform: translate(calc(-50% + var(--entrance-x, 0px) * 0.3), calc(-50% + var(--entrance-y, 0px) * 0.3)) scale(1.2) rotate(2deg);
+            filter: blur(2px);
+          }
+          45% {
+            opacity: 1;
+            transform: translate(calc(-50% + var(--entrance-x, 0px) * -0.08), calc(-50% + var(--entrance-y, 0px) * -0.08)) scale(0.95) rotate(-1deg);
+            filter: blur(0px);
+          }
+          65% {
+            transform: translate(-50%, -50%) scale(1.08) rotate(0.5deg);
+          }
+          80% {
+            transform: translate(-50%, -50%) scale(0.97) rotate(0deg);
+          }
+          100% { 
+            opacity: 1; 
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            filter: blur(0px);
+          }
+        }
+        .animate-label-flow-in {
+          animation: label-flow-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        @keyframes label-shadow-pop {
+          0% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+          }
+          25% {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 0 12px rgba(16, 185, 129, 0.15);
+          }
+          45% {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12), 0 0 0 6px rgba(16, 185, 129, 0.08);
+          }
+          65% {
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+          }
+          100% {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          }
+        }
+        .animate-label-shadow-pop {
+          animation: label-shadow-pop 0.7s ease-out forwards;
+        }
+        
+        @keyframes label-float {
+          0%, 100% { 
+            transform: translate(-50%, calc(-50% + 0px));
+          }
+          50% { 
+            transform: translate(-50%, calc(-50% + -6px));
+          }
+        }
+        .animate-label-float {
+          animation: label-float 3s ease-in-out infinite;
+          animation-delay: var(--float-delay, 0s);
+        }
+        
+        @keyframes dot-entrance {
+          0% {
+            opacity: 0;
+            transform: scale(0);
+          }
+          60% {
+            transform: scale(1.2);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes query-connection {
+          0% {
+            stroke-dashoffset: 100;
+            stroke-opacity: 0;
+          }
+          50% {
+            stroke-opacity: 0.2;
+          }
+          100% {
+            stroke-dashoffset: 0;
+            stroke-opacity: 0.15;
+          }
+        }
+        .animate-query-connection {
+          animation: query-connection 1.5s ease-out forwards;
+        }
+        
+        @keyframes query-pulse {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.05);
+            opacity: 0.9;
+          }
+        }
+        .animate-query-pulse {
+          animation: query-pulse 2s ease-in-out infinite;
+          animation-delay: var(--pulse-delay, 0s);
+        }
+        
+        @keyframes particle-stream {
+          0% {
+            transform: translate(0, 0) scale(0);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.7;
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: translate(calc(50% - var(--target-x, 0px)), calc(50% - var(--target-y, 0px))) scale(0.3);
+            opacity: 0;
+          }
+        }
+        .animate-particle-stream {
+          animation: particle-stream 2.5s ease-out infinite;
+        }
+        
+        @keyframes volume-pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.1;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.2;
+          }
+        }
+        .animate-volume-pulse {
+          animation: volume-pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes globe-glow {
+          0%, 100% {
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.4;
+          }
+        }
+        .animate-globe-glow {
+          animation: globe-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes scale-indicator {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-scale-indicator {
+          animation: scale-indicator 0.8s ease-out forwards;
+          animation-delay: 1s;
+        }
+      `}</style>
       
-      {/* Floating sparkles */}
+      {/* Scale indicator - showing billions */}
       {isActive && (
-        <>
-          <div className="absolute top-[10%] left-[15%] w-1 h-1 bg-[#3A8BFF] rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-          <div className="absolute top-[20%] right-[20%] w-1.5 h-1.5 bg-[#4BA3FF] rounded-full animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
-          <div className="absolute bottom-[30%] left-[20%] w-1 h-1 bg-[#A9AAAE] rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }} />
-          <div className="absolute bottom-[20%] right-[25%] w-1 h-1 bg-[#3A8BFF] rounded-full animate-ping" style={{ animationDuration: '2s', animationDelay: '1.5s' }} />
-        </>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+          <div className="bg-emerald-50/90 backdrop-blur-sm border border-emerald-200 rounded-lg px-4 py-2 shadow-lg animate-scale-indicator">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1">
+                {[0, 1, 2].map((i) => (
+                  <div 
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+                    style={{ animationDelay: `${i * 0.2}s` }}
+                  />
+                ))}
+              </div>
+              <span className="text-xs font-semibold text-emerald-700">
+                <span className="text-lg font-bold">4B+</span> queries/day
+              </span>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-// Value unlock visual for Step 3
-const ValueVisual = ({ isActive }: { isActive: boolean }) => {
+// Visual 03: Solution - Chat
+const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-44 h-44 sm:w-64 md:w-80 sm:h-64 md:h-80 flex items-center justify-center">
-      {/* Three value streams converging */}
-      <div className="relative w-full h-full">
-        {/* Center convergence point */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className={`w-16 h-16 rounded-full bg-gradient-to-br from-[#3A8BFF] to-[#A9AAAE] flex items-center justify-center shadow-[0_0_40px_rgba(58,139,255,0.3)] transition-all duration-700 ${isActive ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}>
-            <span className="text-white text-xl font-bold">G</span>
+    <div className="relative w-full h-full flex items-center justify-center p-4">
+      <div className="w-full max-w-[380px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-3 bg-gray-50">
+          <div className="w-4 h-4 rounded-full bg-foreground" />
+          <span className="text-sm font-medium text-foreground">AI Assistant</span>
+        </div>
+        <div className="p-4 space-y-3">
+          {/* User question */}
+          <div className="flex justify-end">
+            <div className="bg-foreground text-white rounded-2xl rounded-br-sm px-4 py-2.5 max-w-[80%]">
+              <p className="text-sm">Best project management tool for a remote team?</p>
+            </div>
+          </div>
+          {/* Sponsored ad */}
+          <div 
+            className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
+            style={{ transitionDelay: isActive ? '800ms' : '0ms' }}
+          >
+            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl px-4 py-3 flex items-start justify-between gap-3 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <p className="text-sm text-foreground/90">
+                <span className="font-bold text-emerald-600">Linear</span> is worth checking out—built for fast-moving teams with async workflows.
+              </p>
+              <span className="text-xs font-semibold text-emerald-500 whitespace-nowrap bg-emerald-100 px-2 py-0.5 rounded">Sponsored</span>
+            </div>
+          </div>
+          {/* Organic LLM answer */}
+          <div 
+            className={`flex justify-start transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
+            style={{ transitionDelay: isActive ? '1200ms' : '0ms' }}
+          >
+            <div className="bg-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[85%]">
+              <p className="text-sm text-foreground/80 mb-2">For remote teams, I'd recommend:</p>
+              <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                <span>• Notion</span>
+                <span>• Asana</span>
+                <span>• Monday</span>
+              </div>
+            </div>
           </div>
         </div>
-        
-        {/* Publisher stream - Top left */}
-        {isActive && (
-          <div className="absolute top-[15%] left-[15%] animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-foreground/5">
-              <p className="text-[9px] text-foreground/40 mb-1">Publisher Revenue</p>
-              <p className="text-sm font-bold text-foreground">+$2.4M</p>
-              <div className="flex items-center gap-1 mt-1">
-                <div className="w-8 h-1 rounded-full bg-[#3A8BFF]/20">
-                  <div className="w-6 h-1 rounded-full bg-[#3A8BFF] animate-pulse" />
-                </div>
-              </div>
-            </div>
-            {/* Connecting line */}
-            <svg className="absolute top-full left-1/2 w-20 h-20" viewBox="0 0 80 80">
-              <path 
-                d="M 0 0 Q 40 40 60 70" 
-                fill="none" 
-                stroke="url(#valueGradient1)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 2"
-                className="animate-pulse"
-              />
-              <defs>
-                <linearGradient id="valueGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3A8BFF" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#3A8BFF" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-        )}
-        
-        {/* Advertiser stream - Top right */}
-        {isActive && (
-          <div className="absolute top-[15%] right-[15%] animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-foreground/5">
-              <p className="text-[9px] text-foreground/40 mb-1">Advertiser ROAS</p>
-              <p className="text-sm font-bold text-foreground">6.4x</p>
-              <div className="flex items-center gap-1 mt-1">
-                <div className="w-8 h-1 rounded-full bg-[#4BA3FF]/20">
-                  <div className="w-7 h-1 rounded-full bg-[#4BA3FF] animate-pulse" style={{ animationDelay: '0.3s' }} />
-                </div>
-              </div>
-            </div>
-            {/* Connecting line */}
-            <svg className="absolute top-full right-1/2 w-20 h-20" viewBox="0 0 80 80">
-              <path 
-                d="M 80 0 Q 40 40 20 70" 
-                fill="none" 
-                stroke="url(#valueGradient2)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 2"
-                className="animate-pulse"
-                style={{ animationDelay: '0.3s' }}
-              />
-              <defs>
-                <linearGradient id="valueGradient2" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#4BA3FF" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#4BA3FF" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-        )}
-        
-        {/* User stream - Bottom */}
-        {isActive && (
-          <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg border border-foreground/5">
-              <p className="text-[9px] text-foreground/40 mb-1">Suggestion CTR</p>
-              <p className="text-sm font-bold text-foreground">12.4%</p>
-              <div className="flex items-center gap-1 mt-1">
-                <div className="w-8 h-1 rounded-full bg-[#A9AAAE]/20">
-                  <div className="w-5 h-1 rounded-full bg-[#A9AAAE] animate-pulse" style={{ animationDelay: '0.6s' }} />
-                </div>
-              </div>
-            </div>
-            {/* Connecting line */}
-            <svg className="absolute bottom-full left-1/2 -translate-x-1/2 w-20 h-16" viewBox="0 0 80 60">
-              <path 
-                d="M 40 60 L 40 0" 
-                fill="none" 
-                stroke="url(#valueGradient3)" 
-                strokeWidth="1.5" 
-                strokeDasharray="4 2"
-                className="animate-pulse"
-                style={{ animationDelay: '0.6s' }}
-              />
-              <defs>
-                <linearGradient id="valueGradient3" x1="50%" y1="100%" x2="50%" y2="0%">
-                  <stop offset="0%" stopColor="#A9AAAE" stopOpacity="0.6" />
-                  <stop offset="100%" stopColor="#A9AAAE" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-        )}
       </div>
     </div>
   );
 };
 
-// SDK/Integration visual for Step 4
-const IntegrationVisual = ({ isActive }: { isActive: boolean }) => {
-  const sdks = [
-    {
-      name: "TypeScript",
-      icon: (
-        <svg viewBox="0 0 24 24" className="w-6 h-6" fill="#3178C6">
-          <path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/>
-        </svg>
-      ),
-      status: "available",
-      command: "npm i @iris-technologies/api",
-      link: "https://www.npmjs.com/package/@iris-technologies/api",
-    },
-    {
-      name: "React",
-      icon: (
-        <svg viewBox="0 0 24 24" className="w-6 h-6" fill="#61DAFB">
-          <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/>
-        </svg>
-      ),
-      status: "available",
-      command: "npm i @iris-technologies/react",
-      link: "https://www.npmjs.com/package/@iris-technologies/react",
-    },
-  ];
-  
-  const comingSoon = [
-    { name: "Python", icon: "🐍" },
-    { name: "iOS", icon: "🍎" },
-    { name: "Android", icon: "🤖" },
-    { name: "React Native", icon: "📱" },
-  ];
+// Visual 04: Infrastructure
+const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center min-h-[300px]">
+      <svg className="w-full max-w-[500px] h-[240px]" viewBox="0 0 500 240">
+        <defs>
+          <linearGradient id="lineGradLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3D3D3D" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#3D3D3D" stopOpacity="0.6" />
+          </linearGradient>
+          <linearGradient id="lineGradRight" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#10b981" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0.2" />
+          </linearGradient>
+          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.1"/>
+          </filter>
+        </defs>
+        
+        <text x="60" y="25" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280" letterSpacing="0.1em">DEMAND</text>
+        
+        {/* Left nodes */}
+        {['DSP', 'Direct', 'Agency'].map((label, i) => (
+          <g key={label}>
+            <path 
+              d={`M 110 ${60 + i * 60} Q 170 ${60 + i * 60} 200 120`} 
+              fill="none" 
+              stroke="url(#lineGradLeft)" 
+              strokeWidth="2" 
+              opacity={isActive ? 1 : 0.3} 
+              className="transition-opacity duration-700"
+              strokeDasharray={isActive ? "200" : "0"}
+              strokeDashoffset={isActive ? "200" : "0"}
+              style={{
+                animation: isActive ? `draw-line-${i} 1s ease-out forwards` : 'none',
+                animationDelay: `${i * 150}ms`
+              }}
+            />
+            <g filter="url(#shadow)">
+              <rect 
+                x="20" 
+                y={45 + i * 60} 
+                width="90" 
+                height="32" 
+                rx="6" 
+                fill="white" 
+                stroke={isActive ? "#3D3D3D" : "#e5e7eb"} 
+                strokeWidth={isActive ? "2" : "1"} 
+                className="transition-all duration-500"
+                style={{
+                  transform: isActive ? 'scale(1)' : 'scale(0.95)',
+                  transition: `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 100}ms`
+                }}
+              />
+              <text x="65" y={66 + i * 60} textAnchor="middle" fontSize="12" fill="#1f2937" fontWeight="600">{label}</text>
+            </g>
+          </g>
+        ))}
+        
+        <text x="440" y="25" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6b7280" letterSpacing="0.1em">SUPPLY</text>
+        
+        {/* Right nodes */}
+        {['AI Chat', 'AI App', 'Agent'].map((label, i) => (
+          <g key={label}>
+            <path 
+              d={`M 300 120 Q 330 ${60 + i * 60} 390 ${60 + i * 60}`} 
+              fill="none" 
+              stroke="url(#lineGradRight)" 
+              strokeWidth="2" 
+              opacity={isActive ? 1 : 0.3} 
+              className="transition-opacity duration-700"
+              strokeDasharray={isActive ? "200" : "0"}
+              strokeDashoffset={isActive ? "200" : "0"}
+              style={{
+                animation: isActive ? `draw-line-right-${i} 1s ease-out forwards` : 'none',
+                animationDelay: `${(i + 3) * 150}ms`
+              }}
+            />
+            <g filter="url(#shadow)">
+              <rect 
+                x="390" 
+                y={45 + i * 60} 
+                width="90" 
+                height="32" 
+                rx="6" 
+                fill="white" 
+                stroke={isActive ? "#10b981" : "#e5e7eb"} 
+                strokeWidth={isActive ? "2" : "1"} 
+                className="transition-all duration-500"
+                style={{
+                  transform: isActive ? 'scale(1)' : 'scale(0.95)',
+                  transition: `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${(i + 3) * 100}ms`
+                }}
+              />
+              <text x="435" y={66 + i * 60} textAnchor="middle" fontSize="12" fill="#1f2937" fontWeight="600">{label}</text>
+            </g>
+          </g>
+        ))}
+        
+        {/* Direct → Gravity → AI App connection line (stops at circle edges) */}
+        {isActive && (
+          <>
+            {/* Left segment: Direct to left edge of Gravity circle */}
+            <path 
+              d="M 110 120 Q 170 120 208 120" 
+              fill="none" 
+              stroke="#3D3D3D" 
+              strokeWidth="2.5" 
+              strokeDasharray="100"
+              strokeDashoffset="100"
+              opacity="0.8"
+              style={{
+                animation: 'draw-direct-to-gravity-left 1s ease-out forwards',
+                animationDelay: '600ms'
+              }}
+            />
+            {/* Right segment: Right edge of Gravity circle to AI App */}
+            <path 
+              d="M 292 120 Q 330 120 390 120" 
+              fill="none" 
+              stroke="#10b981" 
+              strokeWidth="2.5" 
+              strokeDasharray="100"
+              strokeDashoffset="100"
+              opacity="0.8"
+              style={{
+                animation: 'draw-gravity-right-to-ai-app 1s ease-out forwards',
+                animationDelay: '1600ms'
+              }}
+            />
+          </>
+        )}
+        
+        {/* Animated dots on paths */}
+        {isActive && [0, 1, 2].map((i) => (
+          <g key={`dots-${i}`}>
+            <circle r="4" fill="#3D3D3D">
+              <animateMotion dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" path={`M 110 ${60 + i * 60} Q 170 ${60 + i * 60} 200 120`} />
+              <animate attributeName="opacity" values="0;1;1;0" dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" />
+            </circle>
+            <circle r="4" fill="#10b981">
+              <animateMotion dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" path={`M 300 120 Q 330 ${60 + i * 60} 390 ${60 + i * 60}`} />
+              <animate attributeName="opacity" values="0;1;1;0" dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" />
+            </circle>
+          </g>
+        ))}
+        
+        {/* Animated dots on Direct → AI App path (respecting circle boundaries) */}
+        {isActive && (
+          <>
+            {/* Dot on left segment (Direct to Gravity) */}
+            <circle r="5" fill="#3D3D3D" opacity="0.9">
+              <animateMotion dur="1.5s" repeatCount="indefinite" path="M 110 120 Q 170 120 208 120" />
+              <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" />
+            </circle>
+            {/* Dot on right segment (Gravity to AI App) */}
+            <circle r="5" fill="#10b981" opacity="0.9">
+              <animateMotion dur="1.5s" repeatCount="indefinite" path="M 292 120 Q 330 120 390 120" begin="0.5s" />
+              <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+            </circle>
+          </>
+        )}
+        
+        {/* Center - Gravity hub (rendered last so it appears on top) */}
+        <g transform="translate(250, 120)">
+          {isActive && (
+            <circle r="55" fill="none" stroke="#3D3D3D" strokeWidth="1" opacity="0.2">
+              <animate attributeName="r" values="45;60" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;0" dur="2s" repeatCount="indefinite" />
+            </circle>
+          )}
+          <circle r="48" fill="#3D3D3D" fillOpacity="0.05" />
+          <circle r="42" fill="white" stroke="#3D3D3D" strokeWidth="2.5" filter="url(#shadow)" />
+          <text y="-4" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3D3D3D" letterSpacing="0.05em">GRAVITY</text>
+          <text y="10" textAnchor="middle" fontSize="8" fontWeight="500" fill="#6b7280">AD NETWORK</text>
+        </g>
+      </svg>
+    </div>
+  );
+};
+
+const StepVisuals = [ProblemVisual, ShiftVisual, SolutionVisual, InfrastructureVisual];
+
+// ============================================
+// FILM STRIP PROGRESS BAR
+// ============================================
+
+const FilmStripProgress = ({ 
+  activeStep, 
+  totalSteps, 
+  onStepClick 
+}: { 
+  activeStep: number; 
+  totalSteps: number;
+  onStepClick?: (step: number) => void;
+}) => {
+  return (
+    <div className="flex items-center justify-center gap-2 bg-white/90 backdrop-blur-md rounded-full px-4 py-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-gray-100/50">
+      {Array.from({ length: totalSteps }).map((_, i) => (
+        <div key={i} className="flex items-center">
+          {/* Frame */}
+          <button
+            onClick={() => onStepClick?.(i)}
+            className={`
+              w-8 h-6 rounded border-2 flex items-center justify-center transition-all duration-500 relative cursor-pointer hover:scale-105
+              ${i === activeStep 
+                ? 'border-foreground bg-foreground text-white scale-110 shadow-[0_0_12px_rgba(0,0,0,0.2)]' 
+                : i < activeStep 
+                  ? 'border-foreground/50 bg-foreground/10 text-foreground/50 scale-100 hover:bg-foreground/20' 
+                  : 'border-gray-200 bg-gray-50 text-gray-300 scale-100 hover:bg-gray-100'
+              }
+            `}
+            style={{
+              transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+            }}
+          >
+            {i === activeStep && (
+              <div className="absolute inset-0 rounded border-foreground/30 animate-pulse-glow" />
+            )}
+            <span className="text-[10px] font-bold relative z-10">{String(i + 1).padStart(2, '0')}</span>
+          </button>
+          {/* Connector */}
+          {i < totalSteps - 1 && (
+            <div 
+              className={`h-0.5 transition-all duration-500 ${
+                i < activeStep 
+                  ? 'bg-foreground/50 w-4' 
+                  : i === activeStep - 1
+                    ? 'bg-gradient-to-r from-foreground/50 to-gray-200 w-4'
+                    : 'bg-gray-200 w-4'
+              }`}
+              style={{
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+              }}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ============================================
+// STEP CONTENT - Text that slides in with unique effects
+// ============================================
+
+const StepContent = ({ 
+  step, 
+  isActive, 
+  direction,
+  index
+}: { 
+  step: typeof steps[0]; 
+  isActive: boolean; 
+  direction: 'enter' | 'exit' | 'idle';
+  index: number;
+}) => {
+  // diverse transition styles based on index
+  const getTransitionStyle = () => {
+    if (isActive) return 'opacity-100 translate-x-0 translate-y-0 scale-100 blur-0';
+    
+    // Step 0: Slide Up/Down
+    if (index === 0) return direction === 'enter' ? 'opacity-0 translate-y-10' : 'opacity-0 -translate-y-10';
+    
+    // Step 1: Scale (Zoom)
+    if (index === 1) return direction === 'enter' ? 'opacity-0 scale-90' : 'opacity-0 scale-110';
+    
+    // Step 2: Slide Side (Wipe)
+    if (index === 2) return direction === 'enter' ? 'opacity-0 translate-x-20' : 'opacity-0 -translate-x-20';
+    
+    // Step 3: Blur Reveal
+    if (index === 3) return 'opacity-0 blur-md scale-95';
+    
+    return 'opacity-0';
+  };
+
+  // Adjust padding based on position - less padding on center side
+  const paddingClass = index % 2 === 0 
+    ? 'pl-8 lg:pl-12 pr-4 lg:pr-6' // Even steps: text on left, less padding on right (center side)
+    : 'pl-4 lg:pl-6 pr-8 lg:pr-12'; // Odd steps: text on right, less padding on left (center side)
 
   return (
-    <div className={`w-full max-w-lg transition-all duration-700 ${isActive ? 'opacity-100' : 'opacity-50'}`}>
-      {/* Available SDKs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-        {sdks.map((sdk, idx) => (
-          <a
-            key={sdk.name}
-            href={sdk.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`
-              group relative bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-foreground/5 
-              hover:border-[#3A8BFF]/30 hover:shadow-[0_8px_30px_rgba(58,139,255,0.12)] 
-              transition-all duration-500 cursor-pointer
-              ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-            `}
-            style={{ transitionDelay: `${idx * 150}ms` }}
-          >
-            {/* Status badge */}
-            <div className="absolute top-3 right-3">
-              <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-green-100 text-green-700">
-                Available
-              </span>
-            </div>
-            
-            {/* Icon and title */}
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-foreground/5 to-foreground/10 flex items-center justify-center">
-                {sdk.icon}
-              </div>
-              <div>
-                <h4 className="font-semibold text-foreground text-sm">{sdk.name} SDK</h4>
-              </div>
-            </div>
-            
-            {/* Command */}
-            <div className="bg-[#1a1a2e] rounded-lg px-3 py-2 font-mono text-xs text-white/80 group-hover:text-white transition-colors">
-              <span className="text-[#3A8BFF]">$</span> {sdk.command}
-            </div>
-            
-            {/* Hover arrow */}
-            <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg className="w-4 h-4 text-[#3A8BFF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </div>
-          </a>
-        ))}
+    <div 
+      className={`
+        absolute inset-0 flex flex-col justify-center ${paddingClass}
+        transition-all duration-700 ease-out
+        ${getTransitionStyle()}
+      `}
+    >
+      {/* Step number */}
+      <div 
+        className="flex items-center gap-3 mb-4"
+        style={{ 
+          transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transitionDelay: isActive ? '0ms' : '0ms',
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(-10px)'
+        }}
+      >
+        <span className="text-sm font-bold tracking-[0.2em] text-foreground">{step.number}</span>
+        <span className="w-8 h-px bg-foreground/30" />
+        <span className="text-sm font-medium uppercase tracking-wider text-muted-foreground">{step.title}</span>
       </div>
       
-      {/* Coming Soon SDKs */}
-      <div className="flex flex-wrap justify-center gap-2">
-        {comingSoon.map((sdk, idx) => (
-          <div
-            key={sdk.name}
-            className={`
-              flex items-center gap-2 px-3 py-1.5 rounded-full 
-              bg-foreground/[0.03] border border-foreground/5
-              transition-all duration-500
-              ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}
-            `}
-            style={{ transitionDelay: `${300 + idx * 100}ms` }}
-          >
-            <span className="text-sm">{sdk.icon}</span>
-            <span className="text-xs text-foreground/50">{sdk.name}</span>
-            <span className="text-[9px] text-amber-600 font-medium">Soon</span>
-          </div>
-        ))}
+      {/* Headline */}
+      <h3 
+        className="text-2xl lg:text-4xl font-bold text-foreground leading-tight mb-4"
+        style={{ 
+          transition: 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transitionDelay: isActive ? '100ms' : '0ms',
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(15px)'
+        }}
+      >
+        {step.boldStart}
+      </h3>
+      
+      {/* Description */}
+      <p 
+        className="text-base lg:text-lg text-muted-foreground leading-relaxed mb-6 max-w-md"
+        style={{ 
+          transition: 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transitionDelay: isActive ? '200ms' : '0ms',
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0)' : 'translateY(15px)'
+        }}
+      >
+        {step.description.replace(step.boldStart, '').trim()}
+      </p>
+      
+      {/* KPI */}
+      <div 
+        className="flex items-baseline gap-3"
+        style={{ 
+          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          transitionDelay: isActive ? '300ms' : '0ms',
+          opacity: isActive ? 1 : 0,
+          transform: isActive ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)'
+        }}
+      >
+        <span className="text-4xl lg:text-5xl font-bold text-foreground">{step.kpi.value}</span>
+        <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
       </div>
     </div>
   );
 };
 
-// Visual components map
-const StepVisuals = [ConversationsVisual, ActivationVisual, ValueVisual, IntegrationVisual];
+// ============================================
+// MAIN COMPONENT
+// ============================================
 
 export const HowItWorksSimple = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeStep, setActiveStep] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isManualScrollingRef = useRef(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [showOverview, setShowOverview] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile for reduced scroll height
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const rect = container.getBoundingClientRect();
-      const containerHeight = container.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      
-      const scrollableDistance = containerHeight - viewportHeight;
-      const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
-      
-      setScrollProgress(progress);
-      
-      const headerZone = 0.12;
-      if (progress < headerZone) {
-        setActiveStep(0);
-      } else {
-        const stepProgress = (progress - headerZone) / (1 - headerZone);
-        const newActiveStep = Math.min(Math.floor(stepProgress * steps.length), steps.length - 1);
-        setActiveStep(newActiveStep);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+  const handleScroll = useCallback(() => {
+    // Skip if we're manually scrolling
+    if (isManualScrollingRef.current) return;
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    if (!sectionRef.current) return;
+    
+    const rect = sectionRef.current.getBoundingClientRect();
+    const sectionHeight = sectionRef.current.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    
+    // Calculate how far we've scrolled through the section
+    const scrolled = -rect.top;
+    const totalScrollable = sectionHeight - viewportHeight;
+    const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+    
+    setScrollProgress(progress);
+    
+    // Remove overview completely - start directly with step 0
+    setShowOverview(false);
+    
+    // Calculate active step (distribute evenly across scroll)
+    const step = Math.min(3, Math.floor(progress * 4));
+    setActiveStep(step);
   }, []);
 
-  const getStepVisibility = (stepIndex: number) => {
-    const headerZone = 0.12;
-    const contentProgress = Math.max(0, (scrollProgress - headerZone) / (1 - headerZone));
-    
-    const stepSize = 1 / steps.length;
-    const stepStart = stepIndex * stepSize;
-    const stepEnd = (stepIndex + 1) * stepSize;
-    
-    const entryZone = stepSize * 0.15;
-    const exitZone = stepSize * 0.15;
-    const holdStart = stepStart + entryZone;
-    const holdEnd = stepEnd - exitZone;
-    
-    if (contentProgress < stepStart) return { phase: 'future', progress: 0 };
-    if (contentProgress < holdStart) {
-      const entryProgress = (contentProgress - stepStart) / entryZone;
-      return { phase: 'entering', progress: Math.min(1, entryProgress) };
-    }
-    if (contentProgress < holdEnd) {
-      return { phase: 'active', progress: 1 };
-    }
-    if (contentProgress < stepEnd) {
-      const exitProgress = (contentProgress - holdEnd) / exitZone;
-      return { phase: 'exiting', progress: Math.max(0, 1 - exitProgress) };
-    }
-    return { phase: 'past', progress: 0 };
-  };
 
-  // Shorter scroll on mobile for better UX
-  const sectionHeight = isMobile 
-    ? `${120 + (steps.length * 80)}vh`  // ~440vh on mobile
-    : `${150 + (steps.length * 120)}vh`; // ~630vh on desktop
+  const scrollToStep = useCallback((step: number) => {
+    if (!sectionRef.current) return;
+    
+    // Set flag to prevent scroll handler from interfering
+    isManualScrollingRef.current = true;
+    
+    const sectionHeight = sectionRef.current.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const totalScrollable = sectionHeight - viewportHeight;
+    
+    // Calculate target scroll position for this step
+    // Steps are distributed evenly: 0 = 0%, 1 = 25%, 2 = 50%, 3 = 75%
+    // Center each step in its viewport
+    const targetProgress = Math.min(1, (step + 0.5) / 4);
+    const targetScroll = targetProgress * totalScrollable;
+    
+    // Get current position of section
+    const sectionTop = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+    
+    // Update active step immediately for visual feedback
+    setActiveStep(step);
+    
+    // Scroll to target position
+    window.scrollTo({
+      top: sectionTop + targetScroll,
+      behavior: 'smooth'
+    });
+    
+    // Re-enable scroll handler after animation completes
+    setTimeout(() => {
+      isManualScrollingRef.current = false;
+    }, 1000);
+  }, []);
 
+  useEffect(() => {
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', throttledScroll);
+  }, [handleScroll]);
+
+  // Mobile layout
+  if (isMobile) {
+    return (
+      <section id="how-it-works" className="relative bg-[#F8F8F8] py-12">
+        <div className="max-w-2xl mx-auto px-4">
+          {steps.map((step, index) => {
+            const VisualComponent = StepVisuals[index];
+            return (
+              <div key={step.number} className="py-8 border-b border-gray-200 last:border-b-0">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-sm font-bold tracking-[0.2em]">{step.number}</span>
+                  <span className="w-6 h-px bg-foreground/30" />
+                  <span className="text-sm uppercase tracking-wider text-muted-foreground">{step.title}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2">{step.boldStart}</h3>
+                <p className="text-muted-foreground mb-4">{step.description.replace(step.boldStart, '').trim()}</p>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-3xl font-bold">{step.kpi.value}</span>
+                  <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
+                </div>
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 h-[280px] overflow-hidden">
+                  <VisualComponent isActive={true} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop cinematic layout
   return (
-    <section
-      ref={containerRef}
-      id="how-it-works"
-      className="relative bg-background"
-      style={{ height: sectionHeight }}
+    <section 
+      ref={sectionRef}
+      id="how-it-works" 
+      className="relative bg-[#F8F8F8]"
+      style={{ height: '400vh' }} // Tall section for scroll
     >
-      {/* Sticky container */}
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        {/* Mesh Animation Background */}
-        <Suspense fallback={null}>
-          <div className="absolute inset-0 opacity-40">
-            <MeshAnimation className="w-full h-full" />
-          </div>
-        </Suspense>
-
-        {/* Content */}
-        <div className="relative z-10 w-full px-4 sm:px-6 md:px-8 max-w-[95%] sm:max-w-[650px] md:max-w-[900px] lg:max-w-[1100px] mx-auto">
+      {/* Sticky Container */}
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <div className="absolute inset-0">
           
-          {/* Header */}
+          {/* TEXT Container - Moves Left/Right */}
           <div 
-            className="absolute inset-0 flex flex-col items-center justify-center text-center transition-all duration-700 ease-out"
+            className="absolute top-0 h-full bg-[#F8F8F8] transition-all duration-700 ease-in-out z-10 flex flex-col justify-center"
             style={{
-              opacity: scrollProgress < 0.08 ? 1 : Math.max(0, 1 - (scrollProgress - 0.08) * 8),
-              transform: `translateY(${Math.min(scrollProgress * 60, 30)}px)`,
-              filter: `blur(${Math.min(scrollProgress * 20, 6)}px)`,
-              pointerEvents: scrollProgress < 0.1 ? 'auto' : 'none',
+              width: '50%',
+              left: activeStep % 2 === 0 ? '0%' : '50%',
+              borderRight: activeStep % 2 === 0 ? '1px solid #f3f4f6' : 'none',
+              borderLeft: activeStep % 2 !== 0 ? '1px solid #f3f4f6' : 'none',
+              willChange: 'left',
+              transform: 'translateZ(0)',
             }}
           >
-            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-foreground/40 mb-6">
-              How It Works
-            </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-headline font-bold antialiased leading-tight px-2">
-              The conversation is the context.
-              <br />
-              <span className="gradient">Gravity is the engine.</span>
-            </h2>
-            
-            {/* Gravity Animation - Planets → Shopping Bags */}
-            <GravityAnimation />
+            {steps.map((step, index) => (
+              <StepContent 
+                key={step.number}
+                step={step}
+                isActive={activeStep === index}
+                direction={activeStep > index ? 'exit' : activeStep < index ? 'enter' : 'idle'}
+                index={index}
+              />
+            ))}
           </div>
 
-          {/* Steps Container */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {steps.map((step, index) => {
-              const { phase, progress } = getStepVisibility(index);
-              const isVisible = phase === 'entering' || phase === 'active' || phase === 'exiting';
+          {/* VISUAL Container - Moves Right/Left */}
+          <div 
+            className="absolute top-0 h-full bg-white transition-all duration-700 ease-in-out flex items-center justify-center overflow-hidden"
+            style={{
+              width: '50%',
+              left: activeStep % 2 === 0 ? '50%' : '0%',
+              willChange: 'left',
+              transform: 'translateZ(0)',
+            }}
+          >
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{
+              backgroundImage: 'radial-gradient(#3D3D3D 1px, transparent 1px)',
+              backgroundSize: '24px 24px'
+            }} />
+            
+            {/* Visual morphing area with floating effect */}
+            {steps.map((_, index) => {
               const VisualComponent = StepVisuals[index];
-              
-              let opacity = 0;
-              let translateY = 60;
-              let scale = 0.95;
-              let blur = 0;
-              
-              if (phase === 'entering') {
-                opacity = progress;
-                translateY = (1 - progress) * 40;
-                scale = 0.96 + progress * 0.04;
-                blur = (1 - progress) * 4;
-              } else if (phase === 'active') {
-                opacity = 1;
-                translateY = 0;
-                scale = 1;
-                blur = 0;
-              } else if (phase === 'exiting') {
-                opacity = progress;
-                translateY = (1 - progress) * -30;
-                scale = 1 - (1 - progress) * 0.04;
-                blur = (1 - progress) * 4;
-              } else if (phase === 'past') {
-                opacity = 0;
-                translateY = -40;
-                scale = 0.96;
-                blur = 6;
-              } else {
-                opacity = 0;
-                translateY = 50;
-                scale = 0.95;
-                blur = 6;
-              }
-
+              const isActive = activeStep === index;
               return (
-                <div
-                  key={step.number}
-                  className="absolute inset-x-0 flex flex-col items-center justify-center text-center px-4"
+                <div 
+                  key={index}
+                  className={`
+                    absolute inset-0 flex items-center justify-center p-6 lg:p-8
+                    transition-all duration-700 ease-out
+                    ${isActive ? 'opacity-100 scale-100 blur-0' : 'opacity-0 scale-90 blur-sm pointer-events-none'}
+                  `}
                   style={{
-                    opacity,
-                    transform: `translateY(${translateY}px) scale(${scale})`,
-                    filter: blur > 0 ? `blur(${blur}px)` : 'none',
-                    transition: 'opacity 0.4s ease-out, transform 0.4s ease-out, filter 0.4s ease-out',
-                    pointerEvents: phase === 'active' ? 'auto' : 'none',
-                    willChange: isVisible ? 'opacity, transform, filter' : 'auto',
+                    willChange: isActive ? 'transform, opacity' : 'auto',
+                    transform: 'translateZ(0)',
+                    contentVisibility: isActive ? 'auto' : 'hidden',
                   }}
                 >
-                  {/* Card container */}
-                  <div className="relative bg-white/60 backdrop-blur-xl rounded-3xl p-8 sm:p-10 md:p-12 shadow-[0_8px_60px_rgba(0,0,0,0.06)] border border-foreground/5 max-w-3xl">
-                    {/* Visual */}
-                    <div className="flex justify-center mb-6">
-                      <VisualComponent isActive={phase === 'active' || phase === 'entering'} />
-                    </div>
-                    
-                    {/* Step Number */}
-                    <div className="mb-4">
-                      <span className="text-sm font-medium tracking-[0.3em] text-foreground/30">
-                        {step.number}
-                      </span>
-                    </div>
-
-                    {/* Step Title */}
-                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-foreground mb-4 leading-[1.1]">
-                      {step.title} <span className="gradient">{step.titleAccent}</span>
-                    </h3>
-
-                    {/* Step Description */}
-                    <p className="text-sm sm:text-base text-foreground/50 leading-relaxed max-w-lg mx-auto">
-                      {step.description}
-                    </p>
+                  <div 
+                    className={`
+                      w-full h-full flex items-center justify-center overflow-hidden
+                      rounded-2xl border border-gray-100/50
+                      shadow-[0_20px_50px_rgba(0,0,0,0.08)]
+                      backdrop-blur-sm bg-white/95
+                      ${isActive ? 'animate-float' : ''}
+                    `}
+                    style={{
+                      transition: 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                      willChange: isActive ? 'transform, opacity' : 'auto',
+                      transform: 'translateZ(0)',
+                    }}
+                  >
+                    <VisualComponent isActive={isActive} />
                   </div>
                 </div>
               );
             })}
           </div>
-
-          {/* Progress indicator - only visible when in How It Works section */}
-          <div 
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20 transition-all duration-500"
-            style={{
-              opacity: scrollProgress > 0.08 && scrollProgress < 0.95 ? 1 : 0,
-              transform: `translateX(-50%) translateY(${scrollProgress > 0.08 && scrollProgress < 0.95 ? 0 : 20}px)`,
-              pointerEvents: scrollProgress > 0.08 && scrollProgress < 0.95 ? 'auto' : 'none',
-            }}
-          >
-            {steps.map((_, index) => {
-              const { phase } = getStepVisibility(index);
-              const isActive = phase === 'active' || phase === 'entering' || phase === 'exiting';
-              const isPast = phase === 'past';
-              
-              return (
-                <div key={index} className="flex items-center gap-4">
-                  <button
-                    className={`
-                      relative w-2.5 h-2.5 rounded-full transition-all duration-500 ease-out
-                      ${isActive ? 'scale-125' : 'scale-100'}
-                    `}
-                    style={{
-                      background: isActive 
-                        ? 'linear-gradient(135deg, #3A8BFF, #A9AAAE)' 
-                        : isPast 
-                          ? 'rgba(0,0,0,0.2)' 
-                          : 'rgba(0,0,0,0.08)',
-                    }}
-                  >
-                    {isActive && (
-                      <span className="absolute inset-0 rounded-full bg-[#3A8BFF]/40 blur-sm animate-pulse" />
-                    )}
-                  </button>
-                  
-                  {index < steps.length - 1 && (
-                    <div 
-                      className="w-8 sm:w-12 h-px transition-all duration-500"
-                      style={{
-                        background: isPast 
-                          ? 'linear-gradient(90deg, rgba(58,139,255,0.3), rgba(169,170,174,0.2))' 
-                          : 'rgba(0,0,0,0.06)',
-                      }}
-                    />
-                  )}
-                </div>
-              );
-            })}
+          
+        </div>
+        
+        {/* Film Strip Progress - Bottom center */}
+        <div 
+          className={`
+            absolute bottom-8 left-1/2 -translate-x-1/2 z-30
+            transition-all duration-500
+            opacity-100 translate-y-0
+            flex flex-col items-center gap-3
+          `}
+        >
+          <FilmStripProgress activeStep={activeStep} totalSteps={steps.length} onStepClick={scrollToStep} />
+          {/* Scroll indicator */}
+          <div className="flex flex-col items-center gap-1 animate-bounce-subtle">
+            <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium">Scroll</span>
+            <ChevronDown className="w-4 h-4 text-gray-400" strokeWidth={2} />
           </div>
-
         </div>
       </div>
+
+      {/* Animations */}
+      <style>{`
+        @keyframes bounce-subtle {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(4px);
+          }
+        }
+        
+        .animate-bounce-subtle {
+          animation: bounce-subtle 2s ease-in-out infinite;
+        }
+        
+        @keyframes fade-in-scale {
+          from {
+            opacity: 0;
+            transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))) scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))) scale(1);
+          }
+        }
+        .animate-fade-in-scale {
+          animation: fade-in-scale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes float {
+          0%, 100% { 
+            transform: translateY(0px);
+          }
+          50% { 
+            transform: translateY(-6px);
+          }
+        }
+        .animate-float {
+          animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+          }
+        }
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out forwards;
+        }
+        @keyframes draw-line-0 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-line-1 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-line-2 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-line-right-0 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-line-right-1 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-line-right-2 {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-direct-to-gravity-left {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        @keyframes draw-gravity-right-to-ai-app {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+      `}</style>
     </section>
   );
 };

@@ -3,57 +3,43 @@ import { Link } from "react-router-dom";
 export const Footer = ({ className }: { className?: string }) => {
   const navigation = {
     publishers: [
-      { name: 'Overview', href: '/publishers' },
-      { name: 'Integration', href: '/publishers#integration' },
-      { name: 'Pricing', href: '/publishers#pricing' },
-      { name: 'Documentation', href: '/docs' },
+      { name: 'Docs', href: '/docs' },
     ],
     advertisers: [
-      { name: 'Overview', href: '/advertisers' },
-      { name: 'Ad Formats', href: '/advertisers#formats' },
-      { name: 'Inventory', href: '/advertisers#inventory' },
-      { name: 'Pricing', href: '/advertisers#pricing' },
+      { name: 'FAQ', href: '/#faq' },
     ],
     company: [
-      { name: 'About', href: '/about' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Careers', href: '/careers' },
       { name: 'Contact', href: '/contact' },
-    ],
-    legal: [
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Terms of Service', href: '/terms' },
     ],
   };
 
   return (
-    <footer className={`bg-foreground text-background ${className || ''}`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-        {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="inline-block mb-4">
-              <span className="text-2xl font-bold text-background">
-                Gravity
-              </span>
-            </Link>
-            <p className="text-sm text-background/60 max-w-xs">
-              Where individual value meets aligned incentives.
-            </p>
-          </div>
+    <footer className={`relative overflow-hidden bg-background border-t border-border ${className || ''}`}>
+      {/* Content */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-20 sm:py-24 md:py-32">
+        
+        {/* Top Section - Brand */}
+        <div className="text-center mb-16 sm:mb-20">
+          <Link to="/" className="inline-block">
+            <span className="text-2xl sm:text-3xl font-headline font-bold text-foreground tracking-tight">
+              Gravity
+            </span>
+          </Link>
+        </div>
 
+        {/* Links Grid */}
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 mb-16 sm:mb-20 max-w-3xl mx-auto text-center">
           {/* For Publishers */}
           <div>
-            <p className="text-sm font-medium text-background mb-4">
-              For Publishers
+            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
+              Publishers
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.publishers.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-background/60 hover:text-background transition-colors"
+                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -64,15 +50,15 @@ export const Footer = ({ className }: { className?: string }) => {
 
           {/* For Advertisers */}
           <div>
-            <p className="text-sm font-medium text-background mb-4">
-              For Advertisers
+            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
+              Advertisers
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.advertisers.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-background/60 hover:text-background transition-colors"
+                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -83,15 +69,15 @@ export const Footer = ({ className }: { className?: string }) => {
 
           {/* Company */}
           <div>
-            <p className="text-sm font-medium text-background mb-4">
+            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
               Company
             </p>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {navigation.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-sm text-background/60 hover:text-background transition-colors"
+                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -100,49 +86,13 @@ export const Footer = ({ className }: { className?: string }) => {
             </ul>
           </div>
 
-          {/* Legal */}
-          <div>
-            <p className="text-sm font-medium text-background mb-4">
-              Legal
-            </p>
-            <ul className="space-y-3">
-              {navigation.legal.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-background/60 hover:text-background transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-background/40">
-            © {new Date().getFullYear()} Gravity AI. All rights reserved.
+        <div className="text-center">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Gravity AI
           </p>
-          <div className="flex items-center gap-6">
-            <a 
-              href="https://twitter.com/gravityai" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-background/40 hover:text-background transition-colors"
-            >
-              Twitter
-            </a>
-            <a 
-              href="https://linkedin.com/company/gravityai" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-background/40 hover:text-background transition-colors"
-            >
-              LinkedIn
-            </a>
-          </div>
         </div>
       </div>
     </footer>

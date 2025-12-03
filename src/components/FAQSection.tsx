@@ -21,10 +21,6 @@ const faqItems = [
     a: "Gravity works with any LLM-based platform—chatbots, AI assistants, search engines, and content generation tools. Our architecture adapts to your use case, whether you're using GPT, Claude, or custom models."
   },
   {
-    q: "How does the revenue model work?",
-    a: "We operate on a revenue-sharing model where publishers earn a significant portion of ad revenue. Our real-time bidding system ensures optimal pricing, maximizing revenue for publishers and ROI for advertisers."
-  },
-  {
     q: "How does Gravity handle data privacy?",
     a: "We're built with privacy-by-design principles and comply with GDPR and CCPA. Our contextual targeting means we don't collect or store personal user data—relevance comes from conversation context, not user tracking."
   },
@@ -147,11 +143,15 @@ export const FAQSection = () => {
           <p className="text-sm text-foreground/50 mb-6">
             Have more questions?
           </p>
-          <Link to="/demo">
+          <a 
+            href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <button className="metallic-button text-sm" style={{ padding: "12px 24px" }}>
               <span>Book a Demo</span>
             </button>
-          </Link>
+          </a>
         </div>
       </div>
     </section>

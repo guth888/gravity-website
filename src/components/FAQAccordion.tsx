@@ -99,3 +99,5 @@ export const FAQCompact = ({ items }: { items: FAQItem[] }) => {
   );
 };
 
+
+

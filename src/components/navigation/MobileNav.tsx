@@ -59,7 +59,7 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
               className="metallic-button w-full text-sm py-3"
               onClick={() => window.location.href = '/demo'}
             >
-              <span>Get a Demo</span>
+              <span>Book A Demo</span>
             </button>
           </div>
 

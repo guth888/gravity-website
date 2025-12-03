@@ -122,11 +122,23 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
 
     let phase = 0; // Animation phase: 0=appearing, 1=pulsing, 2=stabilized
 
-    const animate = () => {
+    let lastFrameTime = performance.now();
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
+    const animate = (currentTime: number) => {
+      // Frame rate limiting for better performance
+      const elapsed = currentTime - lastFrameTime;
+      if (elapsed < frameInterval) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameTime = currentTime - (elapsed % frameInterval);
+
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      timeRef.current += 0.016;
+      timeRef.current += elapsed / 1000; // Use actual elapsed time
       const time = timeRef.current;
 
       // Simple phase: just fade in, then stable
@@ -240,7 +252,7 @@ export const MeshAnimation = ({ className = "" }: MeshAnimationProps) => {
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", updateSize);

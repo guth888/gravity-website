@@ -3,36 +3,26 @@ import gravityLogo from '@/assets/gravity-logo.png';
 
 export const Login = () => {
   return (
-    <div className="min-h-screen bg-[#f4f4f5] flex flex-col items-center justify-center px-6 pb-24">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
       {/* Logo */}
-      <Link to="/" className="-mb-2">
+      <Link to="/" className="mb-16">
         <img 
           src={gravityLogo} 
           alt="Gravity" 
-          className="h-40 sm:h-48 opacity-90 hover:opacity-100 transition-opacity"
+          className="h-28 sm:h-36 opacity-90 hover:opacity-100 transition-opacity"
         />
       </Link>
 
-      {/* Heading */}
-      <div className="text-center">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-black/80 mb-2">
-          Welcome back
-        </h1>
-        <p className="text-sm text-black/40 mb-12">
-          Choose your portal to sign in
-        </p>
-      </div>
-
       {/* Buttons */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-3">
         <a 
           href="https://app.trygravity.ai/publisher/login"
           className="
-            flex items-center justify-center px-8 py-4 rounded-full
-            bg-black text-white font-medium text-sm
+            flex items-center justify-center px-10 py-3.5 rounded-lg
+            bg-foreground text-background font-medium text-sm
             transition-all duration-300
-            hover:bg-black/90 hover:shadow-[0_0_30px_rgba(0,0,0,0.15)]
-            hover:scale-[1.02]
+            hover:bg-foreground/90 hover:shadow-lg hover:scale-[1.02]
+            min-w-[180px]
           "
         >
           Publishers
@@ -41,25 +31,17 @@ export const Login = () => {
         <a 
           href="https://app.trygravity.ai/advertiser/login"
           className="
-            flex items-center justify-center px-8 py-4 rounded-full
-            bg-white text-black font-medium text-sm
-            border border-black/10
+            flex items-center justify-center px-10 py-3.5 rounded-lg
+            bg-gray-100 text-foreground font-medium text-sm
+            border-2 border-gray-300
             transition-all duration-300
-            hover:border-black/20 hover:shadow-[0_0_30px_rgba(0,0,0,0.08)]
-            hover:scale-[1.02]
+            hover:bg-gray-200 hover:border-gray-400 hover:shadow-md hover:scale-[1.02]
+            min-w-[180px]
           "
         >
           Advertisers
         </a>
       </div>
-
-      {/* Back link */}
-      <Link 
-        to="/" 
-        className="mt-16 text-xs text-black/30 hover:text-black/50 transition-colors"
-      >
-        ← Back to home
-      </Link>
     </div>
   );
 };
