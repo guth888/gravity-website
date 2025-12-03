@@ -93,12 +93,6 @@ export const Header = ({ className }: { className?: string }) => {
             >
               Log in
             </a>
-            <a 
-              href="/login" 
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-            >
-              Get Started
-            </a>
           </nav>
 
           {/* Right Section - Desktop - Far Right */}
