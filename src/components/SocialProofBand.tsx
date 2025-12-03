@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Logo imports
 import sourcegraphLogo from '@/assets/publishers/sourcegraph.svg';
@@ -56,56 +56,46 @@ const logoSets = [
 ];
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
-  const [currentSetIndex, setCurrentSetIndex] = useState(0);
-  const [targetSetIndex, setTargetSetIndex] = useState(1); // Which set we're transitioning to
-  const [currentLogoIndex, setCurrentLogoIndex] = useState(0); // Which logo position to change (0-5)
   const [displayLogos, setDisplayLogos] = useState(logoSets[0]);
-  const [transitioningIndex, setTransitioningIndex] = useState<number | null>(null); // Track which logo is transitioning
+  const [fadingIndex, setFadingIndex] = useState<number | null>(null);
+  const [nextLogo, setNextLogo] = useState<typeof logoSets[0][0] | null>(null);
+  
+  // Use refs to track state without causing re-renders
+  const currentLogoIndexRef = useRef(0);
+  const targetSetIndexRef = useRef(1);
 
   useEffect(() => {
-    // Change one logo every 5 seconds
     const interval = setInterval(() => {
-      setCurrentLogoIndex(prevIndex => {
-        const nextLogoIndex = (prevIndex + 1) % 6;
-        
-        setTargetSetIndex(prevTargetSet => {
-          const targetLogos = logoSets[prevTargetSet];
-          
-          // Mark this logo as transitioning
-          setTransitioningIndex(prevIndex);
-          
-          // Start crossfade: update logo after a brief delay to allow crossfade
-          setTimeout(() => {
-            setDisplayLogos(prevLogos => {
-              const newLogos = [...prevLogos];
-              newLogos[prevIndex] = targetLogos[prevIndex];
-              return newLogos;
-            });
-            
-            // Clear transitioning state after transition completes
-            setTimeout(() => {
-              setTransitioningIndex(null);
-            }, 1500); // Match transition duration
-          }, 50);
-          
-          // If we've completed a full cycle (all 6 positions), move to next set
-          if (nextLogoIndex === 0) {
-            const nextTargetSet = prevTargetSet === logoSets.length - 1 
-              ? 0 
-              : prevTargetSet + 1;
-            setCurrentSetIndex(prevTargetSet);
-            return nextTargetSet;
-          }
-          
-          return prevTargetSet;
+      const logoIndex = currentLogoIndexRef.current;
+      const targetSet = targetSetIndexRef.current;
+      const targetLogo = logoSets[targetSet][logoIndex];
+      
+      // Start fade transition
+      setFadingIndex(logoIndex);
+      setNextLogo(targetLogo);
+      
+      // After fade completes, update the display logos
+      setTimeout(() => {
+        setDisplayLogos(prev => {
+          const newLogos = [...prev];
+          newLogos[logoIndex] = targetLogo;
+          return newLogos;
         });
-        
-        return nextLogoIndex;
-      });
-    }, 5000); // Change one logo every 5 seconds
+        setFadingIndex(null);
+        setNextLogo(null);
+      }, 800); // Transition duration
+      
+      // Move to next logo position
+      currentLogoIndexRef.current = (logoIndex + 1) % 6;
+      
+      // If we've completed a full cycle, move to next set
+      if (currentLogoIndexRef.current === 0) {
+        targetSetIndexRef.current = (targetSet + 1) % logoSets.length;
+      }
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []); // Empty deps - use functional updates to avoid re-creating interval
+  }, []);
 
   return (
     <section className={`relative bg-background py-4 sm:py-6 md:py-8 -mt-16 sm:-mt-20 md:-mt-24 ${className}`}>
@@ -122,33 +112,31 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         <div className="w-full mx-auto px-6 sm:px-10 md:px-16 lg:px-20">
           <div className="flex items-center justify-between">
             {displayLogos.map((logo, index) => {
-              const isTransitioning = transitioningIndex === index;
-              const targetLogo = isTransitioning ? logoSets[targetSetIndex][index] : null;
+              const isFading = fadingIndex === index;
               
               return (
                 <div
                   key={`logo-${index}`}
                   className="logo-container"
                 >
-                  {/* Old logo - fading out (only during transition) */}
-                  {isTransitioning && targetLogo && (
+                  {/* Current logo */}
+                  <img 
+                    src={logo.src} 
+                    alt={logo.alt} 
+                    className={`logo-item ${isFading ? 'logo-fade-out' : ''} ${logo.isIcon ? 'logo-icon' : ''} ${logo.needsScale ? 'logo-scaled' : ''} ${logo.alt === 'Layers' ? 'logo-layers' : ''}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {/* Next logo - fading in (only during transition) */}
+                  {isFading && nextLogo && (
                     <img 
-                      src={logo.src} 
-                      alt={logo.alt} 
-                      className={`logo-item logo-fade-out ${logo.isIcon ? 'logo-icon' : ''} ${logo.needsScale ? 'logo-scaled' : ''} ${logo.alt === 'Layers' ? 'logo-layers' : ''}`}
+                      src={nextLogo.src} 
+                      alt={nextLogo.alt} 
+                      className={`logo-item logo-fade-in logo-overlay ${nextLogo.isIcon ? 'logo-icon' : ''} ${nextLogo.needsScale ? 'logo-scaled' : ''} ${nextLogo.alt === 'Layers' ? 'logo-layers' : ''}`}
                       loading="lazy"
                       decoding="async"
                     />
                   )}
-                  {/* Current/New logo */}
-                  <img 
-                    src={isTransitioning && targetLogo ? targetLogo.src : logo.src} 
-                    alt={isTransitioning && targetLogo ? targetLogo.alt : logo.alt} 
-                    className={`logo-item ${isTransitioning && targetLogo ? 'logo-fade-in' : ''} ${logo.isIcon ? 'logo-icon' : ''} ${logo.needsScale ? 'logo-scaled' : ''} ${logo.alt === 'Layers' ? 'logo-layers' : ''}`}
-                    style={isTransitioning && targetLogo ? { opacity: 0 } : undefined}
-                    loading="lazy"
-                    decoding="async"
-                  />
                 </div>
               );
             })}
@@ -169,27 +157,22 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         }
         
         .logo-container img {
-          position: relative;
           transform: translateZ(0);
         }
         
-        .logo-container .logo-fade-out {
+        .logo-overlay {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-          transform: translateZ(0);
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) translateZ(0);
         }
         
         .logo-fade-out {
-          animation: logoFadeOut 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
-          pointer-events: none;
+          animation: logoFadeOut 0.8s ease-out forwards;
         }
         
         .logo-fade-in {
-          animation: logoFadeIn 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+          animation: logoFadeIn 0.8s ease-out forwards;
         }
         
         @keyframes logoFadeOut {
