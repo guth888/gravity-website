@@ -155,83 +155,127 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
         >
         
           {/* OLD UI - Google Search */}
-          <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden">
-            {/* Google Header */}
-            <div className="flex items-center gap-3 px-4 pt-3 pb-2 border-b border-gray-100">
-              <div className="flex items-center gap-0.5 text-sm font-medium">
-                <span className="text-blue-500">G</span>
-                <span className="text-red-500">o</span>
-                <span className="text-yellow-500">o</span>
-                <span className="text-blue-500">g</span>
-                <span className="text-green-500">l</span>
-                <span className="text-red-500">e</span>
-            </div>
-              <div className="flex-1 h-8 bg-white border border-gray-300 rounded-full flex items-center px-3 text-[10px] text-gray-600 shadow-sm">
-                best laptop for video editing
-          </div>
-            </div>
-            
-            <div className="flex h-[calc(100%-48px)]">
-              {/* Main Results */}
-              <div className="flex-1 px-4 pt-2 overflow-hidden">
-                {/* Banner Ad */}
-                <div className="p-2 bg-[#fef7e0] rounded-lg border border-amber-200/50 mb-2">
-                  <div className="flex gap-2">
-                    <div className="w-7 h-7 bg-amber-200 rounded flex items-center justify-center text-amber-700 text-[8px] font-bold">B+</div>
-                    <div>
-                      <p className="text-[10px] text-blue-700 font-medium">Best Buy® - Top Laptops for Creators</p>
-                      <p className="text-[8px] text-green-700">www.bestbuy.com/laptops</p>
-                      <p className="text-[8px] text-gray-500">Shop creator laptops. Free shipping on $35+.</p>
-                    </div>
-                    <span className="text-[7px] text-amber-600 font-bold ml-auto">Ad</span>
-                  </div>
-                </div>
-                
-                <p className="text-[8px] text-gray-400 mb-2">About 892,000,000 results (0.42 seconds)</p>
-                
-                {/* Results */}
-                <div className="space-y-2.5 text-[9px]">
-                  <div className="border-b border-gray-100 pb-2">
-                    <p className="text-[8px] text-green-700">www.tomsguide.com › best-laptops</p>
-                    <p className="text-blue-700 font-medium text-[11px]">Best Laptops for Video Editing 2024 | Tom's Guide</p>
-                    <p className="text-gray-600 text-[9px]">The MacBook Pro 16 is our top pick for video editors...</p>
-                  </div>
-                  <div className="border-b border-gray-100 pb-2">
-                    <p className="text-[8px] text-green-700">www.pcmag.com › picks</p>
-                    <p className="text-blue-700 font-medium text-[11px]">The Best Laptops for Video Editing in 2024 | PCMag</p>
-                    <p className="text-gray-600 text-[9px]">We tested 47 laptops for Premiere Pro, DaVinci Resolve...</p>
-                  </div>
-                  <div className="border-b border-gray-100 pb-2">
-                    <p className="text-[8px] text-green-700">www.techradar.com › guides</p>
-                    <p className="text-blue-700 font-medium text-[11px]">Best video editing laptops 2024: top picks</p>
-                    <p className="text-gray-600 text-[9px]">Whether you're a YouTuber or professional editor...</p>
-                  </div>
-                  <div>
-                    <p className="text-[8px] text-green-700">www.creativebloq.com › guides</p>
-                    <p className="text-blue-700 font-medium text-[11px]">Best laptops for video editing in 2024</p>
-                    <p className="text-gray-600 text-[9px]">Expert guide from budget to professional...</p>
-                  </div>
+          <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden flex flex-col">
+            {/* Google Header - authentic styling */}
+            <div className="flex items-center gap-6 px-5 py-3 border-b border-gray-200">
+              <div className="flex items-center">
+                <span style={{ fontFamily: 'Product Sans, Arial, sans-serif', fontSize: '22px', fontWeight: 500 }}>
+                  <span style={{ color: '#4285f4' }}>G</span>
+                  <span style={{ color: '#ea4335' }}>o</span>
+                  <span style={{ color: '#fbbc05' }}>o</span>
+                  <span style={{ color: '#4285f4' }}>g</span>
+                  <span style={{ color: '#34a853' }}>l</span>
+                  <span style={{ color: '#ea4335' }}>e</span>
+                </span>
+              </div>
+              <div className="flex-1 h-11 bg-white border border-gray-200 rounded-full flex items-center px-4 text-[14px] text-gray-700 shadow-sm hover:shadow-md transition-shadow">
+                <span>best laptop for video editing</span>
+                <div className="ml-auto flex items-center gap-3">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                 </div>
               </div>
-              
-              {/* Sidebar */}
-              <div className="w-24 p-2 space-y-2 border-l border-gray-100">
-                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
-                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
-                  <div className="w-full h-10 bg-gray-200 rounded mb-1 flex items-center justify-center">
-                    <span className="text-[8px] text-gray-500 font-medium">Dell XPS</span>
+            </div>
+            
+            {/* Navigation tabs - like real Google */}
+            <div className="flex items-center gap-1 px-5 py-1 border-b border-gray-200 text-[13px]">
+              <span className="px-3 py-2 text-[#1a73e8] border-b-2 border-[#1a73e8] font-medium">All</span>
+              <span className="px-3 py-2 text-gray-600 hover:text-gray-900">Images</span>
+              <span className="px-3 py-2 text-gray-600 hover:text-gray-900">Shopping</span>
+              <span className="px-3 py-2 text-gray-600 hover:text-gray-900">Videos</span>
+              <span className="px-3 py-2 text-gray-600 hover:text-gray-900">News</span>
+            </div>
+            
+            <div className="flex flex-1 overflow-hidden">
+              {/* Main Results */}
+              <div className="flex-1 px-5 pt-3 overflow-y-auto">
+                {/* Sponsored Ads - authentic Google ad styling */}
+                <div className="mb-4 space-y-3">
+                  {/* Ad 1 */}
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
+                        <span className="text-[12px] text-gray-600">·</span>
+                        <span className="text-[12px] text-gray-600">www.bestbuy.com</span>
+                      </div>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Buy® - Top Laptops for Video Editing</p>
+                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">Shop creator laptops with powerful GPUs. Free shipping on orders $35+. Price match guarantee.</p>
+                    </div>
+                  </div>
+                  
+                  {/* Ad 2 */}
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
+                        <span className="text-[12px] text-gray-600">·</span>
+                        <span className="text-[12px] text-gray-600">www.dell.com</span>
+                      </div>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Dell XPS 15 - Built for Creators | Dell.com</p>
+                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">NVIDIA RTX graphics. 4K OLED display. Up to 64GB RAM. Shop now & save $200.</p>
+                    </div>
+                  </div>
+                  
+                  {/* Ad 3 */}
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
+                        <span className="text-[12px] text-gray-600">·</span>
+                        <span className="text-[12px] text-gray-600">www.apple.com</span>
+                      </div>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">MacBook Pro - Pro Performance | Apple</p>
+                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">M3 Pro & M3 Max chips. Up to 22hrs battery. The most advanced Mac laptops ever.</p>
+                    </div>
                   </div>
                 </div>
-                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
-                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
-                  <div className="w-full h-10 bg-blue-50 rounded mb-1 flex items-center justify-center">
-                    <span className="text-[8px] text-blue-600 font-medium">HP ZBook</span>
+                
+                <p className="text-[12px] text-gray-500 mb-4">About 892,000,000 results (0.42 seconds)</p>
+                
+                {/* Organic Results - authentic Google styling */}
+                <div className="space-y-5">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-[10px] font-medium text-gray-600">T</span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] text-gray-600">Tom's Guide</p>
+                        <p className="text-[12px] text-gray-500">https://www.tomsguide.com › best-laptops</p>
+                      </div>
+                    </div>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Laptops for Video Editing 2024 | Tom's Guide</p>
+                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">The MacBook Pro 16 is our top pick for video editors. We tested over 30 laptops...</p>
                   </div>
-                </div>
-                <div className="p-1.5 bg-gray-50 rounded border border-gray-200">
-                  <p className="text-[6px] text-gray-400 mb-1">Sponsored</p>
-                  <div className="w-full h-10 bg-red-50 rounded mb-1 flex items-center justify-center">
-                    <span className="text-[8px] text-red-600 font-medium">Lenovo</span>
+                  
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-[10px] font-medium text-gray-600">P</span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] text-gray-600">PCMag</p>
+                        <p className="text-[12px] text-gray-500">https://www.pcmag.com › picks</p>
+                      </div>
+                    </div>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">The Best Laptops for Video Editing in 2024</p>
+                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">We tested 47 laptops for Premiere Pro, DaVinci Resolve, and Final Cut Pro...</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-[10px] font-medium text-gray-600">T</span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] text-gray-600">TechRadar</p>
+                        <p className="text-[12px] text-gray-500">https://www.techradar.com › buying-guides</p>
+                      </div>
+                    </div>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best video editing laptops 2024: top picks for creators</p>
+                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">Whether you're a YouTuber or professional editor, these are the best options...</p>
                   </div>
                 </div>
               </div>
@@ -241,54 +285,54 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
           {/* NEW UI - Chat Interface (rebuilt from scratch) */}
           <div className="w-1/2 h-full bg-white flex-shrink-0 flex flex-col overflow-hidden">
             {/* Header */}
-            <div style={{ padding: '8px 12px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'linear-gradient(135deg, #374151, #111827)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg style={{ width: '12px', height: '12px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #374151, #111827)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="12" cy="12" r="10"/>
                   <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
                 </svg>
               </div>
-              <span style={{ fontSize: '11px', fontWeight: 500, color: '#374151' }}>AI Assistant</span>
+              <span style={{ fontSize: '15px', fontWeight: 600, color: '#374151' }}>AI Assistant</span>
             </div>
             
             {/* Chat Messages */}
-            <div style={{ flex: 1, padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+            <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', overflowY: 'auto' }}>
               {/* User Message */}
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <div style={{ background: '#1f2937', color: 'white', padding: '8px 12px', borderRadius: '16px 16px 4px 16px', maxWidth: '75%', fontSize: '11px', lineHeight: '1.4' }}>
+                <div style={{ background: '#1f2937', color: 'white', padding: '12px 16px', borderRadius: '18px 18px 4px 18px', maxWidth: '75%', fontSize: '14px', lineHeight: '1.5' }}>
                   Best laptop for video editing?
                 </div>
               </div>
               
               {/* AI Response */}
               <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                <div style={{ background: '#f3f4f6', borderRadius: '16px 16px 16px 4px', maxWidth: '85%', overflow: 'hidden' }}>
+                <div style={{ background: '#f3f4f6', borderRadius: '18px 18px 18px 4px', maxWidth: '88%', overflow: 'hidden' }}>
                   {/* Main response */}
-                  <div style={{ padding: '10px 12px', fontSize: '11px', lineHeight: '1.5', color: '#374151' }}>
+                  <div style={{ padding: '14px 16px', fontSize: '14px', lineHeight: '1.6', color: '#374151' }}>
                     <div>For video editing, you need powerful GPU, 32GB+ RAM, and fast SSD. Top picks:</div>
-                    <div style={{ marginTop: '4px' }}><strong>1. MacBook Pro 16"</strong> — M3 Max chip, great for Final Cut</div>
-                    <div style={{ marginTop: '2px' }}><strong>2. Dell XPS 15</strong> — RTX 4070, stunning OLED display</div>
-                    <div style={{ marginTop: '2px' }}><strong>3. ASUS ProArt</strong> — Budget-friendly, color-accurate</div>
+                    <div style={{ marginTop: '6px' }}><strong>1. MacBook Pro 16"</strong> — M3 Max chip, great for Final Cut</div>
+                    <div style={{ marginTop: '4px' }}><strong>2. Dell XPS 15</strong> — RTX 4070, stunning OLED display</div>
+                    <div style={{ marginTop: '4px' }}><strong>3. ASUS ProArt</strong> — Budget-friendly, color-accurate</div>
                   </div>
                   {/* Sponsored */}
-                  <div style={{ borderTop: '1px solid #d1fae5', background: '#ecfdf5', padding: '8px 12px' }}>
-                    <div style={{ fontSize: '8px', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored · Gravity</div>
-                    <div style={{ fontSize: '11px', fontWeight: 600, color: '#111827', marginTop: '2px' }}>MacBook Pro 16" M3 Max</div>
-                    <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '1px' }}>Built for professional video. Up to 128GB RAM.</div>
-                    <div style={{ fontSize: '11px', color: '#374151', fontWeight: 500, marginTop: '4px' }}>Learn more →</div>
+                  <div style={{ borderTop: '1px solid #e5e7eb', background: '#f3f4f6', padding: '12px 16px' }}>
+                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored · Gravity</div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginTop: '4px' }}>MacBook Pro 16" M3 Max</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Built for professional video. Up to 128GB RAM.</div>
+                    <div style={{ fontSize: '13px', color: '#374151', fontWeight: 500, marginTop: '6px' }}>Learn more →</div>
                   </div>
                 </div>
               </div>
             </div>
             
             {/* Input Bar */}
-            <div style={{ padding: '8px 12px', borderTop: '1px solid #e5e7eb' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ flex: 1, height: '32px', background: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb', padding: '0 12px', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '11px', color: '#9ca3af' }}>Ask anything...</span>
+            <div style={{ padding: '12px 16px', borderTop: '1px solid #e5e7eb' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ flex: 1, height: '44px', background: '#f9fafb', borderRadius: '22px', border: '1px solid #e5e7eb', padding: '0 16px', display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontSize: '14px', color: '#9ca3af' }}>Ask anything...</span>
                 </div>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg style={{ width: '14px', height: '14px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg style={{ width: '18px', height: '18px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </div>
@@ -414,7 +458,7 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
           {/* Main sphere with enhanced glow when active */}
           <circle cx="200" cy="200" r="187" fill="url(#globeGlow)" />
           {isActive && (
-            <circle cx="200" cy="200" r="187" fill="none" stroke="#10b981" strokeWidth="2" opacity="0.2" className="animate-globe-glow">
+            <circle cx="200" cy="200" r="187" fill="none" stroke="#3b82f6" strokeWidth="2" opacity="0.2" className="animate-globe-glow">
               <animate attributeName="r" values="187;195;187" dur="3s" repeatCount="indefinite" />
               <animate attributeName="opacity" values="0.2;0.4;0.2" dur="3s" repeatCount="indefinite" />
             </circle>
@@ -589,7 +633,7 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
             >
             <span className={`px-3 py-1.5 backdrop-blur-sm rounded-lg border text-xs font-medium whitespace-nowrap block transition-all duration-300 animate-label-shadow-pop ${
               q.intent === 'purchase' 
-                ? 'bg-emerald-50/90 border-emerald-200 text-emerald-700' 
+                ? 'bg-blue-50/90 border-blue-200 text-blue-700' 
                 : 'bg-white/90 border-gray-100 text-gray-600'
             }`}
             style={{
@@ -623,7 +667,7 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
             return (
               <div
                 key={`particle-${i}`}
-                className="absolute w-1 h-1 bg-emerald-400 rounded-full opacity-0 animate-particle-stream"
+                className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-0 animate-particle-stream"
                 style={{
                   left: `${startX}%`,
                   top: `${startY}%`,
@@ -639,7 +683,7 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
       {/* Volume indicator - subtle background pulse */}
       {isActive && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ zIndex: 0 }}>
-          <div className="w-[500px] h-[500px] rounded-full border-2 border-emerald-200/20 animate-volume-pulse" />
+          <div className="w-[500px] h-[500px] rounded-full border-2 border-blue-200/20 animate-volume-pulse" />
         </div>
       )}
       
@@ -701,10 +745,10 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
             box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
           }
           25% {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 0 12px rgba(16, 185, 129, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 0 0 12px rgba(59, 130, 246, 0.15);
           }
           45% {
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12), 0 0 0 6px rgba(16, 185, 129, 0.08);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12), 0 0 0 6px rgba(59, 130, 246, 0.08);
           }
           65% {
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
@@ -842,18 +886,18 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
       {/* Scale indicator - showing billions */}
       {isActive && (
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-          <div className="bg-emerald-50/90 backdrop-blur-sm border border-emerald-200 rounded-lg px-4 py-2 shadow-lg animate-scale-indicator">
+          <div className="bg-blue-50/90 backdrop-blur-sm border border-blue-200 rounded-lg px-4 py-2 shadow-lg animate-scale-indicator">
             <div className="flex items-center gap-2">
               <div className="flex gap-1">
                 {[0, 1, 2].map((i) => (
                   <div 
                     key={i}
-                    className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+                    className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"
                     style={{ animationDelay: `${i * 0.2}s` }}
                   />
                 ))}
               </div>
-              <span className="text-xs font-semibold text-emerald-700">
+              <span className="text-xs font-semibold text-blue-700">
                 <span className="text-lg font-bold">4B+</span> queries/day
               </span>
             </div>
@@ -885,11 +929,11 @@ const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
             className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
             style={{ transitionDelay: isActive ? '800ms' : '0ms' }}
           >
-            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl px-4 py-3 flex items-start justify-between gap-3 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl px-4 py-3 flex items-start justify-between gap-3 shadow-sm hover:shadow-md transition-shadow duration-300">
               <p className="text-sm text-foreground/90">
-                <span className="font-bold text-emerald-600">Linear</span> is worth checking out—built for fast-moving teams with async workflows.
+                <span className="font-bold text-blue-600">Linear</span> is worth checking out—built for fast-moving teams with async workflows.
               </p>
-              <span className="text-xs font-semibold text-emerald-500 whitespace-nowrap bg-emerald-100 px-2 py-0.5 rounded">Sponsored</span>
+              <span className="text-xs font-semibold text-blue-500 whitespace-nowrap bg-blue-100 px-2 py-0.5 rounded">Sponsored</span>
             </div>
           </div>
           {/* Organic LLM answer */}
@@ -923,8 +967,8 @@ const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
             <stop offset="100%" stopColor="#3D3D3D" stopOpacity="0.6" />
           </linearGradient>
           <linearGradient id="lineGradRight" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.2" />
           </linearGradient>
           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.1"/>
@@ -998,7 +1042,7 @@ const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
                 height="32" 
                 rx="6" 
                 fill="white" 
-                stroke={isActive ? "#10b981" : "#e5e7eb"} 
+                stroke={isActive ? "#3b82f6" : "#e5e7eb"} 
                 strokeWidth={isActive ? "2" : "1"} 
                 className="transition-all duration-500"
                 style={{
@@ -1032,7 +1076,7 @@ const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
             <path 
               d="M 292 120 Q 330 120 390 120" 
               fill="none" 
-              stroke="#10b981" 
+              stroke="#3b82f6" 
               strokeWidth="2.5" 
               strokeDasharray="100"
               strokeDashoffset="100"
@@ -1052,7 +1096,7 @@ const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
               <animateMotion dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" path={`M 110 ${60 + i * 60} Q 170 ${60 + i * 60} 200 120`} />
               <animate attributeName="opacity" values="0;1;1;0" dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" />
             </circle>
-            <circle r="4" fill="#10b981">
+            <circle r="4" fill="#3b82f6">
               <animateMotion dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" path={`M 300 120 Q 330 ${60 + i * 60} 390 ${60 + i * 60}`} />
               <animate attributeName="opacity" values="0;1;1;0" dur={`${2.5 + i * 0.3}s`} repeatCount="indefinite" />
             </circle>
@@ -1068,7 +1112,7 @@ const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
               <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" />
             </circle>
             {/* Dot on right segment (Gravity to AI App) */}
-            <circle r="5" fill="#10b981" opacity="0.9">
+            <circle r="5" fill="#3b82f6" opacity="0.9">
               <animateMotion dur="1.5s" repeatCount="indefinite" path="M 292 120 Q 330 120 390 120" begin="0.5s" />
               <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
             </circle>
