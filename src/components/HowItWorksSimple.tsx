@@ -157,7 +157,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
           {/* OLD UI - Google Search */}
           <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden flex flex-col">
             {/* Google Header - authentic styling */}
-            <div className="flex items-center gap-6 px-5 py-3 border-b border-gray-200">
+            <div className="flex items-center gap-6 px-5 py-2.5 border-b border-gray-200">
               <div className="flex items-center">
                 <span style={{ fontFamily: 'Product Sans, Arial, sans-serif', fontSize: '22px', fontWeight: 500 }}>
                   <span style={{ color: '#4285f4' }}>G</span>
@@ -189,55 +189,55 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             
             <div className="flex flex-1 overflow-hidden">
               {/* Main Results */}
-              <div className="flex-1 px-5 pt-3 overflow-y-auto">
+              <div className="flex-1 px-5 pt-2.5 overflow-hidden">
                 {/* Sponsored Ads - authentic Google ad styling */}
-                <div className="mb-4 space-y-3">
+                <div className="mb-3 space-y-2.5">
                   {/* Ad 1 */}
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
                         <span className="text-[12px] text-gray-600">www.bestbuy.com</span>
                       </div>
                       <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Buy® - Top Laptops for Video Editing</p>
-                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">Shop creator laptops with powerful GPUs. Free shipping on orders $35+. Price match guarantee.</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Shop creator laptops with powerful GPUs. Free shipping on orders $35+. Price match guarantee.</p>
                     </div>
                   </div>
                   
                   {/* Ad 2 */}
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
                         <span className="text-[12px] text-gray-600">www.dell.com</span>
                       </div>
                       <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Dell XPS 15 - Built for Creators | Dell.com</p>
-                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">NVIDIA RTX graphics. 4K OLED display. Up to 64GB RAM. Shop now & save $200.</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">NVIDIA RTX graphics. 4K OLED display. Up to 64GB RAM. Shop now & save $200.</p>
                     </div>
                   </div>
                   
                   {/* Ad 3 */}
                   <div className="flex items-start gap-3">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
                         <span className="text-[12px] text-gray-600">www.apple.com</span>
                       </div>
                       <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">MacBook Pro - Pro Performance | Apple</p>
-                      <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">M3 Pro & M3 Max chips. Up to 22hrs battery. The most advanced Mac laptops ever.</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">M3 Pro & M3 Max chips. Up to 22hrs battery. The most advanced Mac laptops ever.</p>
                     </div>
                   </div>
                 </div>
                 
-                <p className="text-[12px] text-gray-500 mb-4">About 892,000,000 results (0.42 seconds)</p>
+                <p className="text-[12px] text-gray-500 mb-3">About 892,000,000 results (0.42 seconds)</p>
                 
                 {/* Organic Results - authentic Google styling */}
-                <div className="space-y-5">
+                <div className="space-y-3.5">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-0.5">
                       <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
                         <span className="text-[10px] font-medium text-gray-600">T</span>
                       </div>
@@ -247,35 +247,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                       </div>
                     </div>
                     <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Laptops for Video Editing 2024 | Tom's Guide</p>
-                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">The MacBook Pro 16 is our top pick for video editors. We tested over 30 laptops...</p>
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-[10px] font-medium text-gray-600">P</span>
-                      </div>
-                      <div>
-                        <p className="text-[12px] text-gray-600">PCMag</p>
-                        <p className="text-[12px] text-gray-500">https://www.pcmag.com › picks</p>
-                      </div>
-                    </div>
-                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">The Best Laptops for Video Editing in 2024</p>
-                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">We tested 47 laptops for Premiere Pro, DaVinci Resolve, and Final Cut Pro...</p>
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-[10px] font-medium text-gray-600">T</span>
-                      </div>
-                      <div>
-                        <p className="text-[12px] text-gray-600">TechRadar</p>
-                        <p className="text-[12px] text-gray-500">https://www.techradar.com › buying-guides</p>
-                      </div>
-                    </div>
-                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best video editing laptops 2024: top picks for creators</p>
-                    <p className="text-[13px] text-gray-600 mt-1 leading-relaxed">Whether you're a YouTuber or professional editor, these are the best options...</p>
+                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">The MacBook Pro 16 is our top pick for video editors. We tested over 30 laptops...</p>
                   </div>
                 </div>
               </div>
@@ -316,7 +288,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                   </div>
                   {/* Sponsored */}
                   <div style={{ borderTop: '1px solid #e5e7eb', background: '#f3f4f6', padding: '12px 16px' }}>
-                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored · Gravity</div>
+                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</div>
                     <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginTop: '4px' }}>MacBook Pro 16" M3 Max</div>
                     <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Built for professional video. Up to 128GB RAM.</div>
                     <div style={{ fontSize: '13px', color: '#374151', fontWeight: 500, marginTop: '6px' }}>Learn more →</div>
@@ -341,59 +313,60 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
           </div>
         </div>
         
-        {/* Dot indicators */}
-        <div 
+      </div>
+      
+      {/* Dot indicators - Outside the overflow-hidden container */}
+      <div 
+        style={{
+          position: 'absolute',
+          bottom: '4%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '8px',
+          zIndex: 20
+        }}
+      >
+        <button
+          onClick={() => handleDotClick(0)}
           style={{
-            position: 'absolute',
-            bottom: '12px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            gap: '8px',
-            zIndex: 20
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: showChat ? '#d1d5db' : '#374151',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            transition: 'background 0.3s ease, transform 0.2s ease'
           }}
-        >
-          <button
-            onClick={() => handleDotClick(0)}
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: showChat ? '#d1d5db' : '#374151',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'background 0.3s ease, transform 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-            aria-label="Show Google UI"
-          />
-          <button
-            onClick={() => handleDotClick(1)}
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: showChat ? '#374151' : '#d1d5db',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'background 0.3s ease, transform 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(1.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-            aria-label="Show Chat UI"
-          />
-        </div>
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+          aria-label="Show Google UI"
+        />
+        <button
+          onClick={() => handleDotClick(1)}
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: showChat ? '#374151' : '#d1d5db',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            transition: 'background 0.3s ease, transform 0.2s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.2)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+          aria-label="Show Chat UI"
+        />
       </div>
     </div>
   );
@@ -912,42 +885,36 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
 const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
   return (
     <div className="relative w-full h-full flex items-center justify-center p-4">
-      <div className="w-full max-w-[380px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-        <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-3 bg-gray-50">
-          <div className="w-4 h-4 rounded-full bg-foreground" />
-          <span className="text-sm font-medium text-foreground">AI Assistant</span>
+      <div className="w-full max-w-[420px] flex flex-col gap-3">
+        {/* User Message */}
+        <div 
+          className={`flex justify-end transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
+          style={{ transitionDelay: isActive ? '200ms' : '0ms' }}
+        >
+          <div style={{ background: '#1f2937', color: 'white', padding: '12px 16px', borderRadius: '18px 18px 4px 18px', maxWidth: '75%', fontSize: '14px', lineHeight: '1.4' }}>
+            Best project management tool for a remote team?
+          </div>
         </div>
-        <div className="p-4 space-y-3">
-          {/* User question */}
-          <div className="flex justify-end">
-            <div className="bg-foreground text-white rounded-2xl rounded-br-sm px-4 py-2.5 max-w-[80%]">
-              <p className="text-sm">Best project management tool for a remote team?</p>
+        
+        {/* AI Response */}
+        <div 
+          className={`flex justify-start transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
+          style={{ transitionDelay: isActive ? '400ms' : '0ms' }}
+        >
+          <div style={{ background: '#f3f4f6', borderRadius: '18px 18px 18px 4px', maxWidth: '88%', overflow: 'hidden' }}>
+            {/* Main response */}
+            <div style={{ padding: '12px 16px', fontSize: '14px', lineHeight: '1.5', color: '#374151' }}>
+              <div>For remote teams, I'd recommend:</div>
+              <div style={{ marginTop: '4px' }}><strong>• Notion</strong> — Great for documentation</div>
+              <div style={{ marginTop: '3px' }}><strong>• Asana</strong> — Strong task management</div>
+              <div style={{ marginTop: '3px' }}><strong>• Monday</strong> — Visual project boards</div>
             </div>
-          </div>
-          {/* Sponsored ad */}
-          <div 
-            className={`transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
-            style={{ transitionDelay: isActive ? '800ms' : '0ms' }}
-          >
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl px-4 py-3 flex items-start justify-between gap-3 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <p className="text-sm text-foreground/90">
-                <span className="font-bold text-blue-600">Linear</span> is worth checking out—built for fast-moving teams with async workflows.
-              </p>
-              <span className="text-xs font-semibold text-blue-500 whitespace-nowrap bg-blue-100 px-2 py-0.5 rounded">Sponsored</span>
-            </div>
-          </div>
-          {/* Organic LLM answer */}
-          <div 
-            className={`flex justify-start transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
-            style={{ transitionDelay: isActive ? '1200ms' : '0ms' }}
-          >
-            <div className="bg-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[85%]">
-              <p className="text-sm text-foreground/80 mb-2">For remote teams, I'd recommend:</p>
-              <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-                <span>• Notion</span>
-                <span>• Asana</span>
-                <span>• Monday</span>
-              </div>
+            {/* Sponsored */}
+            <div style={{ borderTop: '1px solid #e5e7eb', background: '#f3f4f6', padding: '12px 16px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginTop: '3px' }}>Linear</div>
+              <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '1px' }}>Built for fast-moving teams with async workflows.</div>
+              <div style={{ fontSize: '13px', color: '#374151', fontWeight: 500, marginTop: '4px' }}>Learn more →</div>
             </div>
           </div>
         </div>

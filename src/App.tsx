@@ -17,6 +17,8 @@ const Onboarding = lazy(() => import("./pages/Onboarding").then(m => ({ default:
 const Dashboard = lazy(() => import("./pages/Dashboard").then(m => ({ default: m.Dashboard })));
 const CampaignNew = lazy(() => import("./pages/CampaignNew").then(m => ({ default: m.CampaignNew })));
 const PublishersOverview = lazy(() => import("./pages/PublishersOverview").then(m => ({ default: m.PublishersOverview })));
+const Publishers = lazy(() => import("./pages/Publishers").then(m => ({ default: m.Publishers })));
+const Advertisers = lazy(() => import("./pages/Advertisers").then(m => ({ default: m.Advertisers })));
 const Demo = lazy(() => import("./pages/Demo").then(m => ({ default: m.Demo })));
 const Login = lazy(() => import("./pages/Login").then(m => ({ default: m.Login })));
 const Docs = lazy(() => import("./pages/Docs"));
@@ -49,6 +51,8 @@ const App = () => (
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/campaign/new" element={<CampaignNew />} />
                 <Route path="/publishers/overview" element={<PublishersOverview />} />
+                <Route path="/publishers" element={<Publishers />} />
+                <Route path="/advertisers" element={<Advertisers />} />
                 <Route path="/demo" element={<Demo />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/docs" element={<Docs />} />

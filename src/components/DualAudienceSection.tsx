@@ -58,76 +58,62 @@ const AdvertisersContent = () => {
           ))}
         </div>
 
-        <div className="flex items-center gap-4 mt-8">
-          <Link 
-            to="/docs#advertisers"
-            className="inline-flex items-center gap-2 text-[#3D3D3D] font-medium hover:underline"
-          >
-            Learn more in Docs
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <a 
-            href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-5 py-2.5 bg-foreground text-background font-medium rounded-lg hover:bg-foreground/90 transition-colors text-sm"
-          >
-            Book a Demo
-          </a>
-        </div>
       </div>
 
       {/* Right: Ad Preview Mockups */}
-      <div>
-        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
-          See exactly how your ads appear in conversations
-        </h4>
-        <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-center">
-          {/* Desktop Preview - Landscape laptop */}
-          <div className="relative flex-1 w-full lg:max-w-[600px]">
+      <div className="-ml-4 lg:-ml-16">
+        {/* Wrapper to measure actual content width */}
+        <div className="inline-flex flex-col items-center">
+          {/* Heading - Centered above both screens */}
+          <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider text-center mb-4 w-full">
+            See exactly how your ads appear in conversations
+          </h4>
+          
+          {/* Scaled mockups container */}
+          <div style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}>
+          <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-end justify-start">
+            {/* Desktop Preview - Landscape laptop */}
+          <div className="relative w-full lg:max-w-[750px]">
             <div className="rounded-xl bg-[#1a1a2e] p-2 shadow-2xl">
               {/* Screen bezel */}
-              <div className="rounded-lg bg-white overflow-hidden" style={{ aspectRatio: '16/10' }}>
+              <div className="rounded-lg bg-white overflow-hidden" style={{ height: '320px', minWidth: '560px' }}>
                 {/* Browser bar with camera dot */}
-                <div className="flex items-center justify-center py-2 bg-gray-50 border-b border-gray-100 relative">
+                <div className="flex items-center justify-center py-1.5 bg-gray-50 border-b border-gray-100 relative">
                   <div className="absolute left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-gray-800" />
                 </div>
                 
-                <div className="flex" style={{ minHeight: '140px' }}>
+                <div className="flex h-[calc(100%-40px)]">
                   {/* Sidebar */}
-                  <div className="w-20 bg-gray-50 border-r border-gray-100 p-2 space-y-1.5 flex-shrink-0">
-                    <div className="h-1.5 w-10 bg-gray-200 rounded" />
-                    <div className="h-3.5 w-full bg-gray-300 rounded" />
-                    <div className="h-1.5 w-12 bg-gray-200 rounded" />
-                    <div className="h-1.5 w-14 bg-gray-200 rounded" />
-                    <div className="h-1.5 w-10 bg-gray-200 rounded" />
-                    <div className="h-1.5 w-12 bg-gray-200 rounded" />
+                  <div className="w-16 bg-gray-50 border-r border-gray-100 p-1.5 space-y-1 flex-shrink-0">
+                    <div className="h-1 w-8 bg-gray-200 rounded" />
+                    <div className="h-3 w-full bg-gray-300 rounded" />
+                    <div className="h-1 w-10 bg-gray-200 rounded" />
+                    <div className="h-1 w-12 bg-gray-200 rounded" />
+                    <div className="h-1 w-8 bg-gray-200 rounded" />
                   </div>
                   
                   {/* Chat area */}
-                  <div className="flex-1 p-2.5 flex flex-col">
+                  <div className="flex-1 p-2 flex flex-col overflow-hidden">
                     {/* User message */}
-                    <div className="flex justify-end mb-2">
-                      <div className="bg-[#3A8BFF] text-white px-3 py-1.5 rounded-xl rounded-tr-sm">
-                        <p className="text-xs">Where can I get a quick coffee on the go?</p>
+                    <div className="flex justify-end mb-1.5">
+                      <div className="bg-[#3A8BFF] text-white px-2.5 py-1.5 rounded-xl rounded-tr-sm">
+                        <p className="text-[11px]">Where can I get a quick coffee on the go?</p>
                       </div>
                     </div>
                     
                     {/* AI Response */}
                     <div className="flex justify-start">
                       <div className="bg-gray-100 rounded-xl rounded-tl-sm max-w-[75%] overflow-hidden">
-                        <div className="px-3 py-2">
-                          <p className="text-xs text-gray-800">For a fast coffee fix, consider a drive-thru coffee shop with a mobile app for easy ordering.</p>
+                        <div className="px-2.5 py-1.5">
+                          <p className="text-[11px] text-gray-800 leading-tight">For a fast coffee fix, consider a drive-thru coffee shop with a mobile app for easy ordering.</p>
                         </div>
                         
                         {/* Sponsored section */}
-                        <div className="border-t border-gray-200 px-3 py-2">
-                          <p className="text-[8px] text-gray-400 uppercase tracking-wider mb-0.5">Sponsored</p>
-                          <p className="text-xs font-semibold text-gray-900">Dutch Bros Coffee</p>
-                          <p className="text-xs text-gray-600">Fuel up with Dutch Bros!</p>
-                          <a className="text-xs text-[#3D3D3D] font-medium mt-0.5 inline-block">Learn more →</a>
+                        <div className="border-t border-gray-200 px-2.5 py-1.5">
+                          <p className="text-[7px] text-gray-400 uppercase tracking-wider mb-0.5">Sponsored</p>
+                          <p className="text-[11px] font-semibold text-gray-900">Dutch Bros Coffee</p>
+                          <p className="text-[10px] text-gray-600">Fuel up with Dutch Bros!</p>
+                          <a className="text-[10px] text-[#3D3D3D] font-medium mt-0.5 inline-block">Learn more →</a>
                         </div>
                       </div>
                     </div>
@@ -135,16 +121,16 @@ const AdvertisersContent = () => {
                     <div className="flex-1" />
                     
                     {/* Input bar */}
-                    <div className="flex items-center gap-1.5 mt-2">
-                      <div className="flex-1 h-7 bg-gray-100 rounded-lg border border-gray-200" />
-                      <div className="w-7 h-7 bg-gray-200 rounded-lg" />
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <div className="flex-1 h-6 bg-gray-100 rounded-lg border border-gray-200" />
+                      <div className="w-6 h-6 bg-gray-200 rounded-lg" />
                     </div>
                   </div>
                 </div>
                 
                 {/* Bottom bar */}
-                <div className="flex justify-center py-1.5 bg-gray-50 border-t border-gray-100">
-                  <div className="w-16 h-0.5 bg-gray-300 rounded-full" />
+                <div className="flex justify-center py-1 bg-gray-50 border-t border-gray-100">
+                  <div className="w-12 h-0.5 bg-gray-300 rounded-full" />
                 </div>
               </div>
             </div>
@@ -155,55 +141,80 @@ const AdvertisersContent = () => {
 
           {/* Mobile Preview - Smaller, phone shape */}
           <div className="flex justify-center lg:justify-start">
-            <div className="relative w-48 flex-shrink-0">
+            <div className="relative w-40 flex-shrink-0">
               <div className="rounded-[2rem] bg-[#1a1a2e] p-1.5 shadow-2xl">
                 {/* Phone notch */}
-                <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-4 bg-black rounded-full z-10" />
+                <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-14 h-3.5 bg-black rounded-full z-10" />
                 
                 {/* Screen */}
-                <div className="rounded-[1.5rem] bg-white overflow-hidden">
-                  <div className="pt-8 pb-4 px-3 min-h-[280px] flex flex-col">
+                <div className="rounded-[1.5rem] bg-white overflow-hidden" style={{ height: '338px' }}>
+                  <div className="pt-7 pb-3 px-2.5 flex flex-col h-full">
                     {/* User message */}
-                    <div className="flex justify-end mb-2">
-                      <div className="bg-[#3A8BFF] text-white px-3 py-2 rounded-xl rounded-tr-sm max-w-[85%]">
-                        <p className="text-[11px]">Where can I get a quick coffee on the go?</p>
+                    <div className="flex justify-end mb-1.5">
+                      <div className="bg-[#3A8BFF] text-white px-2.5 py-1.5 rounded-xl rounded-tr-sm max-w-[85%]">
+                        <p className="text-[10px]">Where can I get a quick coffee on the go?</p>
                       </div>
                     </div>
                     
                     {/* AI Response */}
                     <div className="flex justify-start">
                       <div className="bg-gray-100 rounded-xl rounded-tl-sm max-w-[90%] overflow-hidden">
-                        <div className="px-3 py-2">
-                          <p className="text-[11px] text-gray-800 leading-relaxed">For a fast coffee fix, consider a drive-thru coffee shop with a mobile app for easy ordering.</p>
+                        <div className="px-2.5 py-1.5">
+                          <p className="text-[10px] text-gray-800 leading-tight">For a fast coffee fix, consider a drive-thru coffee shop with a mobile app for easy ordering.</p>
                         </div>
                         
                         {/* Sponsored section */}
-                        <div className="border-t border-gray-200 px-3 py-2">
-                          <p className="text-[8px] text-gray-400 uppercase tracking-wider mb-0.5">Sponsored</p>
-                          <p className="text-[11px] font-semibold text-gray-900">Dutch Bros Coffee</p>
-                          <p className="text-[11px] text-gray-600">Fuel up with Dutch Bros!</p>
-                          <a className="text-[11px] text-[#3D3D3D] font-medium mt-0.5 inline-block">Learn more →</a>
+                        <div className="border-t border-gray-200 px-2.5 py-1.5">
+                          <p className="text-[7px] text-gray-400 uppercase tracking-wider mb-0.5">Sponsored</p>
+                          <p className="text-[10px] font-semibold text-gray-900">Dutch Bros Coffee</p>
+                          <p className="text-[10px] text-gray-600">Fuel up with Dutch Bros!</p>
+                          <a className="text-[10px] text-[#3D3D3D] font-medium mt-0.5 inline-block">Learn more →</a>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  {/* Input bar */}
-                  <div className="px-3 pb-3">
-                    <div className="flex items-center gap-1.5">
-                      <div className="flex-1 h-7 bg-gray-100 rounded-full" />
-                      <div className="w-7 h-7 bg-gray-200 rounded-full" />
+                    
+                    <div className="flex-1 min-h-6" />
+                    
+                    {/* Input bar */}
+                    <div className="px-2.5 pb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <div className="flex-1 h-5 bg-gray-100 rounded-full" />
+                        <div className="w-5 h-5 bg-gray-200 rounded-full" />
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Home indicator */}
-                  <div className="flex justify-center pb-1.5">
-                    <div className="w-20 h-1 bg-black rounded-full" />
+                    
+                    {/* Home indicator */}
+                    <div className="flex justify-center pb-0.5">
+                      <div className="w-14 h-0.5 bg-black rounded-full" />
+                    </div>
                   </div>
                 </div>
               </div>
               <span className="block text-center mt-3 text-xs font-medium text-muted-foreground">Mobile</span>
             </div>
+          </div>
+          </div>
+          </div>
+          
+          {/* CTA Buttons - Centered below both screens */}
+          <div className="flex items-center justify-center gap-4 mt-2 w-full">
+            <Link 
+              to="/advertisers"
+              className="inline-flex items-center gap-2 text-[#3D3D3D] font-medium hover:underline"
+            >
+              Learn more
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <a 
+              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-5 py-2.5 bg-foreground text-background font-medium rounded-lg hover:bg-foreground/90 transition-colors text-sm"
+            >
+              Book a Demo
+            </a>
           </div>
         </div>
       </div>
@@ -230,25 +241,33 @@ const PublishersContent = () => {
             Quick Integration
           </h4>
           <div className="rounded-lg bg-[#1a1a1a] p-4 font-mono text-sm overflow-x-auto">
-            <div className="text-gray-500">// 3 lines to get started</div>
-            <div className="text-[#3D3D3D]">import</div>
-            <span className="text-white"> {"{ Gravity }"} </span>
+            <div className="text-gray-500">// App.tsx</div>
+            <br />
+            <br />
+            <span className="text-[#3D3D3D]">import</span>
+            <span className="text-white"> {"{ GravityProvider }"} </span>
             <span className="text-[#3D3D3D]">from</span>
-            <span className="text-green-400"> '@gravity-ai/react'</span>
+            <span className="text-green-400"> '@iris-technologies/react'</span>
             <span className="text-white">;</span>
             <br />
             <br />
-            <span className="text-white">Gravity.</span>
-            <span className="text-yellow-400">init</span>
-            <span className="text-white">(</span>
-            <span className="text-green-400">'YOUR_API_KEY'</span>
-            <span className="text-white">);</span>
+            <span className="text-[#3D3D3D]">function</span>
+            <span className="text-white"> App() {"{"}</span>
             <br />
-            <span className="text-white">Gravity.</span>
-            <span className="text-yellow-400">render</span>
-            <span className="text-white">(</span>
-            <span className="text-green-400">'#suggestion-container'</span>
-            <span className="text-white">);</span>
+            <span className="text-[#3D3D3D]">  return</span>
+            <span className="text-white"> (</span>
+            <br />
+            <span className="text-white">    {"<"}GravityProvider apiKey=</span>
+            <span className="text-yellow-400">{"{process.env.NEXT_PUBLIC_GRAVITY_API_KEY}"}</span>
+            <span className="text-white">{">"}</span>
+            <br />
+            <span className="text-gray-500">      {"{/* Your app with native AI ads */}"}</span>
+            <br />
+            <span className="text-white">    {"</GravityProvider>"}</span>
+            <br />
+            <span className="text-white">  );</span>
+            <br />
+            <span className="text-white">{"}"}</span>
           </div>
           <div className="flex flex-wrap gap-3 mt-3">
             <a 
@@ -288,30 +307,11 @@ const PublishersContent = () => {
           ))}
         </div>
 
-        <div className="flex items-center gap-4 mt-8">
-          <Link 
-            to="/docs#publishers"
-            className="inline-flex items-center gap-2 text-[#3D3D3D] font-medium hover:underline"
-          >
-            Learn more in Docs
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <a 
-            href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-5 py-2.5 bg-foreground text-background font-medium rounded-lg hover:bg-foreground/90 transition-colors text-sm"
-          >
-            Book a Demo
-          </a>
-        </div>
       </div>
 
       {/* Right: Dashboard Preview - Dark theme */}
       <div>
-        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4">
+        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-4 text-center">
           Your Earnings Dashboard
         </h4>
         <div className="rounded-2xl bg-[#1a1a1a] border border-white/10 shadow-2xl overflow-hidden">
@@ -319,7 +319,7 @@ const PublishersContent = () => {
           <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
             <div>
               <p className="text-xs text-white/50">Total Earnings (30 days)</p>
-              <p className="text-2xl font-bold text-white">$12,847.32</p>
+              <p className="text-2xl font-bold text-white">$128,473.20</p>
             </div>
             <div className="text-right">
               <p className="text-xs text-white/50">vs last month</p>
@@ -330,8 +330,8 @@ const PublishersContent = () => {
           {/* Metrics Grid */}
           <div className="grid grid-cols-3 gap-px bg-white/5">
             {[
-              { label: "Impressions", value: "2.4M", change: "+12%" },
-              { label: "Clicks", value: "48.2K", change: "+8%" },
+              { label: "Impressions", value: "24M", change: "+12%" },
+              { label: "Clicks", value: "482K", change: "+8%" },
               { label: "CPM", value: "$5.35", change: "+5%" },
             ].map((metric, i) => (
               <div key={i} className="bg-[#1a1a1a] p-4 text-center">
@@ -345,7 +345,7 @@ const PublishersContent = () => {
             {[
               { label: "CTR", value: "2.01%", change: "+0.3%" },
               { label: "CPC", value: "$0.27", change: "-2%" },
-              { label: "Revenue", value: "$12.8K", change: "+23%" },
+              { label: "Revenue", value: "$128K", change: "+23%" },
             ].map((metric, i) => (
               <div key={i} className="bg-[#1a1a1a] p-4 text-center">
                 <p className="text-xs text-white/50">{metric.label}</p>
@@ -379,6 +379,27 @@ const PublishersContent = () => {
               />
             </svg>
           </div>
+        </div>
+        
+        {/* CTA Buttons - Centered below dashboard */}
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <Link 
+            to="/publishers"
+            className="inline-flex items-center gap-2 text-[#3D3D3D] font-medium hover:underline"
+          >
+            Learn more
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <a 
+            href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-5 py-2.5 bg-foreground text-background font-medium rounded-lg hover:bg-foreground/90 transition-colors text-sm"
+          >
+            Book a Demo
+          </a>
         </div>
       </div>
     </div>
@@ -420,7 +441,7 @@ export const DualAudienceSection = () => {
                 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200
                 ${activeTab === "publishers" 
                   ? "bg-[#1a1a1a] text-white shadow-sm" 
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-foreground hover:bg-white/50 border border-foreground/30"
                 }
               `}
             >

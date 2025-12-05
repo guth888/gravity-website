@@ -66,47 +66,6 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
           {/* Nav Items */}
           <nav className="flex-1 overflow-y-auto p-6">
             <div className="space-y-4">
-              {/* For Publishers */}
-              <div>
-                <div className="flex items-center justify-between w-full py-2">
-                  <a
-                    href="/publishers"
-                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
-                    onClick={onClose}
-                  >
-                    For Publishers
-                  </a>
-                  <button
-                    onClick={() => toggleDropdown('publishers')}
-                    className="p-1 hover:bg-accent rounded transition-colors"
-                  >
-                    <ChevronDown 
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        openDropdown === 'publishers' ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                </div>
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openDropdown === 'publishers' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="space-y-1 pl-4">
-                    {navData.forPublishers.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                        onClick={onClose}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
               {/* For Advertisers */}
               <div>
                 <div className="flex items-center justify-between w-full py-2">
@@ -135,6 +94,47 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
                 >
                   <div className="space-y-1 pl-4">
                     {navData.forAdvertisers.map((item) => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                        onClick={onClose}
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* For Publishers */}
+              <div>
+                <div className="flex items-center justify-between w-full py-2">
+                  <a
+                    href="/publishers"
+                    className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+                    onClick={onClose}
+                  >
+                    For Publishers
+                  </a>
+                  <button
+                    onClick={() => toggleDropdown('publishers')}
+                    className="p-1 hover:bg-accent rounded transition-colors"
+                  >
+                    <ChevronDown 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        openDropdown === 'publishers' ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                </div>
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openDropdown === 'publishers' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="space-y-1 pl-4">
+                    {navData.forPublishers.map((item) => (
                       <a
                         key={item.href}
                         href={item.href}

@@ -8,49 +8,32 @@ export const Header = ({ className }: { className?: string }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLElement>(null);
-  const lastScrollY = useRef(0);
+  const prevScrollY = useRef(0);
 
   useEffect(() => {
-    let ticking = false;
-    
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentScrollY = window.scrollY;
-          const headline = document.querySelector('.hero-headline');
-          const header = headerRef.current;
-          
-          if (!headline || !header) {
-            ticking = false;
-            return;
-          }
-          
-          const headlineRect = headline.getBoundingClientRect();
-          const headerRect = header.getBoundingClientRect();
-          
-          const headerBottom = headerRect.bottom;
-          const headlineTop = headlineRect.top;
-          
-          const isScrollingDown = currentScrollY > lastScrollY.current;
+      const currentScrollY = window.scrollY;
       
-          // Hide navbar when it touches the headline (exact pixel detection)
-          if (isScrollingDown && headerBottom >= headlineTop && headlineTop < headerRect.height) {
-            setIsVisible(false);
-          } 
-          // Show navbar when scrolling up or when headline is below viewport
-          else if (!isScrollingDown || headlineTop > headerRect.height) {
-            setIsVisible(true);
-          }
-          
-          lastScrollY.current = currentScrollY;
-          ticking = false;
-        });
-        ticking = true;
+      // Always show at the very top
+      if (currentScrollY < 50) {
+        setIsVisible(true);
+        prevScrollY.current = currentScrollY;
+        return;
+      }
+      
+      // Determine scroll direction
+      if (currentScrollY > prevScrollY.current + 5) {
+        // Scrolling DOWN - hide navbar
+        setIsVisible(false);
+        prevScrollY.current = currentScrollY;
+      } else if (currentScrollY < prevScrollY.current - 5) {
+        // Scrolling UP - show navbar
+        setIsVisible(true);
+        prevScrollY.current = currentScrollY;
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -81,6 +64,18 @@ export const Header = ({ className }: { className?: string }) => {
 
           {/* Desktop Navigation - Center */}
           <nav className="hidden lg:flex items-center gap-5 mx-auto">
+            <a 
+              href="/advertisers" 
+              className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
+            >
+              Advertisers
+            </a>
+            <a 
+              href="/publishers" 
+              className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
+            >
+              Publishers
+            </a>
             <a 
               href="/docs" 
               className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"

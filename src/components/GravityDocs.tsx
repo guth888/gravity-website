@@ -619,16 +619,14 @@ const PublishersSection = () => (
     <Paragraph>
       Example metrics from early integrations:
     </Paragraph>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
-      <StatCard value="$2.50" label="Avg CPM" />
-      <StatCard value="85%" label="Fill Rate" />
-      <StatCard value="12.4%" label="CTR" />
-      <StatCard value="+0.2%" label="UX Impact" />
+    <div className="grid grid-cols-2 gap-4 my-6">
+      <StatCard value="$3-$10" label="Avg CPM" />
+      <StatCard value="1.5%" label="CTR" />
     </div>
 
     <SubsectionHeader number="03.4" title="Use Cases" id="publisher-use-cases" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-      {["Consumer Chatbots", "AI Assistants", "Knowledge Agents", "Search/Chat Hybrids"].map((useCase) => (
+      {["Consumer Chatbots", "AI Assistants", "Knowledge Agents", "Search/Chat Hybrids", "AI Consumer Apps", "Productivity Tools & Copilots", "Developer Tools & IDEs", "Autonomous Agents"].map((useCase) => (
         <div key={useCase} className="bg-white/5 border border-white/10 rounded-lg p-4">
           <span className="text-white/80">{useCase}</span>
         </div>
@@ -648,23 +646,71 @@ const AdvertisersSection = () => (
       Not after they've made up their mind—during the decision itself.
     </Paragraph>
 
-    <SubsectionHeader number="04.2" title="Targeting Controls" id="targeting" />
-    <ul className="space-y-3 mb-8">
-      <FeatureItem>Clicks</FeatureItem>
-      <FeatureItem>Conversions</FeatureItem>
-      <FeatureItem>Reach</FeatureItem>
+    <SubsectionHeader number="04.2" title="Campaign Objectives" id="targeting" />
+    <Paragraph>
+      Choose from three campaign objectives based on your goals:
+    </Paragraph>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-1">Clicks</div>
+        <div className="text-white/60 text-sm">Drive traffic to your website</div>
+      </div>
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-1">Reach</div>
+        <div className="text-white/60 text-sm">Maximize impressions and brand awareness</div>
+      </div>
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-1">Conversions</div>
+        <div className="text-white/60 text-sm">Optimize for specific conversion actions</div>
+      </div>
+    </div>
+
+    <SubsectionHeader number="04.3" title="Campaign Setup" id="campaign-setup" />
+    <Paragraph>
+      Set up your campaign with these core details:
+    </Paragraph>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Campaign Name</strong> — Give your campaign a descriptive name</FeatureItem>
+      <FeatureItem><strong>Daily Budget</strong> — Set your daily spend limit in dollars</FeatureItem>
+      <FeatureItem><strong>Landing Page URL</strong> — Where users go when they click</FeatureItem>
+      <FeatureItem><strong>Start/End Dates</strong> — Schedule your campaign with optional end date</FeatureItem>
     </ul>
 
-    <SubsectionHeader number="04.3" title="Creative Formats" id="creative-formats" />
+    <SubsectionHeader number="04.4" title="Targeting & Demographics" id="demographics" />
     <Paragraph>
-      Text-only native suggestions. No images, no videos—just a clear, helpful 
-      recommendation that fits naturally in the conversation. Brand name, value prop, 
-      and optional CTA.
+      Reach the right audience with location targeting:
+    </Paragraph>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Location Targeting</strong> — Select specific countries and regions for your target audience</FeatureItem>
+      <FeatureItem><strong>UTM Parameters</strong> — Automatic UTM tracking (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
+    </ul>
+
+    <SubsectionHeader number="04.5" title="Creative Formats" id="creative-formats" />
+    <Paragraph>
+      Text-only native suggestions that fit naturally in AI conversations. Choose from two formats:
+    </Paragraph>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Sponsored Block</strong> — A dedicated suggestion card with your brand name, value proposition, and "Learn more" CTA</FeatureItem>
+      <FeatureItem><strong>Inline Hyperlink</strong> — A subtle inline mention that links directly to your landing page</FeatureItem>
+    </ul>
+    <Paragraph>
+      Both formats include clear "Sponsored" labeling and are previewed in mobile and desktop views before launch.
     </Paragraph>
 
-    <SubsectionHeader number="04.4" title="Performance Measurement" id="performance" />
+    <SubsectionHeader number="04.6" title="Conversion Tracking & Events Manager" id="events-manager" />
     <Paragraph>
-      Example performance from limited tests:
+      Track conversions with our Events Manager:
+    </Paragraph>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Pixel Setup</strong> — Install our tracking pixel with support for HTML, Shopify, React, Next.js, Wordpress, Webflow, and Framer</FeatureItem>
+      <FeatureItem><strong>Conversion Types</strong> — Track purchases, sign-ups, and custom events</FeatureItem>
+      <FeatureItem><strong>Integrations</strong> — Connect with Calendly, Shopify, or use our API for custom tracking</FeatureItem>
+      <FeatureItem><strong>Live Testing</strong> — Verify your pixel installation with real-time event testing</FeatureItem>
+    </ul>
+
+    <SubsectionHeader number="04.7" title="Performance Measurement" id="performance" />
+    <Paragraph>
+      Track campaign performance with real-time analytics:
     </Paragraph>
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
       <StatCard value="3.2x" label="ROAS" />
@@ -695,22 +741,22 @@ const RenderingSection = () => (
         <div className="p-4 space-y-3 bg-white">
           {/* User question */}
           <div className="flex justify-end">
-            <div className="bg-gray-800 rounded-xl rounded-tr-sm px-3 py-2 max-w-[80%]">
-              <p className="text-sm text-white">What's the best project management tool for a remote team?</p>
+            <div className="bg-blue-500 rounded-xl rounded-tr-sm px-3 py-2 max-w-[80%]">
+              <p className="text-sm text-white">How can I get food delivered quickly?</p>
             </div>
           </div>
           
           {/* AI response */}
           <div className="flex justify-start">
             <div className="bg-gray-100 rounded-xl rounded-bl-sm px-3 py-2.5 max-w-[85%]">
-              <p className="text-sm text-gray-700 mb-2">For remote teams, I'd recommend tools like Asana, Monday, or Notion. They all offer strong collaboration features.</p>
+              <p className="text-sm text-gray-700 mb-2">Look for food delivery services with real-time tracking and a wide range of restaurants to choose from.</p>
               
-              {/* Sponsored suggestion inline */}
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 mt-2">
-                <p className="text-sm text-gray-900">
-                  <span className="font-semibold text-emerald-700">Linear</span> is worth checking out—built for fast-moving teams with excellent async workflows.
-                </p>
-                <span className="text-[10px] text-emerald-600 font-semibold mt-1 block uppercase tracking-wide">Sponsored</span>
+              {/* Sponsored Block - matches real UI format */}
+              <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 mt-2">
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium mb-1">Sponsored</p>
+                <p className="text-sm font-semibold text-gray-900 mb-0.5">DoorDash</p>
+                <p className="text-sm text-gray-600">Get food delivered fast!</p>
+                <p className="text-sm text-blue-500 mt-1.5 font-medium">Learn more →</p>
               </div>
             </div>
           </div>
@@ -865,40 +911,67 @@ const AdvertiserIntegrationsSection = () => (
   <div className="docs-section">
     <SectionHeader number="07" title="Advertiser Integrations" id="advertiser-integrations" />
     
-    <SubsectionHeader number="07.1" title="How to Join" id="join-network" />
+    <SubsectionHeader number="07.1" title="Campaign Setup" id="join-network" />
     <Paragraph>
-      Get started in three steps: Create an account, set up your first campaign, 
-      and launch. No minimum spend, no long-term contracts.
+      Create a new campaign by configuring these settings:
     </Paragraph>
-
-    <SubsectionHeader number="07.2" title="Budgets and Bids" id="budgets-bids" />
-    <ul className="space-y-3 mb-8">
-      <FeatureItem>Daily and lifetime budget caps</FeatureItem>
-      <FeatureItem>CPC or CPM bidding models</FeatureItem>
-      <FeatureItem>Automated bid optimization</FeatureItem>
-      <FeatureItem>Real-time spend tracking</FeatureItem>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Campaign Name</strong> — A descriptive name for your campaign</FeatureItem>
+      <FeatureItem><strong>Daily Budget</strong> — Set your spending limit per day</FeatureItem>
+      <FeatureItem><strong>Landing Page URL</strong> — Where users go when they click</FeatureItem>
+      <FeatureItem><strong>Start/End Dates</strong> — Schedule your campaign timing</FeatureItem>
+      <FeatureItem><strong>Campaign Objective</strong> — Clicks, Reach, or Conversions</FeatureItem>
     </ul>
 
-    <SubsectionHeader number="07.3" title="Audience Controls" id="audience-controls" />
-    <ul className="space-y-3 mb-8">
-      <FeatureItem>Intent category targeting</FeatureItem>
-      <FeatureItem>Publisher allowlists</FeatureItem>
-      <FeatureItem>Geographic targeting</FeatureItem>
-      <FeatureItem>Device and platform filters</FeatureItem>
+    <SubsectionHeader number="07.2" title="Conversion Configuration" id="budgets-bids" />
+    <Paragraph>
+      Track conversions with automatic UTM parameters and conversion types:
+    </Paragraph>
+    <ul className="space-y-3 mb-6">
+      <FeatureItem><strong>Conversion Type</strong> — Purchase, Sign Up, Lead, or custom</FeatureItem>
+      <FeatureItem><strong>UTM Parameters</strong> — Automatically appended (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
+      <FeatureItem><strong>Preview URL</strong> — See exactly how your tracking URL will look</FeatureItem>
     </ul>
 
-    <SubsectionHeader number="07.4" title="Creative Input" id="creative-input" />
-    <Paragraph>
-      Text-only creatives. Provide your brand name, a short value proposition (under 100 characters), 
-      and a destination URL. Gravity handles the rest.
-    </Paragraph>
-
-    <SubsectionHeader number="07.5" title="Campaign Optimization" id="optimization" />
+    <SubsectionHeader number="07.3" title="Demographics & Targeting" id="audience-controls" />
     <ul className="space-y-3 mb-8">
-      <FeatureItem>A/B testing for creative variants</FeatureItem>
-      <FeatureItem>Automated bid adjustments based on performance</FeatureItem>
-      <FeatureItem>Category performance insights</FeatureItem>
-      <FeatureItem>Conversion tracking integration</FeatureItem>
+      <FeatureItem><strong>Locations</strong> — Target specific countries, regions, or cities</FeatureItem>
+      <FeatureItem><strong>Intent Categories</strong> — Reach users based on what they're asking about</FeatureItem>
+    </ul>
+
+    <SubsectionHeader number="07.4" title="Events Manager" id="creative-input" />
+    <Paragraph>
+      Set up tracking and monitor events from your campaigns with our Events Manager:
+    </Paragraph>
+    <div className="my-6 space-y-4">
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-2">1. Setup Your Pixel</div>
+        <div className="text-white/60 text-sm mb-2">Copy and paste the tracking code into your website's header. Choose your platform:</div>
+        <div className="flex flex-wrap gap-2">
+          {["HTML", "Shopify", "React", "Next.js", "Wordpress", "Webflow", "Framer"].map((platform) => (
+            <span key={platform} className="bg-white/10 text-white/80 text-xs px-2 py-1 rounded">{platform}</span>
+          ))}
+        </div>
+      </div>
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-2">2. Test Your Pixel</div>
+        <div className="text-white/60 text-sm">Verify the pixel is installed correctly and view detected domains</div>
+      </div>
+      <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+        <div className="text-white font-semibold mb-2">3. Conversion Tracking</div>
+        <div className="text-white/60 text-sm">Connect integrations (Calendly, Shopify) or use the API to track conversions</div>
+      </div>
+    </div>
+
+    <SubsectionHeader number="07.5" title="Ad Preview" id="optimization" />
+    <Paragraph>
+      Preview exactly how your ad will appear before launching. Ads are generated on the fly 
+      based on the user's question—always relevant and contextual.
+    </Paragraph>
+    <ul className="space-y-3 mb-8">
+      <FeatureItem><strong>Sponsored Block</strong> — Full suggestion with brand, description, and CTA</FeatureItem>
+      <FeatureItem><strong>Inline Hyperlink</strong> — Subtle inline mention within the response</FeatureItem>
+      <FeatureItem><strong>Mobile & Desktop</strong> — Preview both views before launch</FeatureItem>
     </ul>
   </div>
 );
@@ -1020,7 +1093,7 @@ const PerformanceSection = () => (
     </Paragraph>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
       <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-center">
-        <div className="text-3xl font-bold text-[#3D3D3D] mb-2">12.4%</div>
+        <div className="text-3xl font-bold text-[#3D3D3D] mb-2">1.5%</div>
         <div className="text-sm text-white/50">Average CTR</div>
         <div className="text-xs text-white/30 mt-1">vs 0.35% display</div>
       </div>

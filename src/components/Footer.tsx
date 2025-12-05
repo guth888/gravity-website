@@ -1,96 +1,71 @@
 import { Link } from "react-router-dom";
 
-export const Footer = ({ className }: { className?: string }) => {
-  const navigation = {
-    publishers: [
-      { name: 'Docs', href: '/docs' },
-    ],
-    advertisers: [
-      { name: 'FAQ', href: '/#faq' },
-    ],
-    company: [
-      { name: 'Contact', href: '/contact' },
-    ],
-  };
-
+export const Footer = ({ className, dark }: { className?: string; dark?: boolean }) => {
+  const isDark = dark || className?.includes('bg-[#0a0a0a]');
+  
   return (
-    <footer className={`relative overflow-hidden bg-background border-t border-border ${className || ''}`}>
+    <footer className={`relative overflow-hidden ${isDark ? 'bg-[#0a0a0a] border-white/10' : 'bg-background border-t border-border'} ${className || ''}`}>
       {/* Content */}
       <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-20 sm:py-24 md:py-32">
         
         {/* Top Section - Brand */}
         <div className="text-center mb-16 sm:mb-20">
           <Link to="/" className="inline-block">
-            <span className="text-2xl sm:text-3xl font-headline font-bold text-foreground tracking-tight">
+            <span className={`text-2xl sm:text-3xl font-headline font-bold tracking-tight ${isDark ? 'text-white' : 'text-foreground'}`}>
               Gravity
             </span>
           </Link>
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 mb-16 sm:mb-20 max-w-3xl mx-auto text-center">
-          {/* For Publishers */}
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16 sm:mb-20 max-w-3xl mx-auto text-center">
+          {/* Publishers */}
           <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
+            <Link 
+              to="/publishers"
+              className={`text-xs uppercase tracking-[0.15em] transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
               Publishers
-            </p>
-            <ul className="space-y-2">
-              {navigation.publishers.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            </Link>
           </div>
 
-          {/* For Advertisers */}
+          {/* Advertisers */}
           <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
+            <Link 
+              to="/advertisers"
+              className={`text-xs uppercase tracking-[0.15em] transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
               Advertisers
-            </p>
-            <ul className="space-y-2">
-              {navigation.advertisers.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            </Link>
           </div>
 
-          {/* Company */}
+          {/* Docs */}
           <div>
-            <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground mb-4">
-              Company
-            </p>
-            <ul className="space-y-2">
-              {navigation.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <Link 
+              to="/docs"
+              className={`text-xs uppercase tracking-[0.15em] transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              Docs
+            </Link>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <a 
+              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-xs uppercase tracking-[0.15em] transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              Contact
+            </a>
           </div>
 
         </div>
 
         {/* Bottom */}
         <div className="text-center">
-          <p className="text-xs text-muted-foreground">
+          <p className={`text-xs ${isDark ? 'text-gray-400' : 'text-muted-foreground'}`}>
             © {new Date().getFullYear()} Gravity AI
           </p>
         </div>
