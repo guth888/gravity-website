@@ -22,6 +22,12 @@ const Advertisers = lazy(() => import("./pages/Advertisers").then(m => ({ defaul
 const Demo = lazy(() => import("./pages/Demo").then(m => ({ default: m.Demo })));
 const Login = lazy(() => import("./pages/Login").then(m => ({ default: m.Login })));
 const Docs = lazy(() => import("./pages/Docs"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Careers = lazy(() => import("./pages/Careers"));
+const About = lazy(() => import("./pages/About"));
+const Blog = lazy(() => import("./pages/Blog"));
+const Help = lazy(() => import("./pages/Help"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +62,12 @@ const App = () => (
                 <Route path="/demo" element={<Demo />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/docs" element={<Docs />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/help" element={<Help />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

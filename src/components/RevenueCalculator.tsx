@@ -29,11 +29,13 @@ export const RevenueCalculator = () => {
 
   const MIN_MESSAGES = 10000;
   const MAX_MESSAGES = 100000000;
-  const LOW_CPM = 3; // $3 per 1000 messages
-  const HIGH_CPM = 10; // $10 per 1000 messages
+  const LOW_CPM = 3;    // $3 per 1000 messages
+  const MID_CPM = 15;   // $15 per 1000 messages
+  const HIGH_CPM = 200; // $200 per 1000 messages
 
   // Calculate earnings
   const lowEarnings = (messages / 1000) * LOW_CPM;
+  const midEarnings = (messages / 1000) * MID_CPM;
   const highEarnings = (messages / 1000) * HIGH_CPM;
 
   // Calculate slider percentage
@@ -170,6 +172,10 @@ export const RevenueCalculator = () => {
           <div className="flex justify-between items-center">
             <span className="text-gray-400">Low estimate (${LOW_CPM} CPM):</span>
             <span className="text-white font-semibold">{formatCurrency(lowEarnings)}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-400">Mid estimate (${MID_CPM} CPM):</span>
+            <span className="text-white font-semibold">{formatCurrency(midEarnings)}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-400">High estimate (${HIGH_CPM} CPM):</span>

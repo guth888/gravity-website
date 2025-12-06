@@ -16,6 +16,7 @@ export const Publishers = () => {
   const [activeTab, setActiveTab] = useState<UseCaseTab>("chatbots");
   const [isScrolling, setIsScrolling] = useState(false);
   const [dashboardView, setDashboardView] = useState<"chart" | "table">("chart");
+  const [isManualDashboardSwitch, setIsManualDashboardSwitch] = useState(false);
   const sectionRefs = {
     chatbots: useRef<HTMLDivElement>(null),
     assistants: useRef<HTMLDivElement>(null),
@@ -70,11 +71,23 @@ export const Publishers = () => {
 
   // Auto-switch dashboard view between chart and table
   useEffect(() => {
+    if (isManualDashboardSwitch) return; // Pause auto-switch if user manually clicked
+    
     const interval = setInterval(() => {
       setDashboardView((prev) => (prev === "chart" ? "table" : "chart"));
     }, 5000); // Switch every 5 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [isManualDashboardSwitch]);
+
+  // Reset manual switch flag after 10 seconds
+  useEffect(() => {
+    if (isManualDashboardSwitch) {
+      const timer = setTimeout(() => {
+        setIsManualDashboardSwitch(false);
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [isManualDashboardSwitch]);
 
   const useCases = {
     chatbots: {
@@ -726,7 +739,10 @@ export const Publishers = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex bg-[#1a1a1a] rounded-full border border-white/10 p-0.5">
                   <button 
-                    onClick={() => setDashboardView("chart")}
+                    onClick={() => {
+                      setDashboardView("chart");
+                      setIsManualDashboardSwitch(true);
+                    }}
                     className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
                       dashboardView === "chart" 
                         ? "bg-blue-500 text-white" 
@@ -736,7 +752,10 @@ export const Publishers = () => {
                     Chart
                   </button>
                   <button 
-                    onClick={() => setDashboardView("table")}
+                    onClick={() => {
+                      setDashboardView("table");
+                      setIsManualDashboardSwitch(true);
+                    }}
                     className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors ${
                       dashboardView === "table" 
                         ? "bg-blue-500 text-white" 
@@ -962,8 +981,26 @@ export const Publishers = () => {
               
               {/* Auto-switch indicator dots */}
               <div className="flex justify-center gap-2 mt-4">
-                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${dashboardView === "chart" ? "bg-blue-500 w-4" : "bg-gray-600"}`} />
-                <div className={`w-2 h-2 rounded-full transition-all duration-300 ${dashboardView === "table" ? "bg-blue-500 w-4" : "bg-gray-600"}`} />
+                <button
+                  onClick={() => {
+                    setDashboardView("chart");
+                    setIsManualDashboardSwitch(true);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer hover:opacity-80 ${
+                    dashboardView === "chart" ? "bg-blue-500 w-4" : "bg-gray-600"
+                  }`}
+                  aria-label="Switch to chart view"
+                />
+                <button
+                  onClick={() => {
+                    setDashboardView("table");
+                    setIsManualDashboardSwitch(true);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer hover:opacity-80 ${
+                    dashboardView === "table" ? "bg-blue-500 w-4" : "bg-gray-600"
+                  }`}
+                  aria-label="Switch to table view"
+                />
               </div>
             </div>
           </div>
