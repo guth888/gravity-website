@@ -74,15 +74,6 @@ const Help = () => {
     }
   ];
 
-  const quickLinks = [
-    { label: "What is Gravity?", link: "/help/getting-started" },
-    { label: "SDK setup guide", link: "/help/sdk" },
-    { label: "Publisher monetization", link: "/help/publishers" },
-    { label: "Campaign creation", link: "/help/advertisers" },
-    { label: "Conversion tracking", link: "/help/advertisers" },
-    { label: "Common questions", link: "/help/faq" },
-  ];
-
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-gray-900">
       {/* Header */}
@@ -142,29 +133,6 @@ const Help = () => {
                   <p className="text-gray-600 leading-relaxed flex-1">{category.description}</p>
                 </Link>
               )
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Links Section */}
-      <section className="py-16 px-6 bg-white border-t border-gray-200">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-headline font-bold text-gray-900 mb-8">
-            Popular topics
-          </h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {quickLinks.map((item, index) => (
-              <Link
-                key={index}
-                to={item.link}
-                className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group"
-              >
-                <span className="text-gray-700 group-hover:text-gray-900">{item.label}</span>
-                <svg className="w-4 h-4 text-gray-400 group-hover:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
             ))}
           </div>
         </div>
