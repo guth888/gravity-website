@@ -87,9 +87,9 @@ const About = () => {
       </section>
 
       {/* Scrolling Logo Marquee */}
-      <section className="py-4 bg-[#0a0a0a] border-y border-white/5 overflow-hidden">
+      <section className="bg-[#0a0a0a] border-y border-white/5 overflow-hidden" style={{ height: '60px' }}>
         {/* Marquee container */}
-        <div className="relative">
+        <div className="relative h-full flex items-center">
           {/* Fade edges */}
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
@@ -100,12 +100,12 @@ const About = () => {
             {allLogos.map((item, index) => (
               <div 
                 key={`first-${index}`} 
-                className="flex-shrink-0 mx-10 flex items-center justify-center"
+                className="flex-shrink-0 mx-12 flex items-center justify-center"
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="h-8 w-auto object-contain filter brightness-0 invert opacity-50"
+                  className="h-14 w-auto object-contain filter brightness-0 invert opacity-60"
                 />
               </div>
             ))}
@@ -113,12 +113,12 @@ const About = () => {
             {allLogos.map((item, index) => (
               <div 
                 key={`second-${index}`} 
-                className="flex-shrink-0 mx-10 flex items-center justify-center"
+                className="flex-shrink-0 mx-12 flex items-center justify-center"
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="h-8 w-auto object-contain filter brightness-0 invert opacity-50"
+                  className="h-14 w-auto object-contain filter brightness-0 invert opacity-60"
                 />
               </div>
             ))}
