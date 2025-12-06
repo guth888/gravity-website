@@ -29,29 +29,21 @@ const HelpSDK = () => {
             </section>
 
             <section>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Quick start (React)</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">Authentication</h2>
+              <p className="mb-3">All requests require a Publisher API key in the Authorization header:</p>
               <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
-{`import { GravityProvider } from '@gravity-ai/react';
-
-function App() {
-  return (
-    <GravityProvider apiKey={process.env.GRAVITY_API_KEY}>
-      {/* Your app */}
-    </GravityProvider>
-  );
-}`}
+{`Authorization: Bearer YOUR_API_KEY`}
               </pre>
+              <p className="mt-3 text-sm text-gray-600">Get your API key from the Gravity Dashboard.</p>
             </section>
 
             <section>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Configuration options</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">Quick start (REST API)</h2>
               <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
-{`gravity.configure({
-  categories: ['saas', 'fintech'],  // Allowed categories
-  blocklist: ['gambling'],          // Blocked categories
-  safeMode: 'strict',               // Brand safety
-  maxSuggestionsPerSession: 3       // Frequency cap
-});`}
+{`curl -X POST https://server.trygravity.ai/ad \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"message": "What CRM should I use?"}'`}
               </pre>
             </section>
 

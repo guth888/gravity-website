@@ -22,8 +22,7 @@ const GettingStarted = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">What is Gravity?</h2>
               <p>
-                Gravity is an ad platform for AI apps. We place sponsored suggestions inside LLM conversations 
-                at moments when users are making decisions.
+                Gravity is the ad layer for LLM's. We place sponsored suggestions inside LLM conversations at moments when users are making decisions.
               </p>
             </section>
 
@@ -39,8 +38,8 @@ const GettingStarted = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Who is it for?</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><strong>Publishers</strong> — AI apps, chatbots, assistants that want to monetize</li>
-                <li><strong>Advertisers</strong> — Brands that want to reach users during high-intent moments</li>
+                <li><strong>LLM Publishers</strong> — Consumer Chatbots, Search/Chat hybrids, AI Consumer Apps and many more. (Any LLM Surface)</li>
+                <li><strong>Advertisers</strong> — Brands that want to reach users in these LLM Surfaces</li>
               </ul>
             </section>
 

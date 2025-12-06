@@ -22,8 +22,7 @@ const HelpAdvertisers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">How it works</h2>
               <p>
-                Your ads appear as sponsored suggestions inside AI conversations 
-                when users ask questions relevant to your product. You pay per click or impression.
+                Your ads appear as sponsored suggestions inside AI conversations when users ask questions relevant to your product.
               </p>
             </section>
 
@@ -48,7 +47,7 @@ const HelpAdvertisers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Ad formats</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><strong>Sponsored Block</strong> — A card with your brand name, description, and "Learn more" link</li>
+                <li><strong>Sponsored Block</strong> — A card with your brand name, description.</li>
                 <li><strong>Inline Hyperlink</strong> — A subtle mention within the AI response</li>
               </ul>
             </section>
@@ -56,7 +55,7 @@ const HelpAdvertisers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Conversion tracking</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li>Install our tracking pixel (HTML, Shopify, React, WordPress, etc.)</li>
+                <li>Install our tracking pixel (HTML, Shopify, React, etc.)</li>
                 <li>Automatic UTM parameters on all clicks</li>
                 <li>Integrations with Calendly and Shopify</li>
               </ul>

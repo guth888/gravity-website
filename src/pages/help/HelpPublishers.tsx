@@ -22,8 +22,7 @@ const HelpPublishers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">How it works</h2>
               <p>
-                Add our SDK to your AI app. When users ask purchase-intent questions, 
-                we return a relevant sponsored suggestion. You earn revenue per impression and click.
+                Add our SDK to your LLM Surface. When users ask purchase-intent questions, we return a relevant sponsored suggestion. You earn revenue per impression and click.
               </p>
             </section>
 
@@ -48,11 +47,8 @@ const HelpPublishers = () => {
 
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Earnings</h2>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>CPM: $3–$10 (per 1,000 impressions)</li>
-                <li>Average CTR: 1.5%</li>
-                <li>Track impressions, clicks, CTR, and revenue in your dashboard</li>
-              </ul>
+              <p className="mb-2">CPM: $3–$200 (per 1,000 messages)</p>
+              <p>Track impressions, clicks, CTR, and revenue in your dashboard</p>
             </section>
 
             <section>
