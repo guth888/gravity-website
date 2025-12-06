@@ -12,7 +12,7 @@ const Help = () => {
       ),
       title: "Getting Started",
       description: "Learn what Gravity is, how it works, and how it solves the monetization problem for AI apps.",
-      link: "/docs#overview",
+      link: "/help/getting-started",
       linkText: "Read overview"
     },
     {
@@ -23,7 +23,7 @@ const Help = () => {
       ),
       title: "For Publishers",
       description: "Monetize your LLM app with native ads. SDK setup, configuration, analytics, and best practices.",
-      link: "/docs#publishers",
+      link: "/help/publishers",
       linkText: "Publisher docs"
     },
     {
@@ -35,7 +35,7 @@ const Help = () => {
       ),
       title: "For Advertisers",
       description: "Reach high-intent users inside AI conversations. Campaign setup, targeting, and conversion tracking.",
-      link: "/docs#advertisers",
+      link: "/help/advertisers",
       linkText: "Advertiser docs"
     },
     {
@@ -46,7 +46,7 @@ const Help = () => {
       ),
       title: "SDK & API Reference",
       description: "Technical documentation for React SDK, API SDK, and REST API. Code examples and integration guides.",
-      link: "/docs#publisher-integrations",
+      link: "/help/sdk",
       linkText: "View SDK docs"
     },
     {
@@ -57,7 +57,7 @@ const Help = () => {
       ),
       title: "FAQ",
       description: "Frequently asked questions about Gravity for publishers, advertisers, and technical implementation.",
-      link: "/docs#faqs",
+      link: "/help/faq",
       linkText: "View FAQ"
     },
     {
@@ -75,12 +75,12 @@ const Help = () => {
   ];
 
   const quickLinks = [
-    { label: "What is Gravity?", link: "/docs#what-gravity-is" },
-    { label: "How the auction works", link: "/docs#realtime-auction" },
-    { label: "React SDK setup", link: "/docs#sdk-options" },
-    { label: "Campaign creation", link: "/docs#join-network" },
-    { label: "Tracking conversions", link: "/docs#performance" },
-    { label: "Brand safety", link: "/docs#protect-conversations" },
+    { label: "What is Gravity?", link: "/help/getting-started" },
+    { label: "SDK setup guide", link: "/help/sdk" },
+    { label: "Publisher monetization", link: "/help/publishers" },
+    { label: "Campaign creation", link: "/help/advertisers" },
+    { label: "Conversion tracking", link: "/help/advertisers" },
+    { label: "Common questions", link: "/help/faq" },
   ];
 
   return (

@@ -29,6 +29,13 @@ const About = lazy(() => import("./pages/About"));
 const Blog = lazy(() => import("./pages/Blog"));
 const Help = lazy(() => import("./pages/Help"));
 
+// Help subpages
+const HelpGettingStarted = lazy(() => import("./pages/help/GettingStarted"));
+const HelpPublishers = lazy(() => import("./pages/help/HelpPublishers"));
+const HelpAdvertisers = lazy(() => import("./pages/help/HelpAdvertisers"));
+const HelpSDK = lazy(() => import("./pages/help/HelpSDK"));
+const HelpFAQ = lazy(() => import("./pages/help/HelpFAQ"));
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -68,6 +75,11 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/help" element={<Help />} />
+                <Route path="/help/getting-started" element={<HelpGettingStarted />} />
+                <Route path="/help/publishers" element={<HelpPublishers />} />
+                <Route path="/help/advertisers" element={<HelpAdvertisers />} />
+                <Route path="/help/sdk" element={<HelpSDK />} />
+                <Route path="/help/faq" element={<HelpFAQ />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
