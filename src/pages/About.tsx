@@ -86,30 +86,30 @@ const About = () => {
       </section>
 
       {/* Scrolling Logo Marquee */}
-      <section className="py-12 bg-[#111111] border-y border-white/10 overflow-hidden">
-        <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
+      <section className="py-16 bg-[#111111] border-y border-white/10 overflow-hidden">
+        <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-10">
           AI-powered apps use Gravity
         </p>
         
         {/* Marquee container */}
         <div className="relative">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none" />
           
           {/* Scrolling track */}
-          <div className="flex animate-marquee">
+          <div className="flex animate-marquee items-center">
             {/* First set of logos */}
             {allLogos.map((item, index) => (
               <div 
                 key={`first-${index}`} 
-                className="flex-shrink-0 mx-8 flex items-center justify-center"
-                style={{ width: '120px', height: '48px' }}
+                className="flex-shrink-0 mx-16 flex items-center justify-center"
+                style={{ width: '200px', height: '80px' }}
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                  className="w-full h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
                 />
               </div>
             ))}
@@ -117,13 +117,13 @@ const About = () => {
             {allLogos.map((item, index) => (
               <div 
                 key={`second-${index}`} 
-                className="flex-shrink-0 mx-8 flex items-center justify-center"
-                style={{ width: '120px', height: '48px' }}
+                className="flex-shrink-0 mx-16 flex items-center justify-center"
+                style={{ width: '200px', height: '80px' }}
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                  className="w-full h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
                 />
               </div>
             ))}
@@ -141,7 +141,7 @@ const About = () => {
             }
           }
           .animate-marquee {
-            animation: marquee 30s linear infinite;
+            animation: marquee 45s linear infinite;
           }
           .animate-marquee:hover {
             animation-play-state: paused;
