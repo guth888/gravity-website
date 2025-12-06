@@ -32,17 +32,18 @@ const About = () => {
     }
   ];
 
+  // Different order than main page for variety - start with advertisers
   const allLogos = [
+    { name: "DoorDash", logo: doordashLogo },
+    { name: "Verve", logo: verveLogo },
+    { name: "Layers", logo: layersLogo },
+    { name: "Sourcegraph", logo: sourcegraphLogo },
+    { name: "Flaxlabs", logo: flaxlabsLogo },
+    { name: "Presearch", logo: presearchLogo },
+    { name: "Revyl", logo: revylLogo },
     { name: "iAsk", logo: iaskLogo },
     { name: "Ramp", logo: rampLogo },
     { name: "DeepAI", logo: deepaiLogo },
-    { name: "DoorDash", logo: doordashLogo },
-    { name: "Layers", logo: layersLogo },
-    { name: "Verve", logo: verveLogo },
-    { name: "Sourcegraph", logo: sourcegraphLogo },
-    { name: "Presearch", logo: presearchLogo },
-    { name: "Flaxlabs", logo: flaxlabsLogo },
-    { name: "Revyl", logo: revylLogo },
   ];
 
   return (
@@ -86,16 +87,12 @@ const About = () => {
       </section>
 
       {/* Scrolling Logo Marquee */}
-      <section className="py-16 bg-[#111111] border-y border-white/10 overflow-hidden">
-        <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-10">
-          AI-powered apps use Gravity
-        </p>
-        
+      <section className="py-4 bg-[#0a0a0a] border-y border-white/5 overflow-hidden">
         {/* Marquee container */}
         <div className="relative">
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
           
           {/* Scrolling track */}
           <div className="flex animate-marquee items-center">
@@ -103,13 +100,12 @@ const About = () => {
             {allLogos.map((item, index) => (
               <div 
                 key={`first-${index}`} 
-                className="flex-shrink-0 mx-16 flex items-center justify-center"
-                style={{ width: '200px', height: '80px' }}
+                className="flex-shrink-0 mx-10 flex items-center justify-center"
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="w-full h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                  className="h-8 w-auto object-contain filter brightness-0 invert opacity-50"
                 />
               </div>
             ))}
@@ -117,13 +113,12 @@ const About = () => {
             {allLogos.map((item, index) => (
               <div 
                 key={`second-${index}`} 
-                className="flex-shrink-0 mx-16 flex items-center justify-center"
-                style={{ width: '200px', height: '80px' }}
+                className="flex-shrink-0 mx-10 flex items-center justify-center"
               >
                 <img 
                   src={item.logo} 
                   alt={item.name}
-                  className="w-full h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                  className="h-8 w-auto object-contain filter brightness-0 invert opacity-50"
                 />
               </div>
             ))}
@@ -141,10 +136,7 @@ const About = () => {
             }
           }
           .animate-marquee {
-            animation: marquee 45s linear infinite;
-          }
-          .animate-marquee:hover {
-            animation-play-state: paused;
+            animation: marquee 30s linear infinite;
           }
         `}</style>
       </section>
