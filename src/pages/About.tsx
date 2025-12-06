@@ -6,7 +6,15 @@ import { Footer } from "@/components/Footer";
 import iaskLogo from "@/assets/publishers/iask.png";
 import rampLogo from "@/assets/publishers/ramp.png";
 import deepaiLogo from "@/assets/publishers/deepai.png";
-import sourcegraphLogo from "@/assets/publishers/sourcegraph.svg";
+import sourcegraphLogo from "@/assets/publishers/sourcegraph.png";
+import presearchLogo from "@/assets/publishers/presearch.png";
+
+// Import advertiser logos
+import doordashLogo from "@/assets/advertisers/doordash.png";
+import layersLogo from "@/assets/advertisers/layers.png";
+import verveLogo from "@/assets/advertisers/verve.png";
+import flaxlabsLogo from "@/assets/advertisers/flaxlabs.png";
+import revylLogo from "@/assets/advertisers/revyl.png";
 
 const About = () => {
   const problems = [
@@ -24,11 +32,17 @@ const About = () => {
     }
   ];
 
-  const publishers = [
+  const allLogos = [
     { name: "iAsk", logo: iaskLogo },
     { name: "Ramp", logo: rampLogo },
     { name: "DeepAI", logo: deepaiLogo },
-    { name: "Amp Code", logo: sourcegraphLogo },
+    { name: "DoorDash", logo: doordashLogo },
+    { name: "Layers", logo: layersLogo },
+    { name: "Verve", logo: verveLogo },
+    { name: "Sourcegraph", logo: sourcegraphLogo },
+    { name: "Presearch", logo: presearchLogo },
+    { name: "Flaxlabs", logo: flaxlabsLogo },
+    { name: "Revyl", logo: revylLogo },
   ];
 
   return (
@@ -71,24 +85,68 @@ const About = () => {
         </div>
       </section>
 
-      {/* Logo Bar */}
-      <section className="py-12 px-6 bg-[#111111] border-y border-white/10">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
-            AI-powered apps use Gravity
-          </p>
-          <div className="flex items-center justify-center gap-12 flex-wrap">
-            {publishers.map((publisher, index) => (
-              <div key={index} className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
+      {/* Scrolling Logo Marquee */}
+      <section className="py-12 bg-[#111111] border-y border-white/10 overflow-hidden">
+        <p className="text-center text-gray-500 text-sm uppercase tracking-wider mb-8">
+          AI-powered apps use Gravity
+        </p>
+        
+        {/* Marquee container */}
+        <div className="relative">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#111111] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#111111] to-transparent z-10 pointer-events-none" />
+          
+          {/* Scrolling track */}
+          <div className="flex animate-marquee">
+            {/* First set of logos */}
+            {allLogos.map((item, index) => (
+              <div 
+                key={`first-${index}`} 
+                className="flex-shrink-0 mx-8 flex items-center justify-center"
+                style={{ width: '120px', height: '48px' }}
+              >
                 <img 
-                  src={publisher.logo} 
-                  alt={publisher.name}
-                  className="h-8 w-auto object-contain filter brightness-0 invert"
+                  src={item.logo} 
+                  alt={item.name}
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
+                />
+              </div>
+            ))}
+            {/* Duplicate for seamless loop */}
+            {allLogos.map((item, index) => (
+              <div 
+                key={`second-${index}`} 
+                className="flex-shrink-0 mx-8 flex items-center justify-center"
+                style={{ width: '120px', height: '48px' }}
+              >
+                <img 
+                  src={item.logo} 
+                  alt={item.name}
+                  className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-70 hover:opacity-100 transition-opacity"
                 />
               </div>
             ))}
           </div>
         </div>
+        
+        {/* CSS Animation */}
+        <style>{`
+          @keyframes marquee {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+          .animate-marquee {
+            animation: marquee 30s linear infinite;
+          }
+          .animate-marquee:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
       </section>
 
       {/* What Gravity Is Section */}
