@@ -83,17 +83,30 @@ export const Header = ({ className }: { className?: string }) => {
               Docs
             </a>
             <a 
-              href="/login" 
+              href="/careers" 
               className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
             >
-              Log in
+              Careers
+            </a>
+            <a 
+              href="/about" 
+              className="text-sm font-normal text-foreground/70 hover:text-foreground transition-colors py-2 tracking-tight"
+            >
+              About
             </a>
           </nav>
 
           {/* Right Section - Desktop - Far Right */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
+            <a 
+              href="/login" 
+              className="font-medium text-foreground/70 hover:text-foreground transition-colors py-2"
+              style={{ fontSize: '15px' }}
+            >
+              Log in
+            </a>
             <button 
-              className="metallic-button text-xs py-2 px-4"
+              className="metallic-button py-2 px-4"
               onClick={() => window.open('https://calendly.com/zachtheoldham/iris-discovery?month=2025-11', '_blank')}
             >
               <span>Book A Demo</span>

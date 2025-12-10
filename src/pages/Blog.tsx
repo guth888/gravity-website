@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -87,6 +88,8 @@ const Blog = () => {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

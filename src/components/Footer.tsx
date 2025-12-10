@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const Footer = ({ className, dark }: { className?: string; dark?: boolean }) => {
+  const [showEmail, setShowEmail] = useState(false);
   const isDark = dark || className?.includes('bg-[#0a0a0a]') || className?.includes('bg-black');
   
   return (
@@ -100,15 +102,21 @@ export const Footer = ({ className, dark }: { className?: string; dark?: boolean
                   Help Center
                 </Link>
               </li>
-              <li>
-                <a 
-                  href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-base transition-colors ${isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-600'}`}
+              <li className="relative">
+                <button 
+                  onClick={() => setShowEmail(!showEmail)}
+                  className={`text-base transition-colors text-left ${isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-600'}`}
                 >
                   Contact
-                </a>
+                </button>
+                {showEmail && (
+                  <a 
+                    href="mailto:support@trygravity.ai"
+                    className={`block mt-1 text-sm transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}
+                  >
+                    support@trygravity.ai
+                  </a>
+                )}
               </li>
             </ul>
           </div>

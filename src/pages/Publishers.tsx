@@ -120,13 +120,9 @@ export const Publishers = () => {
                 </svg>
               </div>
               <div className="flex-1">
-                <p className="text-sm text-white/90 mb-3 leading-relaxed">For startups, I'd recommend looking at Notion, Asana, or Monday.com. Each offers flexible workflows and scales well with growing teams.</p>
-                {/* Sponsored suggestion */}
-                <div className="bg-[#2a2a2a] border border-white/10 rounded-xl p-3">
-                  <p className="text-[10px] text-white/50 uppercase tracking-wider mb-1.5">Sponsored</p>
-                  <p className="text-sm font-medium text-white">Linear</p>
-                  <p className="text-sm text-white/70">Issue tracking built for modern software teams.</p>
-                </div>
+                <p className="text-sm text-white/90 leading-relaxed">
+                  For startups, I'd recommend looking at Notion, Asana, or Monday.com. Each offers flexible workflows and scales well with growing teams. You might also want to check out <a href="#" className="text-[#58a6ff] hover:underline">Linear</a> <span className="text-[10px] text-white/40">(Sponsored)</span> — issue tracking built for modern software teams.
+                </p>
               </div>
             </div>
           </div>
@@ -220,23 +216,16 @@ export const Publishers = () => {
             <span className="text-white/90 text-sm font-medium">Search Agent</span>
           </div>
           {/* Content */}
-          <div className="p-4 space-y-3">
+          <div className="p-4">
             {/* AI Summary */}
             <div className="bg-[#252525] rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-4 h-4 rounded-full bg-[#3a3a3a]" />
                 <span className="text-xs text-white/50">Answer</span>
               </div>
-              <p className="text-sm text-white/80 leading-relaxed">The most effective e-commerce growth strategies in 2024 include influencer partnerships, UGC content, and optimizing your conversion funnel...</p>
-            </div>
-            {/* Sponsored result */}
-            <div className="bg-[#2a2a2a] border border-white/10 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] text-white/50 border border-white/20 px-1.5 py-0.5 rounded">Sponsored</span>
-                <span className="text-xs text-white/50">reachdigital.co</span>
-              </div>
-              <p className="text-sm font-medium text-[#58a6ff]">Reach Digital</p>
-              <p className="text-xs text-white/60">Scale your brand with data-driven creatives and performance acquisition systems.</p>
+              <p className="text-sm text-white/80 leading-relaxed">
+                The most effective e-commerce growth strategies in 2024 include influencer partnerships, UGC content, and optimizing your conversion funnel. For scaling with data-driven creatives, <a href="#" className="text-[#58a6ff] hover:underline">Reach Digital</a> <span className="text-[10px] text-white/40">(Sponsored)</span> offers performance acquisition systems.
+              </p>
             </div>
           </div>
         </div>
@@ -298,7 +287,7 @@ export const Publishers = () => {
           </div>
           {/* Document with AI */}
           <div className="p-4">
-            <div className="bg-[#252525] rounded-lg p-3 mb-3">
+            <div className="bg-[#252525] rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-4 h-4 rounded bg-[#9333ea] flex items-center justify-center">
                   <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -307,13 +296,9 @@ export const Publishers = () => {
                 </div>
                 <span className="text-xs text-white/50">AI Suggestion</span>
               </div>
-              <p className="text-sm text-white/80">I can help draft your quarterly OKRs. Would you like me to suggest some based on last quarter's results?</p>
-            </div>
-            {/* Sponsored tool */}
-            <div className="bg-[#2a2a2a] border border-white/10 rounded-lg p-3">
-              <p className="text-[10px] text-white/50 uppercase tracking-wider mb-1.5">Suggested Tool</p>
-              <p className="text-sm font-medium text-white">Asana</p>
-              <p className="text-xs text-white/60">Connect your project management for better planning</p>
+              <p className="text-sm text-white/80">
+                I can help draft your quarterly OKRs. Would you like me to suggest some based on last quarter's results? For better planning, you can connect <a href="#" className="text-[#58a6ff] hover:underline">Asana</a> <span className="text-[10px] text-white/40">(Sponsored)</span> to sync your project data.
+              </p>
             </div>
           </div>
         </div>
@@ -433,7 +418,7 @@ export const Publishers = () => {
     },
     {
       title: "Full Control Panel",
-      description: "Complete control over what appears. Manage allowlists, blocklists, frequency caps, brand-safety settings, and custom styling.",
+      description: "Complete control over what appears. Manage blocklists, brand-safety settings, and custom styling. You send us the traffic you want — we never force anything.",
       icon: (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -474,7 +459,7 @@ export const Publishers = () => {
     },
     {
       question: "Will this hurt my user experience?",
-      answer: "No. Suggestions are native, clearly labeled as sponsored, and limited to one per response. Frequency caps prevent fatigue, and you control which categories appear. In testing, user satisfaction scores remained unchanged or improved."
+      answer: "No. Suggestions are native, clearly labeled as sponsored, and limited to one per response. You control which categories appear and send us only the traffic you want. In testing, user satisfaction scores remained unchanged or improved."
     },
     {
       question: "How long does integration take?",
@@ -482,7 +467,7 @@ export const Publishers = () => {
     },
     {
       question: "What controls do I have?",
-      answer: "Full control: category allowlists/blocklists, frequency capping, brand safety modes (strict, moderate, open), and custom styling to match your UI. You decide what appears and how often."
+      answer: "Full control: category blocklists, brand safety modes (strict, moderate, open), and custom styling to match your UI. You send us whatever traffic you want — we don't force anything. You decide what appears."
     }
   ];
 

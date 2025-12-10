@@ -9,20 +9,20 @@ const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
 
 const faqItems = [
   {
-    q: "How easy is it to integrate Gravity's SDK?",
-    a: "Our SDK is designed for seamless integration on both web and mobile platforms. With just a few lines of code, you can integrate native ads into your LLM-powered applications. We provide comprehensive documentation and dedicated support."
+    q: "What is Gravity?",
+    a: "Gravity is the native ad network built for AI. We help LLM-powered apps monetize with contextual suggestions that feel like helpful recommendations — not intrusive ads. For advertisers, we surface your brand at the exact moment users are making decisions inside AI conversations."
   },
   {
-    q: "How does Gravity preserve the conversational experience?",
-    a: "Our AI-powered system analyzes conversation context and seamlessly injects relevant suggestions without breaking the flow. The ads appear as natural suggestions, maintaining the organic feel of LLM interactions."
+    q: "How do ads appear inside AI conversations?",
+    a: "Gravity supports two formats: Sponsored Blocks (clearly labeled suggestion cards) and Inline Hyperlinks (subtle in-text mentions). Both are contextual — they match what the user is asking about — so they feel native to the conversation, not disruptive."
   },
   {
-    q: "What types of LLM platforms can integrate with Gravity?",
-    a: "Gravity works with any LLM-based platform—chatbots, AI assistants, search engines, and content generation tools. Our architecture adapts to your use case, whether you're using GPT, Claude, or custom models."
+    q: "How does Gravity generate revenue for publishers?",
+    a: "When a user asks a high-intent question, Gravity runs a real-time auction among relevant advertisers and delivers a native suggestion. Publishers earn on a CPM basis — typical rates range from $3–$200 depending on vertical. You control what traffic you send us."
   },
   {
-    q: "How does Gravity handle data privacy?",
-    a: "We're built with privacy-by-design principles and comply with GDPR and CCPA. Our contextual targeting means we don't collect or store personal user data—relevance comes from conversation context, not user tracking."
+    q: "What platforms can integrate with Gravity?",
+    a: "Gravity works with any AI-powered conversational product — chatbots, AI assistants, search engines, copilots, and autonomous agents. If your product has conversations, Gravity can monetize them."
   },
 ];
 

@@ -1,21 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import CareersChatDemo from "@/components/CareersChatDemo";
 
-type BackerFilterType = "all" | "investors" | "angels";
+// Hero image
+import heroCareerImage from "@/assets/careers/ChatGPT Image Dec 9, 2025, 01_25_11 PM.png";
 
-interface Backer {
-  name: string;
-  role: string;
-  type: "investor" | "angel";
-  image?: string;
-  logoText?: string;
-}
+// Mission section background texture
+import missionBgTexture from "@/assets/careers/ChatGPT Image Dec 9, 2025, 09_10_49 PM.png";
 
 const Careers = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
-  const [backerFilter, setBackerFilter] = useState<BackerFilterType>("all");
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -46,157 +43,59 @@ const Careers = () => {
   ];
 
   const values = [
-    {
-      title: "High Agency Only",
-      description: "We hire people who take ownership, make decisions, and move. No hand-holding. No waiting. If something needs to be fixed, you fix it."
-    },
-    {
-      title: "Top 1% Execution",
-      description: "We work with people who are both smart and relentless. Gravity isn't a place to coast — it's a place to stretch yourself beyond what you thought was possible."
-    },
-    {
-      title: "Hard Work Wins",
-      description: "We move at the speed of possibility, not comfort. This is a 16-hour-a-day environment when the mission demands it. Intensity is normal here — because the opportunity demands it."
-    },
-    {
-      title: "Two Sides, One Network",
-      description: "Publishers and advertisers succeed together or not at all. We build with absolute respect for both sides — and obsess over delivering real value to the entire ecosystem."
-    },
-    {
-      title: "Think in Decades",
-      description: "We are building infrastructure, not hacks. Our work compounds. Our decisions matter. We optimize for enduring impact, not quick wins."
-    },
-    {
-      title: "Curiosity with Consequence",
-      description: "We question everything, pursue truth, and push into the unknown — but we ship. Curiosity only matters if it leads to progress."
-    }
+    "Rationality",
+    "Productive Achievement",
+    "Ownership"
   ];
 
-  const backers: Backer[] = [
-    // Institutional Investors
-    { name: "Felicis", role: "Investor", type: "investor", logoText: "Felicis" },
-    { name: "Peter Deng (GP, Felicis)", role: "Investor", type: "investor", image: "person" },
-    { name: "A*", role: "Investor", type: "investor", logoText: "A*" },
-    { name: "Bennett, Gautam, and Kevin (A*)", role: "Investor", type: "investor", image: "group" },
-    { name: "Liquid 2", role: "Investor", type: "investor", logoText: "LIQUID 2" },
-    { name: "BOND", role: "Investor", type: "investor", logoText: "BOND" },
-    // Angels
-    { name: "Shyam Sankar (CTO, Palantir)", role: "Angel", type: "angel", image: "person" },
-    { name: "Cliff, Melanie, and Cameron (Co-founders, Canva)", role: "Angel", type: "angel", image: "group" },
-    { name: "Max Mullen (Co-founder, Instacart)", role: "Angel", type: "angel", image: "person" },
-    { name: "Jawed Karim (Co-founder, YouTube)", role: "Angel", type: "angel", image: "person" },
-    { name: "Bob McGrew (Chief Research Officer, OpenAI)", role: "Angel", type: "angel", image: "person" },
-    { name: "Claire Hughes Johnson (COO, Stripe)", role: "Angel", type: "angel", image: "person" },
-  ];
-
-  const filteredBackers = backers.filter((backer) => {
-    if (backerFilter === "all") return true;
-    if (backerFilter === "investors") return backer.type === "investor";
-    if (backerFilter === "angels") return backer.type === "angel";
-    return true;
-  });
-
-  const filterTabs: { key: BackerFilterType; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "investors", label: "Investors" },
-    { key: "angels", label: "Angels" },
-  ];
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-gray-900">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6 overflow-hidden">
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-100/80 to-transparent pointer-events-none" />
+      {/* Hero Section - Full Background Image with Centered Chat */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <img 
+          src={heroCareerImage}
+          alt="Beautiful workspace view - this could be your career"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         
-        {/* Floating accent */}
-        <div className="absolute top-20 right-1/4 w-[500px] h-[500px] bg-gray-200/50 rounded-full blur-3xl pointer-events-none" />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/40" />
         
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-8 shadow-sm">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-sm text-gray-600">We're hiring</span>
+        {/* Centered Chat Demo */}
+        <div className="relative z-10 px-6 pt-24 pb-32">
+          <CareersChatDemo />
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-white/60 rounded-full animate-pulse" />
           </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-gray-900 mb-8 leading-[1.1] tracking-tight">
-            Help Build the Ad Layer
-            <br />
-            <span className="text-gray-400">for the AI Era</span>
-          </h1>
-          
-          <p className="text-xl sm:text-2xl text-gray-600 mb-4 leading-relaxed max-w-3xl mx-auto">
-            Advertising hasn't changed in decades. AI has.
-          </p>
-          
-          <p className="text-lg text-gray-500 mb-12 leading-relaxed max-w-2xl mx-auto">
-            We're building the monetization layer that will make AI free for the world — and we're doing it fast.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <a 
-              href="#open-roles"
-              className="group inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-full font-medium transition-all hover:bg-gray-800 hover:shadow-xl"
-            >
-              View open roles
-              <svg className="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </a>
-          </div>
-
-          <p className="text-xs text-gray-400 tracking-wide uppercase">
-            San Francisco · Remote-friendly
-          </p>
         </div>
       </section>
 
-      {/* Tagline Divider */}
-      <section className="py-8 px-6 border-y border-gray-200 bg-white/50">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm text-gray-500 text-center tracking-wide">
-            We move fast, think long-term, and operate with standards that match the size of the opportunity.
-          </p>
-        </div>
-      </section>
-
-      {/* What Drives Us */}
+      {/* Come Build With Us */}
       <section 
-        id="values"
-        ref={(el) => (sectionRefs.current["values"] = el)}
-        className="py-24 px-6"
+        id="cta"
+        ref={(el) => (sectionRefs.current["cta"] = el)}
+        className="py-32 px-6 bg-white"
       >
-        <div className="max-w-6xl mx-auto">
-          <div className={`mb-16 transition-all duration-700 ${visibleSections.has("values") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">No corporate vagueness — real values</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-gray-900 mt-4">
-              What Drives Us
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {values.map((value, index) => (
-              <div 
-                key={index} 
-                className={`
-                  group relative bg-white rounded-2xl p-8 border border-gray-200
-                  hover:border-gray-300 hover:shadow-xl transition-all duration-500
-                  ${visibleSections.has("values") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                `}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="relative">
-                  <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center mb-5">
-                    <span className="text-white font-bold text-sm">{String(index + 1).padStart(2, '0')}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{value.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{value.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 
+            className={`text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-gray-900 mb-8 leading-tight transition-all duration-700 ${visibleSections.has("cta") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
+            Come Build With Us
+          </h2>
+          
+          <p 
+            className={`text-xl text-gray-500 leading-relaxed transition-all duration-700 delay-150 ${visibleSections.has("cta") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
+            We're a small, sharp team working on one of the biggest problems of the decade. If you want to help build real infrastructure for the AI era — we want to meet you.
+          </p>
         </div>
       </section>
 
@@ -204,18 +103,37 @@ const Careers = () => {
       <section 
         id="matters"
         ref={(el) => (sectionRefs.current["matters"] = el)}
-        className="py-24 px-6 bg-white border-y border-gray-200"
+        className="relative py-24 px-6 bg-white"
       >
-        <div className="max-w-5xl mx-auto">
-          <div className={`grid lg:grid-cols-2 gap-16 items-start transition-all duration-700 ${visibleSections.has("matters") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="lg:sticky lg:top-32">
+        {/* Background texture - entire left side */}
+        <div className="absolute top-0 bottom-0 left-0 w-1/2 pointer-events-none hidden lg:block overflow-hidden">
+          {/* The image */}
+          <div 
+            className="absolute inset-0 opacity-[0.25]"
+            style={{ 
+              backgroundImage: `url(${missionBgTexture})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          />
+          {/* Top fade gradient */}
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent" />
+          {/* Bottom fade gradient */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+          {/* Right edge fade */}
+          <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-white to-transparent" />
+        </div>
+        
+        <div className="relative max-w-5xl mx-auto">
+          <div className={`flex flex-col lg:flex-row gap-16 transition-all duration-700 ${visibleSections.has("matters") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="lg:w-1/2 lg:sticky lg:top-32 lg:h-fit">
               <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">The mission</span>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-gray-900 mt-4 leading-tight">
                 Why This Work Matters
               </h2>
             </div>
 
-            <div className="space-y-8">
+            <div className="lg:w-1/2 space-y-8">
               <p className="text-xl text-gray-600 leading-relaxed">
                 AI is reshaping how the world thinks, searches, learns, and decides — but none of it becomes accessible or affordable without a sustainable economic model.
               </p>
@@ -257,163 +175,35 @@ const Careers = () => {
         </div>
       </section>
 
-      {/* Why We Started Gravity */}
+      {/* What Drives Us */}
       <section 
-        id="started"
-        ref={(el) => (sectionRefs.current["started"] = el)}
-        className="py-24 px-6"
+        id="values"
+        ref={(el) => (sectionRefs.current["values"] = el)}
+        className="py-24 px-6 bg-white"
       >
-        <div className="max-w-5xl mx-auto">
-          <div className={`grid lg:grid-cols-2 gap-16 items-start transition-all duration-700 ${visibleSections.has("started") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div>
-              <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">The origin</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-gray-900 mt-4 leading-tight">
-                Why We Started Gravity
-              </h2>
-            </div>
-
-            <div className="space-y-8 text-gray-600 leading-relaxed">
-              <p className="text-xl">
-                We saw the same gap across every LLM app, agent, and assistant:
-              </p>
-              
-              <div className="bg-gray-900 text-white rounded-2xl p-8">
-                <p className="text-xl font-medium leading-relaxed">
-                  Huge user value, huge compute cost — and zero sustainable monetization.
-                </p>
-              </div>
-              
-              <p className="text-lg">
-                At the same time, advertisers had no way to show up when decisions were being made inside AI conversations.
-              </p>
-              
-              <p className="text-lg">
-                So we built Gravity: a native, contextual ad layer designed specifically for AI.
-              </p>
-              
-              <div className="grid sm:grid-cols-2 gap-4 pt-4">
-                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <p className="text-gray-900 font-medium">For Advertisers</p>
-                  <p className="text-sm text-gray-500 mt-1">Appear inside trusted AI answers</p>
-                </div>
-                <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                  <p className="text-gray-900 font-medium">For Publishers</p>
-                  <p className="text-sm text-gray-500 mt-1">Unlock meaningful revenue</p>
-                </div>
-              </div>
-
-              <div className="pt-6 border-t border-gray-200">
-                <p className="text-lg text-gray-900 font-medium">
-                  We're early. The window is open. The market is huge.
-                </p>
-                <p className="text-lg text-gray-500 mt-2">
-                  And the team is some of the best you'll ever work with.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Backed By Section */}
-      <section 
-        id="backers"
-        ref={(el) => (sectionRefs.current["backers"] = el)}
-        className="py-24 px-6 bg-white border-y border-gray-200"
-      >
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className={`mb-10 transition-all duration-700 ${visibleSections.has("backers") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-gray-900 leading-tight">
-              Backed by Silicon Valley's finest
-            </h2>
-          </div>
-
-          {/* Filter Tabs */}
-          <div className={`flex items-center gap-2 mb-12 transition-all duration-700 delay-100 ${visibleSections.has("backers") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            {filterTabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setBackerFilter(tab.key)}
-                className={`
-                  px-4 py-2 rounded-full text-sm font-medium transition-all
-                  ${backerFilter === tab.key
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
-                  }
-                `}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredBackers.map((backer, index) => (
-              <div
-                key={index}
-                className={`
-                  group transition-all duration-500
-                  ${visibleSections.has("backers") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
-                `}
-                style={{ transitionDelay: `${(index % 8) * 50 + 150}ms` }}
-              >
-                {/* Card Image/Logo */}
-                <div className="aspect-square bg-gray-100 rounded-2xl mb-4 overflow-hidden flex items-center justify-center border border-gray-200 group-hover:border-gray-300 group-hover:shadow-lg transition-all">
-                  {backer.image === "person" ? (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                      <svg className="w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                  ) : backer.image === "group" ? (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                      <svg className="w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                  ) : backer.logoText ? (
-                    <div className="w-full h-full bg-gray-50 flex items-center justify-center p-6">
-                      <span className="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight text-center">
-                        {backer.logoText}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-                      <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-
-                {/* Card Info */}
-                <h3 className="font-semibold text-gray-900 leading-snug mb-1 text-sm sm:text-base">
-                  {backer.name}
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-500">
-                  {backer.role}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Come Build With Us */}
-      <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-gray-900 mb-6 leading-tight">
-            Come Build With Us
-          </h2>
-          
-          <p className="text-xl text-gray-600 leading-relaxed mb-4 max-w-2xl mx-auto">
-            We're a small, sharp team working on one of the biggest problems of the decade.
+          {/* Label */}
+          <p className={`text-xs uppercase tracking-[0.2em] text-gray-500 font-medium mb-8 transition-all duration-700 ${visibleSections.has("values") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            Our core values
           </p>
           
-          <p className="text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
-            If you want to help build real infrastructure for the AI era — we want to meet you.
+          {/* Three values in a row */}
+          <div className={`flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12 transition-all duration-700 delay-100 ${visibleSections.has("values") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            {values.map((value, index) => (
+              <div key={index} className="flex items-center gap-4 sm:gap-8">
+                <span className="text-2xl sm:text-3xl font-headline font-bold text-gray-900">
+                  {value}
+                </span>
+                {index < values.length - 1 && (
+                  <span className="hidden sm:block w-1.5 h-1.5 bg-gray-300 rounded-full" />
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* One-liner */}
+          <p className={`text-lg text-gray-500 transition-all duration-700 delay-150 ${visibleSections.has("values") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            People who thrive at Gravity think long-term, build brilliantly, and move like founders.
           </p>
         </div>
       </section>
@@ -422,7 +212,7 @@ const Careers = () => {
       <section 
         id="open-roles"
         ref={(el) => (sectionRefs.current["open-roles"] = el)}
-        className="py-24 px-6 bg-white border-y border-gray-200"
+        className="py-24 px-6 bg-white "
       >
         <div className="max-w-5xl mx-auto">
           <div className={`flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12 transition-all duration-700 ${visibleSections.has("open-roles") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
@@ -448,31 +238,30 @@ const Careers = () => {
                   rel="noopener noreferrer"
                   className={`
                     group flex flex-col sm:flex-row sm:items-center justify-between 
-                    bg-gray-50 hover:bg-gray-100
-                    border border-gray-200 hover:border-gray-300
-                    rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:shadow-lg
+                    bg-black hover:bg-gray-900
+                    rounded-2xl p-8 sm:p-10 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]
                     ${visibleSections.has("open-roles") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
                   `}
                   style={{ transitionDelay: `${(index + 1) * 100}ms` }}
                 >
-                  <div className="mb-4 sm:mb-0">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
+                  <div className="mb-6 sm:mb-0">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
                       {position.title}
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200">
+                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
                         {position.department}
                       </span>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200">
+                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
                         {position.location}
                       </span>
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200">
+                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
                         {position.type}
                       </span>
                     </div>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center group-hover:bg-gray-900 group-hover:border-gray-900 transition-all duration-300">
-                    <svg className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <svg className="w-6 h-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
                     </svg>
                   </div>
@@ -489,9 +278,7 @@ const Careers = () => {
           <div className="mt-16 pt-12 border-t border-gray-200 text-center">
             <p className="text-gray-500 mb-4">Don't see a fit?</p>
             <a 
-              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:support@trygravity.ai"
               className="inline-flex items-center gap-3 text-gray-900 hover:text-gray-600 transition-colors font-medium text-lg group"
             >
               Reach out anyway

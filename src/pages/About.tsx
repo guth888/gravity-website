@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
@@ -19,10 +20,134 @@ import revylLogo from "@/assets/advertisers/revyl.png";
 // CTA background image
 import ctaBgImage from "@/assets/about/ChatGPT Image Dec 9, 2025, 01_25_11 PM.png";
 
+// Investor logos
+import anthropicLogo from "@/assets/careers/Anthropic.png";
+import basisSetLogo from "@/assets/careers/basis set.png";
+import caffeinatedLogo from "@/assets/careers/caffeinated (1).png";
+import generalAdvanceLogo from "@/assets/careers/general Advance.png";
+import logosFundLogo from "@/assets/careers/logos Fund.png";
+import nextGenVpLogo from "@/assets/careers/NGVP.png";
+
 // Hero team image
 import heroTeamImage from "@/assets/about/908bacf6-9f77-487a-be37-eead0775c50f.jpeg";
 
+// Hero background texture
+import heroBgTexture from "@/assets/about/ChatGPT Image Dec 9, 2025, 08_21_31 PM.png";
+
+// Meet Gravity Transition Component
+const MeetGravitySection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="pb-24 bg-[#0a0a0a] flex flex-col items-center justify-center"
+    >
+      {/* Bouncing arrow */}
+      <div className={`mb-6 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
+        <svg 
+          className="w-6 h-6 text-white/40 animate-bounce" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+
+      {/* Meet text */}
+      <p className={`text-white/50 text-sm uppercase tracking-[0.3em] mb-8 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        Meet
+      </p>
+
+      {/* Animated Logo - SVG with draw effect */}
+      <svg 
+        className={`w-[400px] h-[100px] transition-opacity duration-500 delay-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        viewBox="0 0 400 100"
+      >
+        <defs>
+          <linearGradient id="gravityGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#a0a0a0" />
+          </linearGradient>
+        </defs>
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          className="font-headline font-bold"
+          style={{
+            fontSize: '72px',
+            fill: 'none',
+            stroke: 'url(#gravityGradient)',
+            strokeWidth: '1.5px',
+            strokeDasharray: 600,
+            strokeDashoffset: isVisible ? 0 : 600,
+            transition: 'stroke-dashoffset 4s ease-out 1.5s',
+          }}
+        >
+          Gravity
+        </text>
+        {/* Fill text that fades in after stroke */}
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          className="font-headline font-bold"
+          style={{
+            fontSize: '72px',
+            fill: '#ffffff',
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 1.5s ease-out 5s',
+          }}
+        >
+          Gravity
+        </text>
+      </svg>
+    </section>
+  );
+};
+
 const About = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading and trigger animations
+    const loadTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 900);
+
+    return () => {
+      clearTimeout(loadTimer);
+      clearTimeout(contentTimer);
+    };
+  }, []);
+
   const problems = [
     {
       title: "Brands can't access high-intent moments inside LLM conversations.",
@@ -54,56 +179,127 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Loading Screen */}
+      <div 
+        className={`fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center transition-all duration-500 ${
+          isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="flex flex-col items-center gap-6">
+          {/* Animated logo/text */}
+          <div className="relative">
+            <span className="text-3xl font-headline font-bold text-white">Gravity</span>
+            {/* Animated underline */}
+            <div className="absolute -bottom-2 left-0 h-[2px] bg-white animate-pulse" 
+              style={{ 
+                width: '100%',
+                animation: 'loadingBar 0.8s ease-in-out'
+              }} 
+            />
+          </div>
+          {/* Loading dots */}
+          <div className="flex gap-1.5">
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          </div>
+        </div>
+      </div>
+
+      {/* CSS for loading animation */}
+      <style>{`
+        @keyframes loadingBar {
+          0% { width: 0%; opacity: 0; }
+          50% { opacity: 1; }
+          100% { width: 100%; opacity: 1; }
+        }
+      `}</style>
+
       {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-[#0a0a0a] pt-32 pb-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          {/* Label */}
-          <p className="text-white/40 text-xs uppercase tracking-[0.25em] mb-8">
-            About Gravity
-          </p>
-          
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-headline font-bold text-white leading-[1.1] mb-12 max-w-3xl">
-            The infrastructure behind natural suggestions in AI.
-          </h1>
-          
-          {/* Subhead - single column */}
-          <p className="text-lg text-white/50 leading-relaxed max-w-2xl mb-20">
-            Gravity is the native ad platform for AI conversations, enabling brands to appear as grounded, organic suggestions at the exact moments users are making decisions.
-          </p>
-          
-          {/* Bottom row - two cards side by side */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Card 1 */}
-            <div className="border border-white/10 rounded-lg p-6">
-              <p className="text-white/30 text-xs uppercase tracking-[0.2em] mb-4">What we do</p>
-              <p className="text-white/60 text-sm leading-relaxed">
-                We work with leading AI products, LLM apps, and conversational platforms to unlock high-intent monetization without compromising user trust.
-              </p>
-            </div>
+      <section className="relative bg-[#0a0a0a] pt-32 pb-8 px-6 overflow-hidden">
+        {/* Background texture */}
+        <div 
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{ 
+            backgroundImage: `url(${heroBgTexture})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'grayscale(100%) contrast(1.2)'
+          }}
+        />
+        
+        <div className="relative max-w-5xl mx-auto">
+          {/* Centered top section */}
+          <div className="text-center mb-20">
+            {/* Label */}
+            <p className={`text-white/50 text-sm uppercase tracking-[0.3em] mb-8 transition-all duration-700 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              About Gravity
+            </p>
             
-            {/* Card 2 */}
-            <div className="border border-white/10 rounded-lg p-6">
-              <p className="text-white/30 text-xs uppercase tracking-[0.2em] mb-4">Who backs us</p>
-              <p className="text-white/60 text-sm leading-relaxed">
-                Gravity is supported by world-class operators, founders, and investors shaping the future of AI.
-              </p>
-            </div>
+            {/* Main headline */}
+            <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-bold text-white leading-[1.1] max-w-4xl mx-auto transition-all duration-700 delay-100 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              The infrastructure behind natural suggestions in AI.
+            </h1>
           </div>
           
-          {/* Vision statement - full width */}
-          <div className="mt-20 pt-12 border-t border-white/10">
-            <p className="text-2xl sm:text-3xl text-white leading-snug max-w-3xl">
-              We believe AI should be free for the world.
+          {/* Two columns - Advertisers & Publishers */}
+          <div className="grid md:grid-cols-2 gap-8 mb-20">
+            {/* Advertisers Card */}
+            <Link 
+              to="/advertisers"
+              className="group border border-white/10 hover:border-white/30 rounded-xl p-8 transition-all duration-300 hover:bg-white/5"
+            >
+              <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-5">For Advertisers</p>
+              <p className="text-white/70 text-base leading-relaxed mb-4">
+                Reach users at the moment of decision. Appear as native, grounded suggestions inside AI conversations.
+              </p>
+              <span className="inline-flex items-center gap-2 text-white/50 text-sm group-hover:text-white/80 transition-colors">
+                Learn more
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </Link>
+            
+            {/* Publishers Card */}
+            <Link 
+              to="/publishers"
+              className="group border border-white/10 hover:border-white/30 rounded-xl p-8 transition-all duration-300 hover:bg-white/5"
+            >
+              <p className="text-white/40 text-xs uppercase tracking-[0.2em] mb-5">For Publishers</p>
+              <p className="text-white/70 text-base leading-relaxed mb-4">
+                Monetize your AI product without breaking the user experience. Native ads built for conversations.
+              </p>
+              <span className="inline-flex items-center gap-2 text-white/50 text-sm group-hover:text-white/80 transition-colors">
+                Learn more
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </Link>
+          </div>
+          
+          {/* Vision statement - centered */}
+          <div className="pt-8 pb-4 text-center">
+            <p className="text-2xl sm:text-3xl text-white leading-snug max-w-3xl mx-auto">
+              We believe AI should be free for everyone.
               <br />
-              <span className="block mt-2">That requires a new kind of monetization — native, contextual, and built for conversations.</span>
+              <span className="block mt-3 text-white/60">But free requires infrastructure — a value layer that funds intelligence without taxing the user.</span>
+              <br />
+              <span className="block mt-3 text-white/60">That ad layer must be native, contextual, and built for conversations.</span>
             </p>
           </div>
         </div>
+        
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
       </section>
+
+      {/* Meet Gravity Transition */}
+      <MeetGravitySection />
 
       {/* Office Section */}
       <section className="relative bg-[#0a0a0a]">
@@ -284,86 +480,86 @@ const About = () => {
         </div>
       </section>
 
-      {/* Scrolling Logo Marquee */}
-      <section className="bg-[#0a0a0a] border-y border-white/5 overflow-hidden" style={{ height: '60px' }}>
-        {/* Marquee container */}
-        <div className="relative h-full flex items-center">
-          {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-          
-          {/* Scrolling track */}
-          <div className="flex animate-marquee items-center">
-            {/* First set of logos */}
-            {allLogos.map((item, index) => (
-              <div 
-                key={`first-${index}`} 
-                className="flex-shrink-0 mx-12 flex items-center justify-center"
-              >
-                <img 
-                  src={item.logo} 
-                  alt={item.name}
-                  className="h-14 w-auto object-contain brightness-0 invert opacity-60"
-                />
+      {/* Company Stats Section */}
+      <section className="py-16 px-6 bg-[#0a0a0a]">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+            {/* Funding Raised - Left Side */}
+            <div className="flex items-center gap-6">
+              <div>
+                <p className="text-5xl sm:text-6xl font-bold text-white tracking-tight">$5M</p>
+                <p className="text-white/50 mt-1">Funding raised</p>
               </div>
-            ))}
-            {/* Duplicate for seamless loop */}
-            {allLogos.map((item, index) => (
-              <div 
-                key={`second-${index}`} 
-                className="flex-shrink-0 mx-12 flex items-center justify-center"
-              >
-                <img 
-                  src={item.logo} 
-                  alt={item.name}
-                  className="h-14 w-auto object-contain brightness-0 invert opacity-60"
+              {/* Mini Chart SVG */}
+              <svg className="w-20 h-16 text-sky-400" viewBox="0 0 80 50" fill="none">
+                <path
+                  d="M5 45 Q 15 42, 25 38 T 45 30 T 60 15 T 75 5"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  fill="none"
                 />
+              </svg>
+            </div>
+
+            {/* Stats Pills - Right Side */}
+            <div className="flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
+                <span className="w-2 h-2 bg-white/40 rounded-full" />
+                <span className="text-white/50 text-sm">Founding year:</span>
+                <span className="text-white font-medium text-sm">2025</span>
               </div>
-            ))}
+              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
+                <span className="w-2 h-2 bg-white/40 rounded-full" />
+                <span className="text-white/50 text-sm">Location:</span>
+                <span className="text-white font-medium text-sm">San Francisco, CA</span>
+              </div>
+              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
+                <span className="w-2 h-2 bg-white/40 rounded-full" />
+                <span className="text-white/50 text-sm">Team size:</span>
+                <span className="text-white font-medium text-sm">4 people</span>
+              </div>
+            </div>
           </div>
         </div>
-        
-        {/* CSS Animation */}
-        <style>{`
-          @keyframes marquee {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
-          }
-          .animate-marquee {
-            animation: marquee 30s linear infinite;
-          }
-        `}</style>
       </section>
 
-      {/* What Gravity Is Section */}
-      <section className="py-24 px-6 bg-[#0a0a0a] text-white">
+      {/* Backed By Section */}
+      <section className="py-24 px-6 bg-[#0a0a0a]">
         <div className="max-w-5xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-headline font-bold text-white leading-tight">
-                The missing economic layer.
-              </h2>
-            </div>
-            <div className="space-y-6 text-white/70 text-lg leading-relaxed">
-              <p>
-                Today's AI ecosystem has a missing economic layer. LLM conversations are where decisions now happen — but there is almost no structured way to fund them.
-              </p>
-              <p>
-                Gravity solves this by creating the infrastructure that connects brands with the moments that matter most: when users are actively asking, comparing, and deciding.
-              </p>
-            </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white mb-16">
+            Backed by
+          </h2>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-16 items-center justify-items-center">
+            {[
+              { name: "Anthropic", logo: anthropicLogo },
+              { name: "Basis Set", logo: basisSetLogo },
+              { name: "Caffeinated", logo: caffeinatedLogo },
+              { name: "General Advance", logo: generalAdvanceLogo },
+              { name: "Logos Fund", logo: logosFundLogo },
+              { name: "NextGen VP", logo: nextGenVpLogo },
+            ].map((backer, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-center w-full"
+              >
+                <img 
+                  src={backer.logo} 
+                  alt={backer.name}
+                  className="h-32 sm:h-40 w-auto object-contain mix-blend-lighten"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* What Gravity Solves Section */}
-      <section className="py-24 px-6 bg-[#0a0a0a] text-white border-t border-white/10">
+      <section className="py-24 px-6 bg-[#0a0a0a] text-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-headline font-bold text-white mb-16">
+          <span className="text-xs uppercase tracking-[0.2em] text-white/50 font-medium">Gravity Solves</span>
+          <h2 className="text-3xl sm:text-4xl font-headline font-bold text-white mb-16 mt-4">
             Three fundamental problems.
           </h2>
 
@@ -381,50 +577,6 @@ const About = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Company Stats Section */}
-      <section className="py-16 px-6 bg-[#111] text-white border-t border-white/10">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-            {/* Funding Raised - Left Side */}
-            <div className="flex items-center gap-6">
-              <div>
-                <p className="text-5xl sm:text-6xl font-bold text-white tracking-tight">$5M</p>
-                <p className="text-white/50 mt-1">Funding raised</p>
-              </div>
-              {/* Mini Chart SVG */}
-              <svg className="w-20 h-16 text-sky-400" viewBox="0 0 80 50" fill="none">
-                <path 
-                  d="M5 45 Q 15 42, 25 38 T 45 30 T 60 15 T 75 5" 
-                  stroke="currentColor" 
-                  strokeWidth="2.5" 
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
-
-            {/* Stats Pills - Right Side */}
-            <div className="flex flex-wrap gap-3">
-              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
-                <span className="w-2 h-2 bg-white/40 rounded-full" />
-                <span className="text-white/60 text-sm">Founding year:</span>
-                <span className="text-white font-semibold text-sm">2025</span>
-              </div>
-              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
-                <span className="w-2 h-2 bg-white/40 rounded-full" />
-                <span className="text-white/60 text-sm">Location:</span>
-                <span className="text-white font-semibold text-sm">San Francisco, CA</span>
-              </div>
-              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
-                <span className="w-2 h-2 bg-white/40 rounded-full" />
-                <span className="text-white/60 text-sm">Team size:</span>
-                <span className="text-white font-semibold text-sm">4 people</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>

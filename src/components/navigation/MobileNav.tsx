@@ -148,80 +148,32 @@ export const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
                 </div>
               </div>
 
-              {/* How It Works */}
+              {/* Docs */}
               <a
-                href="/how-it-works"
+                href="/docs"
                 className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
                 onClick={onClose}
               >
-                How It Works
+                Docs
               </a>
 
-              {/* Resources */}
-              <div>
-                <button
-                  onClick={() => toggleDropdown('resources')}
-                  className="flex items-center justify-between w-full text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-                >
-                  Resources
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      openDropdown === 'resources' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openDropdown === 'resources' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="space-y-1 pl-4">
-                    {navData.resources.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                        onClick={onClose}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {/* Careers */}
+              <a
+                href="/careers"
+                className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
+                onClick={onClose}
+              >
+                Careers
+              </a>
 
-              {/* Company */}
-              <div>
-                <button
-                  onClick={() => toggleDropdown('company')}
-                  className="flex items-center justify-between w-full text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
-                >
-                  Company
-                  <ChevronDown 
-                    className={`w-4 h-4 transition-transform duration-300 ${
-                      openDropdown === 'company' ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-                <div 
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openDropdown === 'company' ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
-                  }`}
-                >
-                  <div className="space-y-1 pl-4">
-                    {navData.company.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="block py-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                        onClick={onClose}
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {/* About */}
+              <a
+                href="/about"
+                className="block text-sm font-medium text-foreground hover:text-primary transition-colors py-2"
+                onClick={onClose}
+              >
+                About
+              </a>
             </div>
           </nav>
         </div>

@@ -145,24 +145,14 @@ const Help = () => {
             Still have questions?
           </h2>
           <p className="text-gray-600 mb-8">
-            Our team is here to help you get started with Gravity. Schedule a call and we'll walk you through everything.
+            Our documentation covers everything you need to get started with Gravity.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-full font-medium transition-colors"
-            >
-              Schedule a call
-            </a>
-            <Link 
-              to="/docs"
-              className="inline-flex items-center justify-center gap-2 border border-gray-300 hover:border-gray-400 text-gray-900 px-8 py-4 rounded-full font-medium transition-colors"
-            >
-              Browse all docs
-            </Link>
-          </div>
+          <Link 
+            to="/docs"
+            className="inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-full font-medium transition-colors"
+          >
+            Browse all docs
+          </Link>
         </div>
       </section>
 
