@@ -3,11 +3,11 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import CareersChatDemo from "@/components/CareersChatDemo";
 
-// Hero image
-import heroCareerImage from "@/assets/careers/ChatGPT Image Dec 9, 2025, 01_25_11 PM.png";
+// Hero image (optimized)
+import heroCareerImage from "@/assets/careers/optimized/hero.jpg";
 
-// Mission section background texture
-import missionBgTexture from "@/assets/careers/ChatGPT Image Dec 9, 2025, 09_10_49 PM.png";
+// Mission section background texture (optimized)
+import missionBgTexture from "@/assets/careers/optimized/mission-texture.jpg";
 
 const Careers = () => {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());

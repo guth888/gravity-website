@@ -17,8 +17,8 @@ import verveLogo from "@/assets/advertisers/verve.png";
 import flaxlabsLogo from "@/assets/advertisers/flaxlabs.png";
 import revylLogo from "@/assets/advertisers/revyl.png";
 
-// CTA background image
-import ctaBgImage from "@/assets/about/ChatGPT Image Dec 9, 2025, 01_25_11 PM.png";
+// CTA background image (optimized)
+import ctaBgImage from "@/assets/about/optimized/cta-bg.jpg";
 
 // Investor logos
 import anthropicLogo from "@/assets/careers/Anthropic.png";
@@ -28,11 +28,11 @@ import generalAdvanceLogo from "@/assets/careers/general Advance.png";
 import logosFundLogo from "@/assets/careers/logos Fund.png";
 import nextGenVpLogo from "@/assets/careers/NGVP.png";
 
-// Hero team image
-import heroTeamImage from "@/assets/about/908bacf6-9f77-487a-be37-eead0775c50f.jpeg";
+// Hero team image (optimized)
+import heroTeamImage from "@/assets/about/optimized/team.jpg";
 
-// Hero background texture
-import heroBgTexture from "@/assets/about/ChatGPT Image Dec 9, 2025, 08_21_31 PM.png";
+// Hero background texture (optimized)
+import heroBgTexture from "@/assets/about/optimized/hero-texture.jpg";
 
 // Meet Gravity Transition Component
 const MeetGravitySection = () => {

@@ -8,41 +8,56 @@ export const Header = ({ className }: { className?: string }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const headerRef = useRef<HTMLElement>(null);
-  const prevScrollY = useRef(0);
+  const lastScrollY = useRef(0);
+  const scrollDirection = useRef<'up' | 'down' | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    let ticking = false;
+    lastScrollY.current = window.pageYOffset || document.documentElement.scrollTop;
+    
+    const updateHeader = () => {
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
       
-      // Always show at the very top
       if (currentScrollY < 50) {
+        // Near top - always show
         setIsVisible(true);
-        prevScrollY.current = currentScrollY;
-        return;
+        scrollDirection.current = null;
+      } else if (currentScrollY < lastScrollY.current - 10) {
+        // Scrolling UP by at least 10px
+        if (scrollDirection.current !== 'up') {
+          scrollDirection.current = 'up';
+          setIsVisible(true);
+        }
+      } else if (currentScrollY > lastScrollY.current + 10) {
+        // Scrolling DOWN by at least 10px
+        if (scrollDirection.current !== 'down') {
+          scrollDirection.current = 'down';
+          setIsVisible(false);
+        }
       }
       
-      // Determine scroll direction
-      if (currentScrollY > prevScrollY.current + 5) {
-        // Scrolling DOWN - hide navbar
-        setIsVisible(false);
-        prevScrollY.current = currentScrollY;
-      } else if (currentScrollY < prevScrollY.current - 5) {
-        // Scrolling UP - show navbar
-        setIsVisible(true);
-        prevScrollY.current = currentScrollY;
+      lastScrollY.current = currentScrollY;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeader);
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
     <>
       <header 
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-5 lg:px-6 py-2.5 backdrop-blur-md bg-background/95 border-b border-border transition-all duration-300 ease-out ${
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-5 lg:px-6 py-2.5 backdrop-blur-md bg-background/95 border-b border-border transition-transform duration-300 ease-out ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
         } ${className || ''}`}
       >
         <div className="w-full max-w-[1400px] xl:max-w-[1600px] 2xl:max-w-[1800px] mx-auto flex items-center justify-between gap-3 lg:gap-4">

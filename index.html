@@ -3,67 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#F2F2F2" />
+    <meta name="color-scheme" content="light" />
     <title>Gravity - AI-Native Ad Platform</title>
     <meta name="description" content="Native, high-intent sponsored suggestions inside AI conversations. The most valuable ad channel for LLM publishers and advertisers." />
     <meta name="author" content="Gravity" />
     
-    <!-- Performance hints -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <!-- Performance hints - preconnect to critical origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://calendly.com" />
 
+    <!-- Open Graph -->
     <meta property="og:title" content="Gravity - AI-Native Ad Platform" />
     <meta property="og:description" content="Where AI conversations become the most valuable ad channel. Native sponsored suggestions that feel natural to users and unlock revenue for LLM publishers." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:site" content="@trygravityai" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     
-    <!-- Fonts with optimized loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Fonts - use display=swap for FOUT instead of FOIT -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    </noscript>
     
-    <!-- Preload critical assets -->
-    <link rel="preload" as="image" href="/src/assets/gravity-logo.png" fetchpriority="high">
-    <link rel="modulepreload" href="/src/main.tsx">
-    
-    <!-- Critical CSS for instant paint -->
+    <!-- Critical CSS for instant First Contentful Paint -->
     <style>
-      * { 
-        margin: 0; 
-        padding: 0; 
-        box-sizing: border-box;
-        -webkit-font-smoothing: antialiased; 
-        -moz-osx-font-smoothing: grayscale;
-      }
-      body { 
-        opacity: 0; 
-        transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        background: #000;
-        color: #fff;
-        overflow-x: hidden;
-      }
-      body.loaded { opacity: 1; }
-      #root { min-height: 100vh; }
+      *{margin:0;padding:0;box-sizing:border-box}
+      html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+      body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F2F2F2;color:#121212;opacity:0;transition:opacity .15s ease-out}
+      body.loaded{opacity:1}
+      #root{min-height:100vh;min-height:100dvh}
+      /* Header skeleton to prevent layout shift */
+      .header-skeleton{position:fixed;top:0;left:0;right:0;height:60px;background:#F2F2F2;border-bottom:1px solid rgba(0,0,0,0.05);z-index:50}
     </style>
+    
     <script>
-      // Instant page reveal
-      window.addEventListener('DOMContentLoaded', () => {
-        requestAnimationFrame(() => document.body.classList.add('loaded'));
-      });
+      // Instant reveal on DOMContentLoaded
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => document.body.classList.add('loaded'));
+      } else {
+        document.body.classList.add('loaded');
+      }
       
-      // Prefetch pages on hover
+      // Prefetch pages on hover (Intersection Observer for links)
+      const prefetched = new Set();
       document.addEventListener('mouseover', (e) => {
         const link = e.target.closest('a[href^="/"]');
-        if (link && !link.dataset.prefetched) {
-          link.dataset.prefetched = 'true';
+        if (link) {
           const href = link.getAttribute('href');
-          if (href) {
+          if (href && !prefetched.has(href)) {
+            prefetched.add(href);
             const prefetch = document.createElement('link');
             prefetch.rel = 'prefetch';
             prefetch.href = href;
@@ -71,11 +68,25 @@
           }
         }
       }, { passive: true });
+      
+      // Reduce motion for users who prefer it
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+      }
     </script>
   </head>
 
   <body>
+    <!-- Header skeleton to prevent CLS -->
+    <div class="header-skeleton" id="header-skeleton"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Remove skeleton once React mounts
+      window.addEventListener('load', () => {
+        const skeleton = document.getElementById('header-skeleton');
+        if (skeleton) skeleton.remove();
+      });
+    </script>
   </body>
 </html>
