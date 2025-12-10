@@ -16,10 +16,6 @@ const HelpFAQ = () => {
       a: "Yes. Set allowlists, blocklists, and brand safety levels in your dashboard."
     },
     {
-      q: "How much can publishers earn?",
-      a: "CPMs range from $3–$10. Average CTR is 1.5%. Use our calculator to estimate."
-    },
-    {
       q: "What's the minimum ad spend?",
       a: "No minimum. Start with any daily budget."
     },
@@ -38,10 +34,6 @@ const HelpFAQ = () => {
     {
       q: "Which LLM frameworks do you support?",
       a: "All major frameworks: LangChain, OpenAI, Anthropic, and custom implementations."
-    },
-    {
-      q: "Is there a rate limit?",
-      a: "Standard: 10K requests/day. Enterprise: custom limits."
     }
   ];
 
