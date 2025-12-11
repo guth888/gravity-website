@@ -22,9 +22,9 @@ const HelpSDK = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Available SDKs</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><a href="https://www.npmjs.com/package/@gravity-ai/react" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@gravity-ai/react</a> — React SDK</li>
-                <li><a href="https://www.npmjs.com/package/@gravity-ai/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@gravity-ai/api</a> — API SDK (JS/TS)</li>
-                <li><a href="https://docs.trygravity.ai/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">REST API</a> — Direct HTTP access</li>
+                <li><a href="https://www.npmjs.com/package/@gravity-ai/react" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@gravity-ai/react</a>: React SDK</li>
+                <li><a href="https://www.npmjs.com/package/@gravity-ai/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">@gravity-ai/api</a>: API SDK (JS/TS)</li>
+                <li><a href="https://docs.trygravity.ai/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">REST API</a>: Direct HTTP access</li>
               </ul>
             </section>
 

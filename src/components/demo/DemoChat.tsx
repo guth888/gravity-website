@@ -87,7 +87,7 @@ export const DemoChat: React.FC = () => {
                 • Deliverability controls you can actually see, not just "trust us."{"\n"}
                 • Per-seat visibility across all your clients.{"\n"}
                 • Workflows that don't collapse once you pass 5–10 accounts.{"\n\n"}
-                You'll see a sponsored suggestion inline below — that's Gravity at work, not a banner ad bolted on the side.
+                You'll see a sponsored suggestion inline below. That's Gravity at work, not a banner ad bolted on the side.
               </ChatBubble>
             );
           }
@@ -167,7 +167,7 @@ const AssistantWithSponsor: React.FC = () => {
             </span>
           </div>
           <div className="text-[11px] text-emerald-50/90">
-            Built for multi-account cold email at agency scale — per-client
+            Built for multi-account cold email at agency scale, per-client
             workspaces, deliverability tooling, and reporting that doesn't fall
             apart once you cross 5+ SaaS accounts.
           </div>
@@ -190,7 +190,7 @@ const AssistantWithSponsor: React.FC = () => {
           tooling, not just browsing.{" "}
           <span className="text-slate-400">
             The sponsored suggestion appears inside the answer, matched to your
-            query — not as a random sidebar ad.
+            query, not as a random sidebar ad.
           </span>
         </div>
       </div>

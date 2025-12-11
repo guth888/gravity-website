@@ -14,12 +14,14 @@ import phonePreviewSponsored from "@/assets/advertisers/phonePreviewSponsored.pn
 type UseCaseTab = "create" | "target" | "launch" | "track";
 type PreviewTab = "sponsored" | "inline";
 type TrackingTab = "pixel" | "analytics";
+type ObjectiveTab = "clicks" | "reach" | "conversions";
 
 export const Advertisers = () => {
   const [activeTab, setActiveTab] = useState<UseCaseTab>("create");
   const [isScrolling, setIsScrolling] = useState(false);
   const [previewTab, setPreviewTab] = useState<PreviewTab>("sponsored");
   const [trackingTab, setTrackingTab] = useState<TrackingTab>("pixel");
+  const [objectiveTab, setObjectiveTab] = useState<ObjectiveTab>("conversions");
   const createRef = useRef<HTMLDivElement>(null);
   const targetRef = useRef<HTMLDivElement>(null);
   const launchRef = useRef<HTMLDivElement>(null);
@@ -110,7 +112,7 @@ export const Advertisers = () => {
   const useCases = {
     create: {
       title: "Campaign Setup",
-      description: "Set up your campaign in minutes. Define your budget, landing page, and schedule — no minimum spend or long-term contracts required.",
+      description: "Set up your campaign in minutes. Define your budget, landing page, and schedule. No minimum spend or long-term contracts required.",
       features: [
         "Campaign name and daily budget",
         "Landing page URL with UTM tracking",
@@ -159,38 +161,69 @@ export const Advertisers = () => {
       title: "Campaign Objectives",
       description: "Select the primary goal for your campaign. Choose from clicks, reach, or conversions based on what matters most to your business.",
       features: [
-        "Clicks — Drive traffic to your website",
-        "Reach — Maximize impressions and brand awareness",
-        "Conversions — Optimize for specific conversion actions",
-        "Location targeting — Select countries and regions for your audience"
+        "Clicks: Drive traffic to your website",
+        "Reach: Maximize impressions and brand awareness",
+        "Conversions: Optimize for specific conversion actions",
+        "Location filtering: Filter by country and region"
       ],
       visual: (
         <div className="bg-white rounded-2xl p-5 border border-gray-200">
           <div className="text-xs text-gray-900 font-medium mb-3">Campaign Objective</div>
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 border border-gray-200 rounded-lg">
+            <button 
+              onClick={() => setObjectiveTab("clicks")}
+              className={`p-3 rounded-lg text-left transition-all ${
+                objectiveTab === "clicks" 
+                  ? "border-2 border-blue-500 bg-blue-50/30" 
+                  : "border border-gray-200 hover:border-gray-300"
+              }`}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                  objectiveTab === "clicks" ? "border-blue-500" : "border-gray-300"
+                }`}>
+                  {objectiveTab === "clicks" && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                </div>
                 <span className="text-gray-900 text-sm font-medium">Clicks</span>
               </div>
               <p className="text-xs text-gray-900">Drive traffic to your website</p>
-            </div>
-            <div className="p-3 border border-gray-200 rounded-lg">
+            </button>
+            <button 
+              onClick={() => setObjectiveTab("reach")}
+              className={`p-3 rounded-lg text-left transition-all ${
+                objectiveTab === "reach" 
+                  ? "border-2 border-blue-500 bg-blue-50/30" 
+                  : "border border-gray-200 hover:border-gray-300"
+              }`}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                  objectiveTab === "reach" ? "border-blue-500" : "border-gray-300"
+                }`}>
+                  {objectiveTab === "reach" && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                </div>
                 <span className="text-gray-900 text-sm font-medium">Reach</span>
               </div>
               <p className="text-xs text-gray-900">Maximize impressions</p>
-            </div>
-            <div className="p-3 border-2 border-blue-500 rounded-lg bg-blue-50/30">
+            </button>
+            <button 
+              onClick={() => setObjectiveTab("conversions")}
+              className={`p-3 rounded-lg text-left transition-all ${
+                objectiveTab === "conversions" 
+                  ? "border-2 border-blue-500 bg-blue-50/30" 
+                  : "border border-gray-200 hover:border-gray-300"
+              }`}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-4 h-4 rounded-full border-2 border-blue-500 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                  objectiveTab === "conversions" ? "border-blue-500" : "border-gray-300"
+                }`}>
+                  {objectiveTab === "conversions" && <div className="w-2 h-2 rounded-full bg-blue-500" />}
                 </div>
                 <span className="text-gray-900 text-sm font-medium">Conversions</span>
               </div>
               <p className="text-xs text-gray-900">Optimize for actions</p>
-            </div>
+            </button>
           </div>
         </div>
       )
@@ -270,9 +303,9 @@ export const Advertisers = () => {
       title: "Events Manager",
       description: "Track conversions with our pixel and integrations. Set up in minutes with support for all major platforms. Gravity's engine continuously optimizes your ads for maximum performance.",
       features: [
-        "Pixel setup for HTML, Shopify, React, Next.js, Wordpress, Webflow, Framer",
+        "Pixel setup for HTML, Shopify, React, Next.js, Wordpress, Webflow, Framer + more",
         "Test your pixel with live event verification",
-        "Connect Calendly, Shopify, or use API tracking",
+        "Connect Calendly, Shopify, or use API for service-side tracking",
         "Continuous optimization powered by Gravity's AI engine"
       ],
       visual: (
@@ -358,8 +391,8 @@ export const Advertisers = () => {
                     <line x1="0" y1="60" x2="240" y2="60" stroke="#e5e7eb" strokeWidth="0.5" />
                     
                     {/* Y-axis labels */}
-                    <text x="5" y="22" fontSize="8" fill="#9ca3af">800</text>
-                    <text x="5" y="42" fontSize="8" fill="#9ca3af">400</text>
+                    <text x="5" y="22" fontSize="8" fill="#9ca3af">80K</text>
+                    <text x="5" y="42" fontSize="8" fill="#9ca3af">40K</text>
                     <text x="5" y="62" fontSize="8" fill="#9ca3af">0</text>
                     
                     {/* X-axis date labels */}
@@ -407,12 +440,12 @@ export const Advertisers = () => {
                   <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
                     <span className="text-gray-900 font-medium">page_view</span>
                     <span className="text-gray-900">Pixel</span>
-                    <span className="text-right text-gray-900 font-semibold">915</span>
+                    <span className="text-right text-gray-900 font-semibold">91,500</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
                     <span className="text-gray-900 font-medium">click</span>
                     <span className="text-gray-900">Pixel</span>
-                    <span className="text-right text-gray-900 font-semibold">310</span>
+                    <span className="text-right text-gray-900 font-semibold">31,000</span>
                   </div>
                 </div>
               </div>
@@ -446,7 +479,7 @@ export const Advertisers = () => {
             className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight"
             style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}
           >
-            <span className="text-gray-900">Show up inside AI answers exactly when users need you.</span>
+            <span className="text-gray-900">Advertise inside AI answers exactly when users need you.</span>
           </h1>
           <p className="text-sm sm:text-base text-gray-500 max-w-md mx-auto mb-6 leading-relaxed">
             Reach users at the exact moment they ask, compare, and decide inside AI conversations.
@@ -636,35 +669,44 @@ export const Advertisers = () => {
               </div>
             </div>
             
-            {/* Chat Mockup */}
-            <div className="bg-white rounded-2xl p-1 border border-gray-200 shadow-2xl">
-              <div className="bg-white rounded-xl overflow-hidden">
-                {/* Header */}
-                <div className="px-4 py-3 border-b border-gray-100 bg-gray-50 flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-gray-700" />
-                  <span className="text-xs text-gray-700 font-medium">AI Assistant</span>
-                </div>
-                
+            {/* Chat Mockup - Realistic LLM Interface */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden">
+              {/* Header */}
+              <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#1a1a1a]" />
+                <span className="text-sm text-gray-800 font-medium">Assistant</span>
+              </div>
+              
+              {/* Chat area */}
+              <div className="bg-white min-h-[300px] flex flex-col">
                 {/* Messages */}
-                <div className="p-4 space-y-4 bg-white">
+                <div className="flex-1 px-5 py-5 space-y-6">
+                  {/* User message - right aligned */}
                   <div className="flex justify-end">
-                    <div className="bg-blue-500 rounded-xl rounded-tr-sm px-4 py-2 max-w-[80%]">
-                      <p className="text-sm text-white">How can I get food delivered quickly?</p>
-                    </div>
+                    <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
                   </div>
                   
-                  <div className="flex justify-start">
-                    <div className="bg-gray-100 rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%]">
-                      <p className="text-sm text-gray-700 mb-3">Look for food delivery services with real-time tracking and a wide range of restaurants to choose from.</p>
-                      
-                      {/* Sponsored Block - matches real UI */}
-                      <div className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5">
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wider font-medium mb-1">Sponsored</p>
-                        <p className="text-sm font-semibold text-gray-900 mb-0.5">DoorDash</p>
-                        <p className="text-sm text-gray-600">Get food delivered fast!</p>
-                        <p className="text-sm text-blue-500 mt-1.5 font-medium">Learn more →</p>
-                      </div>
+                  {/* AI response - plain text, left aligned */}
+                  <div className="space-y-4">
+                    <p className="text-[14px] text-gray-700 leading-relaxed">For quick food delivery, look for services with real-time tracking and a wide restaurant selection.</p>
+                    
+                    {/* Sponsored Block */}
+                    <div className="bg-[#fafafa] border border-gray-200 rounded-lg p-3">
+                      <p className="text-[9px] text-gray-400 uppercase tracking-wider font-medium mb-1.5">Sponsored</p>
+                      <p className="text-[14px] font-semibold text-gray-900">DoorDash</p>
+                      <p className="text-[13px] text-gray-500 mt-0.5">Get food delivered fast from local restaurants.</p>
+                      <p className="text-[13px] text-gray-700 mt-2 font-medium">Learn more →</p>
                     </div>
+                  </div>
+                </div>
+                
+                {/* Input bar */}
+                <div className="px-5 pb-5">
+                  <div className="bg-[#f7f7f8] rounded-xl px-4 py-3 flex items-center gap-3 border border-gray-200">
+                    <span className="text-[14px] text-gray-400 flex-1">Ask anything...</span>
+                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -682,7 +724,7 @@ export const Advertisers = () => {
               Target by what matters
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-              Choose your targeting strategy: clicks, reach, conversions, or geography. Clear controls for any campaign strategy.
+              Choose your targeting strategy: clicks, reach, conversions, and filter by geography.
             </p>
           </div>
           
@@ -723,7 +765,7 @@ export const Advertisers = () => {
                   </svg>
                 ),
                 title: "Geo-Specific", 
-                desc: "Target by country and region" 
+                desc: "Filter by country and region" 
               }
             ].map((feature, i) => (
               <div key={i} className="bg-white rounded-2xl p-8 border border-gray-200 group hover:border-gray-300 hover:shadow-md transition-all duration-300">
@@ -745,7 +787,7 @@ export const Advertisers = () => {
             Ready to reach high-intent users?
           </h2>
           <p className="text-gray-500 text-lg mb-10 max-w-2xl mx-auto">
-            Step into the new era of advertising—where brands appear inside AI conversations at the moments that spark intent and drive results.
+            Step into the new era of advertising, where brands appear inside AI conversations at the moments that spark intent and drive results.
           </p>
           
           <div className="flex items-center justify-center">
@@ -755,7 +797,7 @@ export const Advertisers = () => {
               rel="noopener noreferrer"
               className="px-8 py-3.5 bg-transparent border border-gray-300 text-gray-900 font-medium rounded-full hover:border-gray-400 transition-colors"
             >
-              Book a demo
+              Sign Up
             </a>
           </div>
         </div>

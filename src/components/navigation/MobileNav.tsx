@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { navData } from './navData';
 import { ChevronDown, X } from 'lucide-react';
 import { Button } from '../ui/button';
-import gravityLogo from '@/assets/gravity-logo.png';
+import gravityLogo from '@/assets/new-gravitylogo.png';
 
 interface MobileNavProps {
   isOpen: boolean;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import gravityLogo from '@/assets/gravity-logo.png';
+import gravityLogo from '@/assets/new-gravitylogo.png';
 
 const Privacy = () => {
   return (

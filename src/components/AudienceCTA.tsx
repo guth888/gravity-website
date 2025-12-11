@@ -86,7 +86,7 @@ export const AudienceCTA = () => {
               ${hoveredSide === 'publisher' ? 'text-white/60' : 'text-white/35'}
             `}>
               You built the space where conversations happen. We built the engine to 
-              monetize them—without compromising UX or user trust.
+              monetize them, without compromising UX or user trust.
             </p>
 
             {/* CTA */}

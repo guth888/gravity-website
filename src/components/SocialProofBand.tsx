@@ -6,14 +6,14 @@ import deepaiLogo from '@/assets/publishers/deepai.png';
 import verveLogo from '@/assets/advertisers/verve.png';
 import doordashLogo from '@/assets/advertisers/doordash.png';
 
-// Static logos - the 6 main partners
+// Static logos - the 6 main partners with links
 const logos = [
-  { src: doordashLogo, alt: "DoorDash", isIcon: false },
-  { src: rampLogo, alt: "Ramp", isIcon: false },
-  { src: verveLogo, alt: "Verve", isIcon: false },
-  { src: sourcegraphLogo, alt: "Amp", isIcon: true },
-  { src: iaskLogo, alt: "iAsk", isIcon: false },
-  { src: deepaiLogo, alt: "DeepAI", isIcon: false },
+  { src: doordashLogo, alt: "DoorDash", isIcon: false, url: "https://www.doordash.com/" },
+  { src: rampLogo, alt: "Ramp", isIcon: false, url: "https://ramp.com/" },
+  { src: verveLogo, alt: "Verve", isIcon: false, url: "https://verve.com/" },
+  { src: sourcegraphLogo, alt: "Amp", isIcon: true, url: "https://ampcode.com/" },
+  { src: iaskLogo, alt: "iAsk", isIcon: false, url: "https://iask.ai/" },
+  { src: deepaiLogo, alt: "DeepAI", isIcon: false, url: "https://deepai.org/" },
 ];
 
 export const SocialProofBand = ({ className = "" }: { className?: string }) => {
@@ -33,8 +33,11 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
         <div className="w-full mx-auto px-6 sm:px-10 md:px-16 lg:px-20">
           <div className="flex items-center justify-between">
             {logos.map((logo, index) => (
-              <div
+              <a
                 key={`logo-${index}`}
+                href={logo.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="logo-container"
               >
                 <img 
@@ -42,7 +45,7 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
                   alt={logo.alt} 
                   className={`logo-item ${logo.isIcon ? 'logo-icon' : ''}`}
                 />
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -57,6 +60,8 @@ export const SocialProofBand = ({ className = "" }: { className?: string }) => {
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
+          text-decoration: none;
         }
         
         @media (min-width: 768px) {

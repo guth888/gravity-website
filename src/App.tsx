@@ -25,8 +25,11 @@ const Docs = lazy(() => import("./pages/Docs"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Careers = lazy(() => import("./pages/Careers"));
+const FullStackEngineer = lazy(() => import("./pages/careers/FullStackEngineer"));
+const MLEngineer = lazy(() => import("./pages/careers/MLEngineer"));
 const About = lazy(() => import("./pages/About"));
 const Blog = lazy(() => import("./pages/Blog"));
+const Contact = lazy(() => import("./pages/Contact"));
 const Help = lazy(() => import("./pages/Help"));
 
 // Help subpages
@@ -72,8 +75,11 @@ const App = () => (
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/careers" element={<Careers />} />
+                <Route path="/careers/full-stack-engineer" element={<FullStackEngineer />} />
+                <Route path="/careers/ml-engineer" element={<MLEngineer />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/help" element={<Help />} />
                 <Route path="/help/getting-started" element={<HelpGettingStarted />} />
                 <Route path="/help/publishers" element={<HelpPublishers />} />

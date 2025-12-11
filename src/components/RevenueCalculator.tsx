@@ -1,6 +1,10 @@
 import { useState, useRef, useCallback } from "react";
 
 const formatNumber = (num: number): string => {
+  if (num >= 1000000000) {
+    const billions = num / 1000000000;
+    return billions % 1 === 0 ? `${billions}B` : `${billions.toFixed(1)}B`;
+  }
   if (num >= 1000000) {
     const millions = num / 1000000;
     return millions % 1 === 0 ? `${millions}M` : `${millions.toFixed(1)}M`;
@@ -27,11 +31,11 @@ export const RevenueCalculator = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
-  const MIN_MESSAGES = 10000;
-  const MAX_MESSAGES = 100000000;
-  const LOW_CPM = 3;    // $3 per 1000 messages
-  const MID_CPM = 15;   // $15 per 1000 messages
-  const HIGH_CPM = 200; // $200 per 1000 messages
+  const MIN_MESSAGES = 100000;       // 100K (so 10M is at exact middle)
+  const MAX_MESSAGES = 1000000000;   // 1B
+  const LOW_CPM = 3;    // $3 per 1000 queries
+  const MID_CPM = 20;   // $20 per 1000 queries
+  const HIGH_CPM = 150; // $150 per 1000 queries
 
   // Calculate earnings
   const lowEarnings = (messages / 1000) * LOW_CPM;
@@ -116,7 +120,7 @@ export const RevenueCalculator = () => {
         >
           {formatNumber(messages)}
         </h2>
-        <p className="text-gray-400 text-lg">messages per month</p>
+        <p className="text-gray-400 text-lg">queries per month</p>
       </div>
 
       {/* Slider */}
@@ -145,9 +149,9 @@ export const RevenueCalculator = () => {
         
         {/* Slider Labels */}
         <div className="flex justify-between items-center mt-3 text-sm text-gray-400">
-          <span>10K</span>
+          <span>100K</span>
           <span className="uppercase tracking-wider text-xs">Drag</span>
-          <span>100M</span>
+          <span>1B</span>
         </div>
       </div>
 

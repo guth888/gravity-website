@@ -33,7 +33,7 @@ export const GravityLiveDemo: React.FC = () => {
           </h2>
           <p className="max-w-2xl text-sm sm:text-base text-slate-400">
             Talk to the demo assistant and see how sponsored suggestions could be
-            injected into your own LLM conversations — without breaking trust.
+            injected into your own LLM conversations, without breaking trust.
             This is exactly what your users would experience.
           </p>
         </div>

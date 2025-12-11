@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 export const Footer = ({ className, dark }: { className?: string; dark?: boolean }) => {
-  const [showEmail, setShowEmail] = useState(false);
   const isDark = dark || className?.includes('bg-[#0a0a0a]') || className?.includes('bg-black');
   
   return (
@@ -102,21 +100,13 @@ export const Footer = ({ className, dark }: { className?: string; dark?: boolean
                   Help Center
                 </Link>
               </li>
-              <li className="relative">
-                <button 
-                  onClick={() => setShowEmail(!showEmail)}
-                  className={`text-base transition-colors text-left ${isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-600'}`}
+              <li>
+                <Link 
+                  to="/contact"
+                  className={`text-base transition-colors ${isDark ? 'text-white hover:text-gray-300' : 'text-gray-900 hover:text-gray-600'}`}
                 >
                   Contact
-                </button>
-                {showEmail && (
-                  <a 
-                    href="mailto:support@trygravity.ai"
-                    className={`block mt-1 text-sm transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'}`}
-                  >
-                    support@trygravity.ai
-                  </a>
-                )}
+                </Link>
               </li>
             </ul>
           </div>
@@ -127,7 +117,7 @@ export const Footer = ({ className, dark }: { className?: string; dark?: boolean
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             {/* Copyright */}
             <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-              © Gravity Inc. {new Date().getFullYear()}
+              © Iris inc. {new Date().getFullYear()}
             </p>
 
             {/* Legal Links */}

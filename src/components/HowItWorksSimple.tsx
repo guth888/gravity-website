@@ -114,38 +114,40 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-      {/* Micro-label - PAST / FUTURE */}
+      {/* Micro-label - PAST / FUTURE - positioned above the card */}
       <div 
-        className="absolute top-[4%] left-1/2 -translate-x-1/2 z-10 transition-opacity duration-500"
+        className="absolute left-1/2 -translate-x-1/2 z-20 transition-opacity duration-500"
         style={{
-          fontSize: '12px',
+          top: '6px',
+          fontSize: '11px',
           fontWeight: 500,
-          letterSpacing: '0.04em',
-          color: '#6b7280',
-          opacity: showChat ? 0 : 0.5,
+          letterSpacing: '0.08em',
+          color: '#9ca3af',
+          opacity: showChat ? 0 : 0.7,
           textTransform: 'uppercase'
         }}
       >
         Past
       </div>
       <div 
-        className="absolute top-[4%] left-1/2 -translate-x-1/2 z-10 transition-opacity duration-500"
+        className="absolute left-1/2 -translate-x-1/2 z-20 transition-opacity duration-500"
         style={{
-          fontSize: '12px',
+          top: '6px',
+          fontSize: '11px',
           fontWeight: 500,
-          letterSpacing: '0.04em',
-          color: '#6b7280',
-          opacity: showChat ? 0.5 : 0,
+          letterSpacing: '0.08em',
+          color: '#9ca3af',
+          opacity: showChat ? 0.7 : 0,
           textTransform: 'uppercase'
         }}
       >
         Future
       </div>
 
-      {/* Main container */}
-      <div className="absolute inset-[10%] rounded-xl overflow-hidden shadow-xl bg-white">
+      {/* Main container - THE VISIBLE CARD (with top margin for labels) */}
+      <div className="absolute inset-x-0 top-[28px] bottom-0 rounded-xl overflow-hidden shadow-xl bg-white">
         
-        {/* Sliding wrapper - holds both UIs */}
+        {/* Sliding wrapper - INVISIBLE, just handles animation */}
         <div 
           className="flex h-full transition-transform duration-700 ease-in-out"
           style={{ 
@@ -154,7 +156,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
           }}
         >
         
-          {/* OLD UI - Google Search */}
+          {/* OLD UI - Google Search - NO rounded-xl */}
           <div className="w-1/2 h-full bg-white flex-shrink-0 overflow-hidden flex flex-col">
             {/* Google Header - authentic styling */}
             <div className="flex items-center gap-6 px-5 py-2.5 border-b border-gray-200">
@@ -169,7 +171,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                 </span>
               </div>
               <div className="flex-1 h-11 bg-white border border-gray-200 rounded-full flex items-center px-4 text-[14px] text-gray-700 shadow-sm hover:shadow-md transition-shadow">
-                <span>best laptop for video editing</span>
+                <span>best crm for startups</span>
                 <div className="ml-auto flex items-center gap-3">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -190,6 +192,8 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             <div className="flex flex-1 overflow-hidden">
               {/* Main Results */}
               <div className="flex-1 px-5 pt-2.5 overflow-hidden">
+                <p className="text-[12px] text-gray-500 mb-3">About 156,000,000 results (0.38 seconds)</p>
+                
                 {/* Sponsored Ads - authentic Google ad styling */}
                 <div className="mb-3 space-y-2.5">
                   {/* Ad 1 */}
@@ -198,10 +202,10 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
-                        <span className="text-[12px] text-gray-600">www.bestbuy.com</span>
+                        <span className="text-[12px] text-gray-600">www.salesforce.com</span>
                       </div>
-                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Buy® - Top Laptops for Video Editing</p>
-                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Shop creator laptops with powerful GPUs. Free shipping on orders $35+. Price match guarantee.</p>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Salesforce® CRM - #1 CRM for Growing Businesses</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Scale your startup with the world's #1 CRM. Start free trial. No credit card required.</p>
                     </div>
                   </div>
                   
@@ -211,10 +215,10 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
-                        <span className="text-[12px] text-gray-600">www.dell.com</span>
+                        <span className="text-[12px] text-gray-600">www.hubspot.com</span>
                       </div>
-                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Dell XPS 15 - Built for Creators | Dell.com</p>
-                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">NVIDIA RTX graphics. 4K OLED display. Up to 64GB RAM. Shop now & save $200.</p>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">HubSpot CRM - Free Forever | Start Today</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">All-in-one CRM platform. Marketing, sales, service. Free tools to get started.</p>
                     </div>
                   </div>
                   
@@ -224,95 +228,243 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] px-1 py-0.5 bg-white border border-gray-300 rounded text-gray-600 font-medium">Sponsored</span>
                         <span className="text-[12px] text-gray-600">·</span>
-                        <span className="text-[12px] text-gray-600">www.apple.com</span>
+                        <span className="text-[12px] text-gray-600">www.pipedrive.com</span>
                       </div>
-                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">MacBook Pro - Pro Performance | Apple</p>
-                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">M3 Pro & M3 Max chips. Up to 22hrs battery. The most advanced Mac laptops ever.</p>
+                      <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Pipedrive CRM - Sales CRM for Small Teams</p>
+                      <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Visual pipeline. Easy to use. 14-day free trial. Trusted by 100,000+ companies.</p>
                     </div>
                   </div>
                 </div>
                 
-                <p className="text-[12px] text-gray-500 mb-3">About 892,000,000 results (0.42 seconds)</p>
-                
                 {/* Organic Results - authentic Google styling */}
-                <div className="space-y-3.5">
+                <div className="space-y-3">
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">
                       <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-[10px] font-medium text-gray-600">T</span>
+                        <span className="text-[10px] font-medium text-gray-600">F</span>
                       </div>
                       <div>
-                        <p className="text-[12px] text-gray-600">Tom's Guide</p>
-                        <p className="text-[12px] text-gray-500">https://www.tomsguide.com › best-laptops</p>
+                        <p className="text-[12px] text-gray-600">Forbes Advisor</p>
+                        <p className="text-[12px] text-gray-500">https://www.forbes.com › advisor › best-crm</p>
                       </div>
                     </div>
-                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best Laptops for Video Editing 2024 | Tom's Guide</p>
-                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">The MacBook Pro 16 is our top pick for video editors. We tested over 30 laptops...</p>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best CRM Software for Startups 2024 | Forbes</p>
+                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">We compared 25 CRM platforms for small businesses. HubSpot ranked #1 for startups...</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-[10px] font-medium text-gray-600">G</span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] text-gray-600">G2</p>
+                        <p className="text-[12px] text-gray-500">https://www.g2.com › categories › crm</p>
+                      </div>
+                    </div>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best CRM Software in 2024 | G2 Reviews</p>
+                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Compare top CRM solutions based on 50,000+ verified user reviews...</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-[10px] font-medium text-gray-600">R</span>
+                      </div>
+                      <div>
+                        <p className="text-[12px] text-gray-600">Reddit</p>
+                        <p className="text-[12px] text-gray-500">https://www.reddit.com › r/startups</p>
+                      </div>
+                    </div>
+                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">What CRM are you using for your startup? : r/startups</p>
+                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">We switched from Salesforce to HubSpot last year. Way better for early stage...</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* NEW UI - Chat Interface (rebuilt from scratch) */}
-          <div className="w-1/2 h-full bg-white flex-shrink-0 flex flex-col overflow-hidden">
-            {/* Header */}
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #374151, #111827)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+          {/* NEW UI - Hyper-realistic ChatGPT Clone (Light Mode) */}
+          <div className="w-1/2 h-full flex-shrink-0 flex overflow-hidden" style={{ background: '#ffffff', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+            {/* Sidebar - light */}
+            <div style={{ width: '52px', background: '#f9f9f9', borderRight: '1px solid #e5e5e5', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 0', gap: '2px' }}>
+              {/* New chat */}
+              <div style={{ width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: '#ffffff', border: '1px solid #e5e5e5' }}>
+                <svg style={{ width: '20px', height: '20px', color: '#374151' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 5v14M5 12h14"/>
                 </svg>
               </div>
-              <span style={{ fontSize: '15px', fontWeight: 600, color: '#374151' }}>AI Assistant</span>
+              {/* Search */}
+              <div style={{ width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                <svg style={{ width: '20px', height: '20px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+              </div>
+              {/* Spacer */}
+              <div style={{ flex: 1 }} />
+              {/* User avatar at bottom */}
+              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px', fontSize: '12px', fontWeight: 600, color: 'white' }}>
+                E
+              </div>
             </div>
             
-            {/* Chat Messages */}
-            <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', overflowY: 'auto' }}>
-              {/* User Message */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <div style={{ background: '#1f2937', color: 'white', padding: '12px 16px', borderRadius: '18px 18px 4px 18px', maxWidth: '75%', fontSize: '14px', lineHeight: '1.5' }}>
-                  Best laptop for video editing?
+            {/* Main chat area */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#ffffff' }}>
+              {/* Header */}
+              <div style={{ padding: '12px 16px', borderBottom: '1px solid #e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '15px', fontWeight: 600, color: '#171717' }}>AI Assistant</span>
+                  <svg style={{ width: '14px', height: '14px', color: '#6b7280' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="m6 9 6 6 6-6"/>
+                  </svg>
+                  <span style={{ fontSize: '12px', color: '#6b7280', marginLeft: '4px' }}>4o</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {/* Share */}
+                  <div style={{ padding: '6px 12px', borderRadius: '20px', border: '1px solid #e5e5e5', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                    <svg style={{ width: '14px', height: '14px', color: '#374151' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16,6 12,2 8,6"/><line x1="12" y1="2" x2="12" y2="15"/>
+                    </svg>
+                    <span style={{ fontSize: '13px', color: '#374151' }}>Share</span>
+                  </div>
                 </div>
               </div>
               
-              {/* AI Response */}
-              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                <div style={{ background: '#f3f4f6', borderRadius: '18px 18px 18px 4px', maxWidth: '88%', overflow: 'hidden' }}>
-                  {/* Main response */}
-                  <div style={{ padding: '14px 16px', fontSize: '14px', lineHeight: '1.6', color: '#374151' }}>
-                    <div>For video editing, you need powerful GPU, 32GB+ RAM, and fast SSD. Top picks:</div>
-                    <div style={{ marginTop: '6px' }}><strong>1. MacBook Pro 16"</strong> — M3 Max chip, great for Final Cut</div>
-                    <div style={{ marginTop: '4px' }}><strong>2. Dell XPS 15</strong> — RTX 4070, stunning OLED display</div>
-                    <div style={{ marginTop: '4px' }}><strong>3. ASUS ProArt</strong> — Budget-friendly, color-accurate</div>
+              {/* Chat Messages */}
+              <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto', background: '#ffffff' }}>
+                {/* User Message - Right aligned */}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+                  <div style={{ paddingTop: '4px', textAlign: 'right' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#171717', marginBottom: '4px' }}>You</div>
+                    <div style={{ fontSize: '15px', color: '#171717', lineHeight: '1.6' }}>
+                      What CRM should I use for my startup?
+                    </div>
                   </div>
-                  {/* Sponsored */}
-                  <div style={{ borderTop: '1px solid #e5e7eb', background: '#f3f4f6', padding: '12px 16px' }}>
-                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginTop: '4px' }}>MacBook Pro 16" M3 Max</div>
-                    <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Built for professional video. Up to 128GB RAM.</div>
-                    <div style={{ fontSize: '13px', color: '#374151', fontWeight: 500, marginTop: '6px' }}>Learn more →</div>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '11px', fontWeight: 600, color: 'white' }}>
+                    E
+                  </div>
+                </div>
+                
+                {/* AI Response */}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  {/* AI Assistant icon */}
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#171717', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, paddingTop: '4px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#171717', marginBottom: '8px' }}>AI Assistant</div>
+                    <div style={{ fontSize: '15px', color: '#374151', lineHeight: '1.7' }}>
+                      <p style={{ marginBottom: '12px' }}>For an early-stage startup, you'll want a CRM that's <strong style={{ color: '#171717' }}>easy to set up</strong>, <strong style={{ color: '#171717' }}>affordable</strong>, and <strong style={{ color: '#171717' }}>scales with you</strong>. Here are my top picks:</p>
+                      <div style={{ marginBottom: '8px' }}><strong style={{ color: '#171717' }}>1. HubSpot</strong> — Free tier, great for inbound marketing</div>
+                      <div style={{ marginBottom: '8px' }}><strong style={{ color: '#171717' }}>2. Pipedrive</strong> — Visual pipeline, sales-focused</div>
+                      <div style={{ marginBottom: '12px' }}><strong style={{ color: '#171717' }}>3. Notion</strong> — Flexible, works as lightweight CRM</div>
+                      
+                      {/* Sponsored Card - Product style */}
+                      <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '14px', border: '1px solid #e5e7eb', marginTop: '8px' }}>
+                        <div style={{ display: 'flex', gap: '12px' }}>
+                          {/* Product image placeholder */}
+                          <div style={{ width: '64px', height: '64px', borderRadius: '8px', background: 'linear-gradient(135deg, #f3f4f6, #e5e7eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <svg style={{ width: '28px', height: '28px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                              <span style={{ fontSize: '10px', fontWeight: 500, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</span>
+                            </div>
+                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#171717' }}>Close CRM</div>
+                            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Built for startups. Calling, email, and pipeline in one.</div>
+                            <div style={{ fontSize: '13px', color: '#171717', fontWeight: 500, marginTop: '6px', cursor: 'pointer' }}>Learn more →</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Action buttons */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginTop: '12px' }}>
+                      {/* Copy */}
+                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                      </div>
+                      {/* Thumbs up */}
+                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                        </svg>
+                      </div>
+                      {/* Thumbs down */}
+                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                        </svg>
+                      </div>
+                      {/* Regenerate */}
+                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Input Bar */}
-            <div style={{ padding: '12px 16px', borderTop: '1px solid #e5e7eb' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ flex: 1, height: '44px', background: '#f9fafb', borderRadius: '22px', border: '1px solid #e5e7eb', padding: '0 16px', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '14px', color: '#9ca3af' }}>Ask anything...</span>
+              
+              {/* Input Bar - Light mode */}
+              <div style={{ padding: '12px 16px 16px', background: '#ffffff' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'flex-end', 
+                  gap: '8px', 
+                  background: '#ffffff', 
+                  border: '1px solid #d1d5db', 
+                  borderRadius: '24px', 
+                  padding: '10px 12px 10px 16px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                }}>
+                  {/* Attach */}
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                    <svg style={{ width: '20px', height: '20px', color: '#6b7280' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                  </div>
+                  {/* Input text */}
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', minHeight: '24px' }}>
+                    <span style={{ fontSize: '15px', color: '#9ca3af' }}>Ask anything...</span>
+                  </div>
+                  {/* Voice */}
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                    <svg style={{ width: '20px', height: '20px', color: '#6b7280' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                  </div>
+                  {/* Send */}
+                  <div style={{ 
+                    width: '32px', 
+                    height: '32px', 
+                    borderRadius: '50%', 
+                    background: '#d1d5db', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    cursor: 'pointer' 
+                  }}>
+                    <svg style={{ width: '16px', height: '16px', color: 'white' }} viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                  </div>
                 </div>
-                <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#111827', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <svg style={{ width: '18px', height: '18px', color: 'white' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
+                {/* Disclaimer */}
+                <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
+                  AI can make mistakes. Verify important information.
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
       </div>
       
       {/* Dot indicators - Outside the overflow-hidden container */}
@@ -881,40 +1033,48 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
   );
 };
 
-// Visual 03: Solution - Chat
+// Visual 03: Solution - Chat with Inline Hyperlink
 const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
   return (
-    <div className="relative w-full h-full flex items-center justify-center p-4">
-      <div className="w-full max-w-[420px] flex flex-col gap-3">
-        {/* User Message */}
-        <div 
-          className={`flex justify-end transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
-          style={{ transitionDelay: isActive ? '200ms' : '0ms' }}
-        >
-          <div style={{ background: '#1f2937', color: 'white', padding: '12px 16px', borderRadius: '18px 18px 4px 18px', maxWidth: '75%', fontSize: '14px', lineHeight: '1.4' }}>
-            Best project management tool for a remote team?
-          </div>
+    <div className={`relative w-full h-full flex items-center justify-center overflow-hidden transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Chat Mockup - Realistic LLM Interface */}
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden w-full max-w-[400px]">
+        {/* Header */}
+        <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-[#1a1a1a]" />
+          <span className="text-sm text-gray-800 font-medium">Assistant</span>
         </div>
         
-        {/* AI Response */}
-        <div 
-          className={`flex justify-start transition-all duration-700 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} 
-          style={{ transitionDelay: isActive ? '400ms' : '0ms' }}
-        >
-          <div style={{ background: '#f3f4f6', borderRadius: '18px 18px 18px 4px', maxWidth: '88%', overflow: 'hidden' }}>
-            {/* Main response */}
-            <div style={{ padding: '12px 16px', fontSize: '14px', lineHeight: '1.5', color: '#374151' }}>
-              <div>For remote teams, I'd recommend:</div>
-              <div style={{ marginTop: '4px' }}><strong>• Notion</strong> — Great for documentation</div>
-              <div style={{ marginTop: '3px' }}><strong>• Asana</strong> — Strong task management</div>
-              <div style={{ marginTop: '3px' }}><strong>• Monday</strong> — Visual project boards</div>
+        {/* Chat area */}
+        <div className="bg-white min-h-[300px] flex flex-col">
+          {/* Messages */}
+          <div className="flex-1 px-5 py-5 space-y-6">
+            {/* User message - right aligned */}
+            <div className="flex justify-end">
+              <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
             </div>
-            {/* Sponsored */}
-            <div style={{ borderTop: '1px solid #e5e7eb', background: '#f3f4f6', padding: '12px 16px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</div>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: '#111827', marginTop: '3px' }}>Linear</div>
-              <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '1px' }}>Built for fast-moving teams with async workflows.</div>
-              <div style={{ fontSize: '13px', color: '#374151', fontWeight: 500, marginTop: '4px' }}>Learn more →</div>
+            
+            {/* AI response with inline hyperlink */}
+            <div className="space-y-3">
+              <p className="text-[14px] text-gray-700 leading-relaxed">For quick food delivery, look for services with real-time tracking and a wide restaurant selection.</p>
+              
+              <p className="text-[14px] text-gray-700 leading-relaxed">
+                You might want to try{' '}
+                <a href="https://www.doordash.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2 font-medium hover:text-blue-700">DoorDash</a>
+                {' '}
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider">(Sponsored)</span>
+                {' '}— they offer fast delivery from local restaurants with real-time order tracking.
+              </p>
+            </div>
+          </div>
+          
+          {/* Input bar */}
+          <div className="px-5 pb-5">
+            <div className="bg-[#f7f7f8] rounded-xl px-4 py-3 flex items-center gap-3 border border-gray-200">
+              <span className="text-[14px] text-gray-400 flex-1">Ask anything...</span>
+              <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
             </div>
           </div>
         </div>
@@ -1612,3 +1772,4 @@ export const HowItWorksSimple = () => {
     </section>
   );
 };
+

@@ -7,7 +7,7 @@ const steps = [{
   icon: Upload,
   number: "01",
   title: "Input Signal",
-  description: "Brand voice, guidelines, product catalog, and key messaging — transmitted through a few high-leverage questions. Proprietary AI agents handle the rest."
+  description: "Brand voice, guidelines, product catalog, and key messaging, transmitted through a few high-leverage questions. Proprietary AI agents handle the rest."
 }, {
   icon: Brain,
   number: "02",
@@ -17,7 +17,7 @@ const steps = [{
   icon: Sparkles,
   number: "03",
   title: "Native Generation",
-  description: "Creative engine synthesizes contextual responses optimized for each LLM conversation layer — surpassing base model output."
+  description: "Creative engine synthesizes contextual responses optimized for each LLM conversation layer, surpassing base model output."
 }, {
   icon: Eye,
   number: "04",

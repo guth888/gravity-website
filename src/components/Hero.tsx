@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import gravityLogo from '@/assets/gravity-logo.png';
 import { PrefetchLink } from "./PrefetchLink";
 
 // Floating particles background - zooming from right to left, avoiding center
@@ -119,14 +118,12 @@ export const Hero = () => {
           className="relative max-w-[100%] sm:max-w-[520px] md:max-w-[700px] lg:max-w-[850px] xl:max-w-[950px] mx-auto mb-8 antialiased text-gravity-space hero-float-delayed"
           style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400, fontSize: '18px', lineHeight: 1.6, letterSpacing: '-0.01em' }}
         >
-          Ads that appear natively inside AI answers — relevant, trusted, and timed to user intent.
+          Ads that appear natively inside AI answers: relevant, trusted, and timed to user intent.
         </p>
         
         {/* CTA Button */}
         <a 
-          href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11" 
-          target="_blank" 
-          rel="noopener noreferrer"
+          href="/login"
           style={{
             display: "inline-block"
           }}
@@ -135,7 +132,7 @@ export const Hero = () => {
             padding: "16px 32px",
             minHeight: "48px"
           }}>
-            <span>Book A Demo</span>
+            <span>Sign up</span>
           </button>
         </a>
       </div>

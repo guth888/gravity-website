@@ -29,9 +29,9 @@ const HelpPublishers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Integration options</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><a href="https://www.npmjs.com/package/@gravity-ai/react" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">React SDK</a> — Best for React/Next.js apps</li>
-                <li><a href="https://www.npmjs.com/package/@gravity-ai/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">API SDK</a> — JavaScript/TypeScript client</li>
-                <li><a href="https://docs.trygravity.ai/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">REST API</a> — For any platform</li>
+                <li><a href="https://www.npmjs.com/package/@gravity-ai/react" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">React SDK</a>: Best for React/Next.js apps</li>
+                <li><a href="https://www.npmjs.com/package/@gravity-ai/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">API SDK</a>: JavaScript/TypeScript client</li>
+                <li><a href="https://docs.trygravity.ai/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">REST API</a>: For any platform</li>
               </ul>
             </section>
 

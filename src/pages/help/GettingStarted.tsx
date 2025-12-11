@@ -38,8 +38,8 @@ const GettingStarted = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Who is it for?</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><strong>LLM Publishers</strong> — Consumer Chatbots, Search/Chat hybrids, AI Consumer Apps and many more. (Any LLM Surface)</li>
-                <li><strong>Advertisers</strong> — Brands that want to reach users in these LLM Surfaces</li>
+                <li><strong>LLM Publishers</strong>: Consumer Chatbots, Search/Chat hybrids, AI Consumer Apps and many more. (Any LLM Surface)</li>
+                <li><strong>Advertisers</strong>: Brands that want to reach users in these LLM Surfaces</li>
               </ul>
             </section>
 

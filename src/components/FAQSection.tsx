@@ -10,19 +10,19 @@ const MeshAnimation = lazy(() => import("./MeshAnimation").then(m => ({
 const faqItems = [
   {
     q: "What is Gravity?",
-    a: "Gravity is the native ad network built for AI. We help LLM-powered apps monetize with contextual suggestions that feel like helpful recommendations — not intrusive ads. For advertisers, we surface your brand at the exact moment users are making decisions inside AI conversations."
+    a: "Gravity is the native ad network built for AI. We help LLM-powered apps monetize with contextual suggestions that feel like helpful recommendations, not intrusive ads. For advertisers, we surface your brand at the exact moment users are making decisions inside AI conversations."
   },
   {
     q: "How do ads appear inside AI conversations?",
-    a: "Gravity supports two formats: Sponsored Blocks (clearly labeled suggestion cards) and Inline Hyperlinks (subtle in-text mentions). Both are contextual — they match what the user is asking about — so they feel native to the conversation, not disruptive."
+    a: "Gravity supports two formats: Sponsored Blocks (clearly labeled suggestion cards) and Inline Hyperlinks (subtle in-text mentions). Both are contextual, matching what the user is asking about, so they feel native to the conversation, not disruptive."
   },
   {
     q: "How does Gravity generate revenue for publishers?",
-    a: "When a user asks a high-intent question, Gravity runs a real-time auction among relevant advertisers and delivers a native suggestion. Publishers earn on a CPM basis — typical rates range from $3–$200 depending on vertical. You control what traffic you send us."
+    a: "When a user asks a high-intent question, Gravity runs a real-time auction among relevant advertisers and delivers a native suggestion. Publishers earn on a CPM basis, with typical rates ranging from $3–$200 depending on vertical. You control what traffic you send us."
   },
   {
     q: "What platforms can integrate with Gravity?",
-    a: "Gravity works with any AI-powered conversational product — chatbots, AI assistants, search engines, copilots, and autonomous agents. If your product has conversations, Gravity can monetize them."
+    a: "Gravity works with any AI-powered conversational product: chatbots, AI assistants, search engines, copilots, and autonomous agents. If your product has conversations, Gravity can monetize them."
   },
 ];
 
@@ -132,26 +132,6 @@ export const FAQSection = () => {
               isVisible={isInView}
             />
           ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className={`
-          text-center mt-16 sm:mt-20
-          ${isInView ? "opacity-100" : "opacity-0"}
-          transition-opacity duration-700 delay-500
-        `}>
-          <p className="text-sm text-foreground/50 mb-6">
-            Have more questions?
-          </p>
-          <a 
-            href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="metallic-button text-sm" style={{ padding: "12px 24px" }}>
-              <span>Book a Demo</span>
-            </button>
-          </a>
         </div>
       </div>
     </section>

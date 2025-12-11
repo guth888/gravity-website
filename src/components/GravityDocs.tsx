@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from "react";
-import gravityLogo from '@/assets/gravity-logo.png';
+import gravityLogo from '@/assets/new-gravitylogo.png';
 
 // Section data structure
 interface Section {
@@ -324,7 +324,7 @@ const OverviewSection = () => (
         <SubsectionHeader number="00.1" title="What Gravity Is" id="what-gravity-is" />
         <Paragraph>
           Gravity is an AI-native ad platform that connects advertisers with high-intent moments inside LLM conversations. 
-          We insert high-intent sponsored suggestions directly into AI answers—designed to preserve trust and feel native to the conversation.
+          We insert high-intent sponsored suggestions directly into AI answers, designed to preserve trust and feel native to the conversation.
         </Paragraph>
         <Paragraph>
           Think of it as the ad layer purpose-built for the conversational era: where users ask, compare, and decide inside AI chats instead of browsing feeds or clicking links.
@@ -356,7 +356,7 @@ const OverviewSection = () => (
       Today's AI ecosystem has a missing economic layer.
     </Paragraph>
     <Paragraph>
-      LLM conversations are where decisions now happen — but there is almost no structured way to fund them.
+      LLM conversations are where decisions now happen, but there is almost no structured way to fund them.
     </Paragraph>
     <Paragraph>
       Gravity solves three fundamental problems:
@@ -369,7 +369,7 @@ const OverviewSection = () => (
         <strong>AI apps and agents have no sustainable monetization model.</strong> Running LLMs is expensive. Most assistants, bots, and agents don't have a path to profitability. Gravity gives them a clean, native way to generate revenue without breaking UX.
       </FeatureItem>
       <FeatureItem>
-        <strong>Free AI isn't economically possible without an ad layer.</strong> Just like search engines and social networks needed ads to become free and globally accessible, AI needs a native monetization layer. Gravity is that layer — the economic infrastructure that will fund the future of free AI.
+        <strong>Free AI isn't economically possible without an ad layer.</strong> Just like search engines and social networks needed ads to become free and globally accessible, AI needs a native monetization layer. Gravity is that layer, the economic infrastructure that will fund the future of free AI.
       </FeatureItem>
     </ul>
 
@@ -489,10 +489,69 @@ const NetworkArchitectureSection = () => (
           </g>
         ))}
 
-        {/* Center */}
+        {/* Center - Gravity hub with orbit effect */}
         <g transform="translate(300, 150)">
-          <circle r="45" fill="#3D3D3D" fillOpacity="0.1" />
+          {/* Outer orbit ring */}
+          <circle 
+            r="52" 
+            fill="none" 
+            stroke="#3D3D3D" 
+            strokeWidth="0.5" 
+            opacity="0.2"
+            strokeDasharray="3 6"
+          >
+            <animateTransform 
+              attributeName="transform" 
+              type="rotate" 
+              from="0 0 0" 
+              to="360 0 0" 
+              dur="30s" 
+              repeatCount="indefinite"
+            />
+          </circle>
+          
+          {/* Orbit markers */}
+          {[0, 120, 240].map((angle, i) => (
+            <circle 
+              key={`orbit-doc-${i}`}
+              r="2" 
+              fill="#3D3D3D" 
+              opacity="0.3"
+            >
+              <animateTransform 
+                attributeName="transform" 
+                type="rotate" 
+                from={`${angle} 0 0`}
+                to={`${angle + 360} 0 0`}
+                dur="30s" 
+                repeatCount="indefinite"
+                additive="sum"
+              />
+              <animateMotion path="M 0 -52 A 52 52 0 0 1 0 52 A 52 52 0 0 1 0 -52" dur="0.01s" fill="freeze" />
+            </circle>
+          ))}
+          
+          {/* Radiating pulse */}
+          <circle r="35" fill="none" stroke="#3D3D3D" strokeWidth="1">
+            <animate attributeName="r" values="35;55" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle r="35" fill="none" stroke="#3D3D3D" strokeWidth="1">
+            <animate attributeName="r" values="35;55" dur="3s" begin="1.5s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0" dur="3s" begin="1.5s" repeatCount="indefinite" />
+          </circle>
+          
+          {/* Inner glow */}
+          <circle r="45" fill="#3D3D3D" fillOpacity="0.08" />
+          
+          {/* Core */}
           <circle r="35" fill="#0a0a0a" stroke="#3D3D3D" strokeWidth="2" />
+          
+          {/* Subtle inner pulse */}
+          <circle r="30" fill="#3D3D3D" opacity="0">
+            <animate attributeName="opacity" values="0;0.05;0" dur="2s" repeatCount="indefinite" />
+          </circle>
+          
           <text y="5" textAnchor="middle" fontSize="11" fontWeight="700" fill="#3D3D3D">GRAVITY</text>
         </g>
 
@@ -643,7 +702,7 @@ const AdvertisersSection = () => (
     <SubsectionHeader number="04.1" title="Access to High-Intent Conversations" id="high-intent" />
     <Paragraph>
       Reach users at the exact moment they're asking, comparing, and deciding. 
-      Not after they've made up their mind—during the decision itself.
+      Not after they've made up their mind, during the decision itself.
     </Paragraph>
 
     <SubsectionHeader number="04.2" title="Campaign Objectives" id="targeting" />
@@ -670,10 +729,10 @@ const AdvertisersSection = () => (
       Set up your campaign with these core details:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Campaign Name</strong> — Give your campaign a descriptive name</FeatureItem>
-      <FeatureItem><strong>Daily Budget</strong> — Set your daily spend limit in dollars</FeatureItem>
-      <FeatureItem><strong>Landing Page URL</strong> — Where users go when they click</FeatureItem>
-      <FeatureItem><strong>Start/End Dates</strong> — Schedule your campaign with optional end date</FeatureItem>
+      <FeatureItem><strong>Campaign Name</strong>: Give your campaign a descriptive name</FeatureItem>
+      <FeatureItem><strong>Daily Budget</strong>: Set your daily spend limit in dollars</FeatureItem>
+      <FeatureItem><strong>Landing Page URL</strong>: Where users go when they click</FeatureItem>
+      <FeatureItem><strong>Start/End Dates</strong>: Schedule your campaign with optional end date</FeatureItem>
     </ul>
 
     <SubsectionHeader number="04.4" title="Targeting & Demographics" id="demographics" />
@@ -681,8 +740,8 @@ const AdvertisersSection = () => (
       Reach the right audience with location targeting:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Location Targeting</strong> — Select specific countries and regions for your target audience</FeatureItem>
-      <FeatureItem><strong>UTM Parameters</strong> — Automatic UTM tracking (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
+      <FeatureItem><strong>Location Targeting</strong>: Select specific countries and regions for your target audience</FeatureItem>
+      <FeatureItem><strong>UTM Parameters</strong>: Automatic UTM tracking (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
     </ul>
 
     <SubsectionHeader number="04.5" title="Creative Formats" id="creative-formats" />
@@ -690,8 +749,8 @@ const AdvertisersSection = () => (
       Text-only native suggestions that fit naturally in AI conversations. Choose from two formats:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Sponsored Block</strong> — A dedicated suggestion card with your brand name, value proposition, and "Learn more" CTA</FeatureItem>
-      <FeatureItem><strong>Inline Hyperlink</strong> — A subtle inline mention that links directly to your landing page</FeatureItem>
+      <FeatureItem><strong>Sponsored Block</strong>: A dedicated suggestion card with your brand name, value proposition, and "Learn more" CTA</FeatureItem>
+      <FeatureItem><strong>Inline Hyperlink</strong>: A subtle inline mention that links directly to your landing page</FeatureItem>
     </ul>
     <Paragraph>
       Both formats include clear "Sponsored" labeling and are previewed in mobile and desktop views before launch.
@@ -702,10 +761,10 @@ const AdvertisersSection = () => (
       Track conversions with our Events Manager:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Pixel Setup</strong> — Install our tracking pixel with support for HTML, Shopify, React, Next.js, Wordpress, Webflow, and Framer</FeatureItem>
-      <FeatureItem><strong>Conversion Types</strong> — Track purchases, sign-ups, and custom events</FeatureItem>
-      <FeatureItem><strong>Integrations</strong> — Connect with Calendly, Shopify, or use our API for custom tracking</FeatureItem>
-      <FeatureItem><strong>Live Testing</strong> — Verify your pixel installation with real-time event testing</FeatureItem>
+      <FeatureItem><strong>Pixel Setup</strong>: Install our tracking pixel with support for HTML, Shopify, React, Next.js, Wordpress, Webflow, and Framer</FeatureItem>
+      <FeatureItem><strong>Conversion Types</strong>: Track purchases, sign-ups, and custom events</FeatureItem>
+      <FeatureItem><strong>Integrations</strong>: Connect with Calendly, Shopify, or use our API for custom tracking</FeatureItem>
+      <FeatureItem><strong>Live Testing</strong>: Verify your pixel installation with real-time event testing</FeatureItem>
     </ul>
 
     <SubsectionHeader number="04.7" title="Performance Measurement" id="performance" />
@@ -773,7 +832,7 @@ const RenderingSection = () => (
     <SubsectionHeader number="05.3" title="Interaction Model" id="interaction" />
     <Paragraph>
       Click → Landing page. Simple. No complex flows, no multi-step journeys. 
-      The suggestion is the ad unit—clicking it takes users directly to the advertiser.
+      The suggestion is the ad unit. Clicking it takes users directly to the advertiser.
     </Paragraph>
 
     <SubsectionHeader number="05.4" title="UX Safety Patterns" id="ux-safety" />
@@ -916,11 +975,11 @@ const AdvertiserIntegrationsSection = () => (
       Create a new campaign by configuring these settings:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Campaign Name</strong> — A descriptive name for your campaign</FeatureItem>
-      <FeatureItem><strong>Daily Budget</strong> — Set your spending limit per day</FeatureItem>
-      <FeatureItem><strong>Landing Page URL</strong> — Where users go when they click</FeatureItem>
-      <FeatureItem><strong>Start/End Dates</strong> — Schedule your campaign timing</FeatureItem>
-      <FeatureItem><strong>Campaign Objective</strong> — Clicks, Reach, or Conversions</FeatureItem>
+      <FeatureItem><strong>Campaign Name</strong>: A descriptive name for your campaign</FeatureItem>
+      <FeatureItem><strong>Daily Budget</strong>: Set your spending limit per day</FeatureItem>
+      <FeatureItem><strong>Landing Page URL</strong>: Where users go when they click</FeatureItem>
+      <FeatureItem><strong>Start/End Dates</strong>: Schedule your campaign timing</FeatureItem>
+      <FeatureItem><strong>Campaign Objective</strong>: Clicks, Reach, or Conversions</FeatureItem>
     </ul>
 
     <SubsectionHeader number="07.2" title="Conversion Configuration" id="budgets-bids" />
@@ -928,15 +987,15 @@ const AdvertiserIntegrationsSection = () => (
       Track conversions with automatic UTM parameters and conversion types:
     </Paragraph>
     <ul className="space-y-3 mb-6">
-      <FeatureItem><strong>Conversion Type</strong> — Purchase, Sign Up, Lead, or custom</FeatureItem>
-      <FeatureItem><strong>UTM Parameters</strong> — Automatically appended (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
-      <FeatureItem><strong>Preview URL</strong> — See exactly how your tracking URL will look</FeatureItem>
+      <FeatureItem><strong>Conversion Type</strong>: Purchase, Sign Up, Lead, or custom</FeatureItem>
+      <FeatureItem><strong>UTM Parameters</strong>: Automatically appended (utm_source=gravity, utm_medium=ai_suggestion)</FeatureItem>
+      <FeatureItem><strong>Preview URL</strong>: See exactly how your tracking URL will look</FeatureItem>
     </ul>
 
     <SubsectionHeader number="07.3" title="Demographics & Targeting" id="audience-controls" />
     <ul className="space-y-3 mb-8">
-      <FeatureItem><strong>Locations</strong> — Target specific countries, regions, or cities</FeatureItem>
-      <FeatureItem><strong>Intent Categories</strong> — Reach users based on what they're asking about</FeatureItem>
+      <FeatureItem><strong>Locations</strong>: Target specific countries, regions, or cities</FeatureItem>
+      <FeatureItem><strong>Intent Categories</strong>: Reach users based on what they're asking about</FeatureItem>
     </ul>
 
     <SubsectionHeader number="07.4" title="Events Manager" id="creative-input" />
@@ -966,12 +1025,12 @@ const AdvertiserIntegrationsSection = () => (
     <SubsectionHeader number="07.5" title="Ad Preview" id="optimization" />
     <Paragraph>
       Preview exactly how your ad will appear before launching. Ads are generated on the fly 
-      based on the user's question—always relevant and contextual.
+      based on the user's question, always relevant and contextual.
     </Paragraph>
     <ul className="space-y-3 mb-8">
-      <FeatureItem><strong>Sponsored Block</strong> — Full suggestion with brand, description, and CTA</FeatureItem>
-      <FeatureItem><strong>Inline Hyperlink</strong> — Subtle inline mention within the response</FeatureItem>
-      <FeatureItem><strong>Mobile & Desktop</strong> — Preview both views before launch</FeatureItem>
+      <FeatureItem><strong>Sponsored Block</strong>: Full suggestion with brand, description, and CTA</FeatureItem>
+      <FeatureItem><strong>Inline Hyperlink</strong>: Subtle inline mention within the response</FeatureItem>
+      <FeatureItem><strong>Mobile & Desktop</strong>: Preview both views before launch</FeatureItem>
     </ul>
   </div>
 );

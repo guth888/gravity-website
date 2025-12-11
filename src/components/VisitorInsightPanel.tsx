@@ -130,7 +130,7 @@ export const VisitorInsightPanel: React.FC = () => {
     if (isRepeat) {
       l.push({
         id: "repeat",
-        text: "This isn't your first time here. You came back — which means something stuck.",
+        text: "This isn't your first time here. You came back, which means something stuck.",
       });
     }
 
@@ -147,17 +147,17 @@ export const VisitorInsightPanel: React.FC = () => {
       let deviceLine = "";
       if (device.isMobile) {
         deviceLine = device.platform === 'ios'
-          ? "You're on an iPhone — checking this between meetings or on the move. That's not casual browsing behavior."
+          ? "You're on an iPhone, checking this between meetings or on the move. That's not casual browsing behavior."
           : device.platform === 'android'
-          ? "You're on Android — mobile research usually means this is top of mind, not a backlog item."
-          : "You're on mobile — quick scan mode. You're qualifying, not deep-diving yet.";
+          ? "You're on Android, mobile research usually means this is top of mind, not a backlog item."
+          : "You're on mobile, quick scan mode. You're qualifying, not deep-diving yet.";
       } else {
         deviceLine = device.platform === 'mac'
-          ? "You're on a Mac — product-led environment, probably a startup or scale-up."
+          ? "You're on a Mac, product-led environment, probably a startup or scale-up."
           : device.platform === 'windows'
-          ? "You're on Windows — enterprise-leaning setup. Probably navigating procurement or internal buy-in."
+          ? "You're on Windows, enterprise-leaning setup. Probably navigating procurement or internal buy-in."
           : device.platform === 'linux'
-          ? "You're on Linux — developer or infra background. You care about how this actually works under the hood."
+          ? "You're on Linux, developer or infra background. You care about how this actually works under the hood."
           : "Desktop session. You're in work mode, not scrolling on the couch.";
       }
       l.push({
@@ -171,17 +171,17 @@ export const VisitorInsightPanel: React.FC = () => {
     if (localHour !== null) {
       let timeLine = "";
       if (localHour >= 9 && localHour < 12) {
-        timeLine = "You're here during prime morning hours — when people tackle their most important work.";
+        timeLine = "You're here during prime morning hours, when people tackle their most important work.";
       } else if (localHour >= 12 && localHour < 14) {
-        timeLine = "Lunchtime browsing — you're squeezing this in between calls. That's a priority signal.";
+        timeLine = "Lunchtime browsing, you're squeezing this in between calls. That's a priority signal.";
       } else if (localHour >= 14 && localHour < 18) {
-        timeLine = "Afternoon session — deep work hours. You're not just killing time; you're evaluating.";
+        timeLine = "Afternoon session, deep work hours. You're not just killing time; you're evaluating.";
       } else if (localHour >= 18 && localHour < 21) {
         timeLine = "You're checking this after hours. That's either dedication or a side project that matters.";
       } else if (localHour >= 21 || localHour < 6) {
         timeLine = "Late night visit. Either you're in a different timezone, or this problem is keeping you up.";
       } else {
-        timeLine = "Early morning — you're the type who gets ahead before the inbox explodes.";
+        timeLine = "Early morning, you're the type who gets ahead before the inbox explodes.";
       }
       l.push({
         id: "time",
@@ -198,7 +198,7 @@ export const VisitorInsightPanel: React.FC = () => {
     if (locLabel) {
       l.push({
         id: "location",
-        text: `You're checking this from somewhere around ${locLabel} — not exactly a random corner of the internet.`,
+        text: `You're checking this from somewhere around ${locLabel}, not exactly a random corner of the internet.`,
       });
     }
 
@@ -215,7 +215,7 @@ export const VisitorInsightPanel: React.FC = () => {
         break;
       case "social":
         sourceSentence =
-          "You dropped in from social — likely off a post or thread that lives in your \"interesting but important\" bucket.";
+          "You dropped in from social, likely off a post or thread that lives in your \"interesting but important\" bucket.";
         break;
       case "referral":
         sourceSentence =
@@ -223,12 +223,12 @@ export const VisitorInsightPanel: React.FC = () => {
         break;
       case "email":
         sourceSentence =
-          "You came in from an email — you're already on a list that cares about this topic.";
+          "You came in from an email, you're already on a list that cares about this topic.";
         break;
       case "direct":
       default:
         sourceSentence =
-          "You landed here directly, which usually means this wasn't an accident — you already had Gravity or this problem in mind.";
+          "You landed here directly, which usually means this wasn't an accident. You already had Gravity or this problem in mind.";
         break;
     }
 
@@ -244,7 +244,7 @@ export const VisitorInsightPanel: React.FC = () => {
 
       l.push({
         id: "path",
-        text: `You came in through ${prettyPath} — exactly where people land when they're trying to understand how this would plug into their stack.`,
+        text: `You came in through ${prettyPath}, exactly where people land when they're trying to understand how this would plug into their stack.`,
       });
     }
 
@@ -255,12 +255,12 @@ export const VisitorInsightPanel: React.FC = () => {
       if (companyType === 'enterprise') {
         l.push({
           id: "environment",
-          text: `Your network resolves to ${companyName}. That's not a coffee shop — that's a real company with infrastructure decisions to make.`,
+          text: `Your network resolves to ${companyName}. That's not a coffee shop, that's a real company with infrastructure decisions to make.`,
         });
       } else if (companyType === 'isp') {
         l.push({
           id: "environment",
-          text: `You're coming through ${companyName} — probably working remote or from a home office. But the browsing pattern says this isn't personal time.`,
+          text: `You're coming through ${companyName}, probably working remote or from a home office. But the browsing pattern says this isn't personal time.`,
         });
       } else {
         l.push({
@@ -272,7 +272,7 @@ export const VisitorInsightPanel: React.FC = () => {
       l.push({
         id: "environment",
         text:
-          "Your setup doesn't look like a student laptop — more like the environment of someone who actually owns a piece of the stack.",
+          "Your setup doesn't look like a student laptop, more like the environment of someone who actually owns a piece of the stack.",
       });
     }
 
@@ -280,7 +280,7 @@ export const VisitorInsightPanel: React.FC = () => {
     l.push({
       id: "summary",
       text:
-        "All of that is inferred from a single anonymous visit. Gravity does the same at scale for your users — not to expose who they are, but to understand what decision they're trying to make right now.",
+        "All of that is inferred from a single anonymous visit. Gravity does the same at scale for your users, not to expose who they are, but to understand what decision they're trying to make right now.",
     });
 
     setLines(l);

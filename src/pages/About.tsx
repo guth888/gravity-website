@@ -159,7 +159,7 @@ const About = () => {
     },
     {
       title: "Free AI isn't economically possible without an ad layer.",
-      description: "Just like search engines and social networks needed ads to become free and globally accessible, AI needs a native monetization layer. Gravity is that layer — the economic infrastructure that will fund the future of free AI."
+      description: "Just like search engines and social networks needed ads to become free and globally accessible, AI needs a native monetization layer. Gravity is that layer, the economic infrastructure that will fund the future of free AI."
     }
   ];
 
@@ -287,7 +287,7 @@ const About = () => {
             <p className="text-2xl sm:text-3xl text-white leading-snug max-w-3xl mx-auto">
               We believe AI should be free for everyone.
               <br />
-              <span className="block mt-3 text-white/60">But free requires infrastructure — a value layer that funds intelligence without taxing the user.</span>
+              <span className="block mt-3 text-white/60">But free requires infrastructure, a value layer that funds intelligence without taxing the user.</span>
               <br />
               <span className="block mt-3 text-white/60">That ad layer must be native, contextual, and built for conversations.</span>
             </p>
@@ -325,7 +325,7 @@ const About = () => {
             {/* Full image */}
             <img 
               src={heroTeamImage} 
-              alt="Gravity team working together at sunset — disco ball, focused engineers, and the office dog" 
+              alt="Gravity team working together at sunset, disco ball, focused engineers, and the office dog" 
               className="w-full h-auto rounded-xl"
             />
             
@@ -487,7 +487,7 @@ const About = () => {
             {/* Funding Raised - Left Side */}
             <div className="flex items-center gap-6">
               <div>
-                <p className="text-5xl sm:text-6xl font-bold text-white tracking-tight">$5M</p>
+                <p className="text-5xl sm:text-6xl font-bold text-white tracking-tight">$6M</p>
                 <p className="text-white/50 mt-1">Funding raised</p>
               </div>
               {/* Mini Chart SVG */}
@@ -598,7 +598,7 @@ const About = () => {
             Come build with us
           </h2>
           <p className="text-white/90 text-lg mb-10 max-w-2xl mx-auto drop-shadow-md">
-            We're a small, sharp team working on one of the biggest problems of the decade. If you want to help build real infrastructure for the AI era — we want to meet you.
+            We're a small, sharp team working on one of the biggest problems of the decade. If you want to help build real infrastructure for the AI era, we want to meet you.
           </p>
           <Link 
             to="/careers"

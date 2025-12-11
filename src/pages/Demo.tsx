@@ -66,7 +66,7 @@ export const Demo = () => {
               </h2>
               {/* Tablet+ heading */}
               <h2 className={`hidden sm:block text-2xl md:text-3xl font-headline font-semibold transition-colors duration-500 ease-out ${mode === "publisher" ? "text-white" : "text-black"}`}>
-                {mode === "publisher" ? "Monetize your AI conversations—intelligently." : "Access the highest-intent inventory in AI."}
+                {mode === "publisher" ? "Monetize your AI conversations, intelligently." : "Access the highest-intent inventory in AI."}
               </h2>
               {/* Description - shortened on mobile */}
               <p className={`text-xs sm:text-sm leading-relaxed max-w-[600px] mx-auto transition-colors duration-500 ease-out ${mode === "publisher" ? "text-[#D4D4D8]" : "text-neutral-600"}`}>

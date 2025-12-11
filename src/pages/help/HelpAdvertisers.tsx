@@ -47,8 +47,8 @@ const HelpAdvertisers = () => {
             <section>
               <h2 className="text-lg font-semibold text-gray-900 mb-2">Ad formats</h2>
               <ul className="list-disc pl-5 space-y-2">
-                <li><strong>Sponsored Block</strong> — A card with your brand name, description.</li>
-                <li><strong>Inline Hyperlink</strong> — A subtle mention within the AI response</li>
+                <li><strong>Sponsored Block</strong>: A card with your brand name, description.</li>
+                <li><strong>Inline Hyperlink</strong>: A subtle mention within the AI response</li>
               </ul>
             </section>
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import CareersChatDemo from "@/components/CareersChatDemo";
@@ -35,10 +36,18 @@ const Careers = () => {
 
   const openPositions = [
     {
-      title: "Founding Engineers",
-      department: "Engineering",
-      location: "San Francisco / Remote",
-      type: "Full-time"
+      title: "Founding Full Stack Engineer",
+      department: "Core Team",
+      location: "San Francisco, CA",
+      type: "Full-time",
+      slug: "full-stack-engineer"
+    },
+    {
+      title: "Founding Machine Learning Engineer",
+      department: "Core Team",
+      location: "San Francisco, CA",
+      type: "Full-time",
+      slug: "ml-engineer"
     }
   ];
 
@@ -94,7 +103,7 @@ const Careers = () => {
           <p 
             className={`text-xl text-gray-500 leading-relaxed transition-all duration-700 delay-150 ${visibleSections.has("cta") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
-            We're a small, sharp team working on one of the biggest problems of the decade. If you want to help build real infrastructure for the AI era — we want to meet you.
+            We're a small, sharp team working on one of the biggest problems of the decade. If you want to help build real infrastructure for the AI era, we want to meet you.
           </p>
         </div>
       </section>
@@ -135,7 +144,7 @@ const Careers = () => {
 
             <div className="lg:w-1/2 space-y-8">
               <p className="text-xl text-gray-600 leading-relaxed">
-                AI is reshaping how the world thinks, searches, learns, and decides — but none of it becomes accessible or affordable without a sustainable economic model.
+                AI is reshaping how the world thinks, searches, learns, and decides, but none of it becomes accessible or affordable without a sustainable economic model.
               </p>
               
               <div className="space-y-4 py-6 border-l-2 border-gray-300 pl-6">
@@ -145,7 +154,7 @@ const Careers = () => {
               </div>
               
               <p className="text-xl text-gray-600 leading-relaxed">
-                Gravity exists because a new interface needs a new monetization layer — one that's native, contextual, and aligned with users, publishers, and advertisers.
+                Gravity exists because a new interface needs a new monetization layer, one that's native, contextual, and aligned with users, publishers, and advertisers.
               </p>
               
               <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
@@ -212,70 +221,57 @@ const Careers = () => {
       <section 
         id="open-roles"
         ref={(el) => (sectionRefs.current["open-roles"] = el)}
-        className="py-24 px-6 bg-white "
+        className="py-24 px-6 bg-white"
       >
-        <div className="max-w-5xl mx-auto">
-          <div className={`flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12 transition-all duration-700 ${visibleSections.has("open-roles") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div>
-              <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">Join us</span>
-              <h2 className="text-3xl sm:text-4xl font-headline font-bold text-gray-900 mt-2">
-                Open Roles
-              </h2>
-            </div>
-            <p className="text-gray-500 text-sm">
-              {openPositions.length} position{openPositions.length !== 1 ? 's' : ''} available
-            </p>
+        <div className="max-w-4xl mx-auto">
+          <div className={`mb-12 transition-all duration-700 ${visibleSections.has("open-roles") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <h2 
+              className="text-3xl sm:text-4xl text-gray-900"
+              style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}
+            >
+              Open Roles
+            </h2>
           </div>
 
-          {/* Job Listings */}
+          {/* Job Listings - Synthetic Style */}
           <div className="space-y-4">
             {openPositions.length > 0 ? (
               openPositions.map((position, index) => (
-                <a 
+                <Link 
                   key={index}
-                  href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to={`/careers/${position.slug}`}
                   className={`
-                    group flex flex-col sm:flex-row sm:items-center justify-between 
-                    bg-black hover:bg-gray-900
-                    rounded-2xl p-8 sm:p-10 transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]
+                    group block bg-white hover:bg-gray-50
+                    rounded-2xl p-8 sm:p-10 transition-all duration-300 
+                    border border-gray-200/60 hover:border-gray-300 hover:shadow-lg
                     ${visibleSections.has("open-roles") ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}
                   `}
                   style={{ transitionDelay: `${(index + 1) * 100}ms` }}
                 >
-                  <div className="mb-6 sm:mb-0">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-                      {position.title}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
-                        {position.department}
-                      </span>
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
-                        {position.location}
-                      </span>
-                      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white/80 border border-white/20">
-                        {position.type}
-                      </span>
-                    </div>
+                  <h3 
+                    className="text-2xl sm:text-3xl text-gray-900 mb-3"
+                    style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}
+                  >
+                    {position.title}
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-2 text-gray-500 text-sm">
+                    <span>{position.department}</span>
+                    <span className="w-1 h-1 bg-gray-400 rounded-full" />
+                    <span>{position.location}</span>
+                    <span className="w-1 h-1 bg-gray-400 rounded-full" />
+                    <span>{position.type}</span>
                   </div>
-                  <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <svg className="w-6 h-6 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
-                    </svg>
-                  </div>
-                </a>
+                </Link>
               ))
             ) : (
-              <div className="text-center py-16 bg-gray-50 rounded-2xl border border-gray-200">
+              <div className="text-center py-16 bg-white rounded-2xl border border-gray-200">
                 <p className="text-gray-500 mb-6">No open roles right now, but we're always looking for great people.</p>
               </div>
             )}
           </div>
 
           {/* Contact CTA */}
-          <div className="mt-16 pt-12 border-t border-gray-200 text-center">
+          <div className="mt-16 pt-12 border-t border-gray-300/50 text-center">
             <p className="text-gray-500 mb-4">Don't see a fit?</p>
             <a 
               href="mailto:support@trygravity.ai"

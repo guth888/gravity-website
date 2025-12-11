@@ -535,7 +535,7 @@ export const Onboarding = () => {
               <div className="space-y-2">
                 <h1 className="text-3xl font-semibold text-foreground">We've analyzed your brand's tone. Adjust if needed.</h1>
                 <p className="text-muted-foreground">
-                  Gravity scanned your website and product content to understand how your brand naturally speaks. This helps us generate sponsored suggestions that feel aligned and trustworthy inside LLM conversations. No work needed — everything is pre-calibrated. You can tweak if you'd like.
+                  Gravity scanned your website and product content to understand how your brand naturally speaks. This helps us generate sponsored suggestions that feel aligned and trustworthy inside LLM conversations. No work needed, everything is pre-calibrated. You can tweak if you'd like.
                 </p>
               </div>
 
@@ -595,7 +595,7 @@ export const Onboarding = () => {
                   <h3 className="text-sm font-semibold text-foreground">Preview: How Gravity will speak on your behalf</h3>
                   <div className="p-6 rounded-lg border border-primary/20 bg-primary/5">
                     <p className="text-sm text-foreground/90 leading-relaxed">
-                      "If you're exploring options, {state.brandBasics.name || "Acme Pro"} offers a cleaner, faster way to manage your workflow—trusted by thousands and optimized for real results."
+                      "If you're exploring options, {state.brandBasics.name || "Acme Pro"} offers a cleaner, faster way to manage your workflow, trusted by thousands and optimized for real results."
                     </p>
                   </div>
                   <p className="text-xs text-muted-foreground">

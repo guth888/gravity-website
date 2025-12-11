@@ -1,61 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
 import { MobileNav } from './navigation/MobileNav';
-import { Button } from './ui/button';
 import { Menu } from 'lucide-react';
-import gravityLogo from '@/assets/gravity-logo.png';
+import gravityLogo from '@/assets/new-gravitylogo-forwhitebackground.png';
 
 export const Header = ({ className }: { className?: string }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const headerRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
-  const scrollDirection = useRef<'up' | 'down' | null>(null);
 
   useEffect(() => {
-    let ticking = false;
-    lastScrollY.current = window.pageYOffset || document.documentElement.scrollTop;
-    
-    const updateHeader = () => {
-      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
       
+      // Always show header when near top of page
       if (currentScrollY < 50) {
-        // Near top - always show
         setIsVisible(true);
-        scrollDirection.current = null;
-      } else if (currentScrollY < lastScrollY.current - 10) {
-        // Scrolling UP by at least 10px
-        if (scrollDirection.current !== 'up') {
-          scrollDirection.current = 'up';
-          setIsVisible(true);
-        }
-      } else if (currentScrollY > lastScrollY.current + 10) {
-        // Scrolling DOWN by at least 10px
-        if (scrollDirection.current !== 'down') {
-          scrollDirection.current = 'down';
-          setIsVisible(false);
-        }
+      } 
+      // Scrolling UP - show header
+      else if (currentScrollY < lastScrollY.current) {
+        setIsVisible(true);
+      } 
+      // Scrolling DOWN - hide header
+      else if (currentScrollY > lastScrollY.current + 5) {
+        setIsVisible(false);
       }
       
       lastScrollY.current = currentScrollY;
-      ticking = false;
     };
 
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateHeader);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <>
       <header 
-        ref={headerRef}
         className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-5 lg:px-6 py-2.5 backdrop-blur-md bg-background/95 border-b border-border transition-transform duration-300 ease-out ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         } ${className || ''}`}
@@ -67,7 +46,7 @@ export const Header = ({ className }: { className?: string }) => {
               src={gravityLogo} 
               alt="Gravity AI" 
               className="h-7 sm:h-8"
-              style={{ transform: 'scale(2.5)', transformOrigin: 'left center', marginRight: '24px' }}
+              style={{ transform: 'scale(3.2)', transformOrigin: 'left center', marginRight: '32px' }}
             />
             <span 
               className="font-headline font-bold text-foreground tracking-tight antialiased"
@@ -120,22 +99,24 @@ export const Header = ({ className }: { className?: string }) => {
             >
               Log in
             </a>
-            <button 
-              className="metallic-button py-2 px-4"
-              onClick={() => window.open('https://calendly.com/zachtheoldham/iris-discovery?month=2025-11', '_blank')}
+            <a 
+              href="/login"
+              className="metallic-button"
+              style={{ padding: '9px 18px', fontSize: '12px', display: 'inline-block', textDecoration: 'none' }}
             >
-              <span>Book A Demo</span>
-            </button>
+              <span>Sign up</span>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center gap-3 shrink-0">
-            <button 
-              className="metallic-button text-xs py-2 px-4"
-              onClick={() => window.open('https://calendly.com/zachtheoldham/iris-discovery?month=2025-11', '_blank')}
+            <a 
+              href="/login"
+              className="metallic-button"
+              style={{ padding: '8px 14px', fontSize: '11px', display: 'inline-block', textDecoration: 'none' }}
             >
-              <span>Book A Demo</span>
-            </button>
+              <span>Sign up</span>
+            </a>
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="p-2 hover:bg-accent rounded-lg transition-colors"

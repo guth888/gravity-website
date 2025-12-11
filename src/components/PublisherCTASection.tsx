@@ -64,7 +64,7 @@ export const PublisherCTASection = () => {
           ${isInView ? "opacity-100" : "opacity-0"}
           transition-opacity duration-700 delay-200
         `}>
-          You built the space where conversations happen. We built the engine to monetize them—without compromising UX or user trust.
+          You built the space where conversations happen. We built the engine to monetize them, without compromising UX or user trust.
         </p>
 
         {/* CTA - Metallic button (same as Hero) */}
