@@ -8,7 +8,6 @@ const steps = [
     title: "The Problem",
     description: "The old ad formats don't fit the new world. Users no longer browse — they ask, compare, and decide inside LLMs.",
     boldStart: "The old ad formats don't fit the new world.",
-    kpi: { value: "73%", label: "Users skip traditional ads" },
   },
   {
     number: "02",
@@ -58,38 +57,121 @@ const SLOT_POSITIONS = (() => {
 })();
 
 // Visual 01: Problem - Death of Browsing (Looping Futuristic Glitch)
-const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
+const ProblemVisual = ({ isActive, scrollProgress = 0 }: { isActive: boolean; scrollProgress?: number }) => {
   const [showChat, setShowChat] = useState(false);
   const [isManual, setIsManual] = useState(false);
+  const [aiTypedText, setAiTypedText] = useState('');
+  const [isAiTyping, setIsAiTyping] = useState(false);
+  const [forcedChat, setForcedChat] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const prevScrollProgressRef = useRef(0);
+  const wasActiveRef = useRef(false);
+
+  // Force Chat UI when approaching transition to Card 02 (scroll progress > 0.18)
+  // Only trigger when scrolling DOWN towards Card 02, not when scrolling back up
+  useEffect(() => {
+    const isScrollingDown = scrollProgress > prevScrollProgressRef.current;
+    prevScrollProgressRef.current = scrollProgress;
+    
+    // Only force Chat UI if:
+    // 1. Card is active
+    // 2. Scrolling down (approaching Card 02)
+    // 3. Near the transition point
+    // 4. Chat is not already showing
+    // 5. Haven't already forced it this session
+    if (isActive && isScrollingDown && scrollProgress > 0.18 && !showChat && !forcedChat) {
+      // User is approaching transition - force Chat UI
+      setForcedChat(true);
+      setShowChat(true);
+      setIsManual(true); // Prevent auto-rotate from interfering
+      
+      // Clear any pending auto-rotate timeouts
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    }
+  }, [isActive, scrollProgress, showChat, forcedChat]);
+
+  // Reset states and restart auto-rotate when scrolling back to Card 01
+  useEffect(() => {
+    // Detect when Card 01 becomes active again (was inactive, now active)
+    if (isActive && !wasActiveRef.current) {
+      // Just became active - reset forced states to allow auto-rotate
+      setForcedChat(false);
+      setIsManual(false);
+    }
+    wasActiveRef.current = isActive;
+  }, [isActive]);
+
+  // Full AI response to type out
+  const fullAiResponse = "Sleep deprivation under 7 hours significantly impacts cognitive function. Here's a science-backed protocol:\n\n**1. Sleep hygiene** — No screens 1hr before bed, room at 65-68°F\n**2. Timing** — Fixed wake time, even weekends\n**3. Supplements** — Magnesium glycinate (300mg) before bed";
+
+  // Clear all typing timeouts
+  const clearTypingTimeouts = () => {
+    typingTimeoutsRef.current.forEach(t => clearTimeout(t));
+    typingTimeoutsRef.current = [];
+  };
+
+  // Start typing animation for AI response
+  useEffect(() => {
+    if (showChat && isActive) {
+      // Reset and start typing
+      setAiTypedText('');
+      setIsAiTyping(true);
+      clearTypingTimeouts();
+
+      // Small delay before starting to type
+      const startDelay = setTimeout(() => {
+        // Type character by character with variable speed
+        fullAiResponse.split('').forEach((_, index) => {
+          const charTimeout = setTimeout(() => {
+            setAiTypedText(fullAiResponse.slice(0, index + 1));
+            if (index === fullAiResponse.length - 1) {
+              setIsAiTyping(false);
+            }
+          }, index * 18); // 18ms per character for calm typing
+          typingTimeoutsRef.current.push(charTimeout);
+        });
+      }, 300);
+      typingTimeoutsRef.current.push(startDelay);
+    } else {
+      clearTypingTimeouts();
+      setAiTypedText('');
+      setIsAiTyping(false);
+    }
+
+    return () => clearTypingTimeouts();
+  }, [showChat, isActive]);
 
   useEffect(() => {
     if (!isActive) {
       setShowChat(false);
       setIsManual(false);
+      setForcedChat(false); // Reset forced state when card becomes inactive
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       return;
     }
 
-    // Don't auto-rotate if user manually clicked
+    // Don't auto-rotate if user manually clicked or forced by scroll
     if (isManual) return;
 
     // Reset to Google UI first
     setShowChat(false);
 
-    // Auto-rotate: Google UI (5s) -> Chat UI (5s) -> repeat
+    // Auto-rotate: Google UI (5s) -> Chat UI (typing time + 4s pause) -> repeat
     const startAutoRotate = () => {
       // Show Google UI for 5 seconds
       timeoutRef.current = setTimeout(() => {
         setShowChat(true);
-        // Then show Chat UI for 5 seconds
+        // Calculate typing duration: 300ms delay + (characters * 18ms) + 4000ms pause after typing
+        const typingDuration = 300 + (fullAiResponse.length * 18) + 4000;
+        // Then show Chat UI for the calculated duration
         timeoutRef.current = setTimeout(() => {
           setShowChat(false);
           // Restart cycle
           startAutoRotate();
-        }, 5000);
+        }, typingDuration);
       }, 5000);
     };
 
@@ -106,14 +188,40 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
     setIsManual(true);
     setShowChat(index === 1); // 0 = Google, 1 = Chat
     
-    // Resume auto-rotation after 12 seconds of manual control
+    // Resume auto-rotation after 15 seconds of manual control
     setTimeout(() => {
       setIsManual(false);
-    }, 12000);
+    }, 15000);
+  };
+
+  // Helper to render AI text with formatting
+  const renderAiText = (text: string) => {
+    // Split by newlines and render with proper formatting
+    return text.split('\n').map((line, i) => {
+      // Handle bold text
+      const parts = line.split(/(\*\*[^*]+\*\*)/g);
+      return (
+        <div key={i} style={{ marginBottom: line === '' ? '8px' : '4px' }}>
+          {parts.map((part, j) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={j} style={{ color: '#171717' }}>{part.slice(2, -2)}</strong>;
+            }
+            return <span key={j}>{part}</span>;
+          })}
+        </div>
+      );
+    });
   };
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {/* Blinking cursor animation */}
+      <style>{`
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+      `}</style>
       {/* Micro-label - PAST / FUTURE - positioned above the card */}
       <div 
         className="absolute left-1/2 -translate-x-1/2 z-20 transition-opacity duration-500"
@@ -265,20 +373,6 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                     <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">Best CRM Software in 2024 | G2 Reviews</p>
                     <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">Compare top CRM solutions based on 50,000+ verified user reviews...</p>
                   </div>
-                  
-                  <div>
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-[10px] font-medium text-gray-600">R</span>
-                      </div>
-                      <div>
-                        <p className="text-[12px] text-gray-600">Reddit</p>
-                        <p className="text-[12px] text-gray-500">https://www.reddit.com › r/startups</p>
-                      </div>
-                    </div>
-                    <p className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer leading-tight">What CRM are you using for your startup? : r/startups</p>
-                    <p className="text-[13px] text-gray-600 mt-0.5 leading-relaxed">We switched from Salesforce to HubSpot last year. Way better for early stage...</p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -317,7 +411,6 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                   <svg style={{ width: '14px', height: '14px', color: '#6b7280' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="m6 9 6 6 6-6"/>
                   </svg>
-                  <span style={{ fontSize: '12px', color: '#6b7280', marginLeft: '4px' }}>4o</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {/* Share */}
@@ -332,12 +425,14 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
               
               {/* Chat Messages */}
               <div style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto', background: '#ffffff' }}>
-                {/* User Message - Right aligned */}
+                {/* User Message - Right aligned - Already visible, no typing animation */}
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-                  <div style={{ paddingTop: '4px', textAlign: 'right' }}>
+                  <div style={{ paddingTop: '4px', textAlign: 'right', maxWidth: '85%' }}>
                     <div style={{ fontSize: '13px', fontWeight: 600, color: '#171717', marginBottom: '4px' }}>You</div>
-                    <div style={{ fontSize: '15px', color: '#171717', lineHeight: '1.6' }}>
-                      What CRM should I use for my startup?
+                    <div style={{ background: '#f3f4f6', padding: '10px 14px', borderRadius: '16px 4px 16px 16px', display: 'inline-block' }}>
+                      <div style={{ fontSize: '15px', color: '#171717', lineHeight: '1.7', fontWeight: 400 }}>
+                        I can't manage to sleep well these past nights I've been sleeping less than 7 hours and it's starting to affect my focus during the day. Help me fix this.
+                      </div>
                     </div>
                   </div>
                   <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#4b5563', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '11px', fontWeight: 600, color: 'white' }}>
@@ -345,7 +440,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                   </div>
                 </div>
                 
-                {/* AI Response */}
+                {/* AI Response - Types progressively */}
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                   {/* AI Assistant icon */}
                   <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#171717', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -355,60 +450,84 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                   </div>
                   <div style={{ flex: 1, paddingTop: '4px' }}>
                     <div style={{ fontSize: '13px', fontWeight: 600, color: '#171717', marginBottom: '8px' }}>AI Assistant</div>
-                    <div style={{ fontSize: '15px', color: '#374151', lineHeight: '1.7' }}>
-                      <p style={{ marginBottom: '12px' }}>For an early-stage startup, you'll want a CRM that's <strong style={{ color: '#171717' }}>easy to set up</strong>, <strong style={{ color: '#171717' }}>affordable</strong>, and <strong style={{ color: '#171717' }}>scales with you</strong>. Here are my top picks:</p>
-                      <div style={{ marginBottom: '8px' }}><strong style={{ color: '#171717' }}>1. HubSpot</strong> — Free tier, great for inbound marketing</div>
-                      <div style={{ marginBottom: '8px' }}><strong style={{ color: '#171717' }}>2. Pipedrive</strong> — Visual pipeline, sales-focused</div>
-                      <div style={{ marginBottom: '12px' }}><strong style={{ color: '#171717' }}>3. Notion</strong> — Flexible, works as lightweight CRM</div>
+                    {/* Fixed-size container for AI response */}
+                    <div style={{ fontSize: '15px', color: '#374151', lineHeight: '1.7', minHeight: '180px', position: 'relative' }}>
+                      {/* Invisible full text to maintain size */}
+                      <div style={{ visibility: 'hidden', position: 'absolute' }}>
+                        {renderAiText(fullAiResponse)}
+                        {/* Sponsored card space */}
+                        <div style={{ height: '100px' }} />
+                      </div>
+                      {/* Visible typed text */}
+                      <div>
+                        {renderAiText(aiTypedText)}
+                      </div>
                       
-                      {/* Sponsored Card - Product style */}
-                      <div style={{ background: '#f9fafb', borderRadius: '12px', padding: '14px', border: '1px solid #e5e7eb', marginTop: '8px' }}>
+                      {/* Sponsored Card - appears after typing completes */}
+                      <div style={{ 
+                        background: '#f9fafb', 
+                        borderRadius: '12px', 
+                        padding: '14px', 
+                        border: '1px solid #e5e7eb', 
+                        marginTop: '12px',
+                        opacity: !isAiTyping && aiTypedText.length > 0 ? 1 : 0,
+                        transition: 'opacity 0.5s ease'
+                      }}>
                         <div style={{ display: 'flex', gap: '12px' }}>
                           {/* Product image placeholder */}
                           <div style={{ width: '64px', height: '64px', borderRadius: '8px', background: 'linear-gradient(135deg, #f3f4f6, #e5e7eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <svg style={{ width: '28px', height: '28px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                             </svg>
                           </div>
                           <div style={{ flex: 1 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                               <span style={{ fontSize: '10px', fontWeight: 500, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sponsored</span>
                             </div>
-                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#171717' }}>Close CRM</div>
-                            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Built for startups. Calling, email, and pipeline in one.</div>
-                            <div style={{ fontSize: '13px', color: '#171717', fontWeight: 500, marginTop: '6px', cursor: 'pointer' }}>Learn more →</div>
+                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#171717' }}>Calm Sleep</div>
+                            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '2px' }}>Guided sleep stories & meditations. Fall asleep in minutes.</div>
+                            <div style={{ fontSize: '13px', color: '#171717', fontWeight: 500, marginTop: '6px', cursor: 'pointer' }}>Try free for 7 days →</div>
                           </div>
                         </div>
                       </div>
                     </div>
                     
-                    {/* Action buttons */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', marginTop: '12px' }}>
-                      {/* Copy */}
-                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                        </svg>
+                    {/* Action buttons - only show after typing completes */}
+                    {!isAiTyping && aiTypedText.length > 0 && (
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '2px', 
+                        marginTop: '12px',
+                        opacity: !isAiTyping && aiTypedText.length > 0 ? 1 : 0,
+                        transition: 'opacity 0.5s ease'
+                      }}>
+                        {/* Copy */}
+                        <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                          <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                          </svg>
+                        </div>
+                        {/* Thumbs up */}
+                        <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                          <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                          </svg>
+                        </div>
+                        {/* Thumbs down */}
+                        <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                          <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                          </svg>
+                        </div>
+                        {/* Regenerate */}
+                        <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                          <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                          </svg>
+                        </div>
                       </div>
-                      {/* Thumbs up */}
-                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
-                        </svg>
-                      </div>
-                      {/* Thumbs down */}
-                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
-                        </svg>
-                      </div>
-                      {/* Regenerate */}
-                      <div style={{ width: '28px', height: '28px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                        <svg style={{ width: '16px', height: '16px', color: '#9ca3af' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-                        </svg>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -417,7 +536,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
               <div style={{ padding: '12px 16px 16px', background: '#ffffff' }}>
                 <div style={{ 
                   display: 'flex', 
-                  alignItems: 'flex-end', 
+                  alignItems: 'center', 
                   gap: '8px', 
                   background: '#ffffff', 
                   border: '1px solid #d1d5db', 
@@ -457,10 +576,6 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
                     </svg>
                   </div>
                 </div>
-                {/* Disclaimer */}
-                <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: '#9ca3af' }}>
-                  AI can make mistakes. Verify important information.
-                </div>
               </div>
             </div>
           </div>
@@ -485,11 +600,12 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            background: showChat ? '#d1d5db' : '#374151',
-            border: 'none',
+            background: showChat ? '#9ca3af' : '#e5e7eb',
+            border: showChat ? 'none' : '2px solid #171717',
+            outline: 'none',
             cursor: 'pointer',
             padding: 0,
-            transition: 'background 0.3s ease, transform 0.2s ease'
+            transition: 'all 0.3s ease, transform 0.2s ease'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.2)';
@@ -505,11 +621,12 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            background: showChat ? '#374151' : '#d1d5db',
-            border: 'none',
+            background: showChat ? '#e5e7eb' : '#9ca3af',
+            border: showChat ? '2px solid #171717' : 'none',
+            outline: 'none',
             cursor: 'pointer',
             padding: 0,
-            transition: 'background 0.3s ease, transform 0.2s ease'
+            transition: 'all 0.3s ease, transform 0.2s ease'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'scale(1.2)';
@@ -525,7 +642,7 @@ const ProblemVisual = ({ isActive }: { isActive: boolean }) => {
 };
 
 // Visual 02: Shift - Globe
-const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
+const ShiftVisual = ({ isActive }: { isActive: boolean; scrollProgress?: number }) => {
   // Expanded query set to show volume and scale
   const queries = [
     // High-intent purchase queries
@@ -1034,7 +1151,97 @@ const ShiftVisual = ({ isActive }: { isActive: boolean }) => {
 };
 
 // Visual 03: Solution - Chat with Inline Hyperlink
-const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
+const SolutionVisual = ({ isActive }: { isActive: boolean; scrollProgress?: number }) => {
+  const [aiTypedText, setAiTypedText] = useState('');
+  const [isAiTyping, setIsAiTyping] = useState(false);
+  const [showSponsored, setShowSponsored] = useState(false);
+  const typingTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
+
+  // Full AI response text (plain text version for typing)
+  const fullAiResponse = "For quick food delivery, look for services with real-time tracking and a wide restaurant selection.\n\nYou might want to try DoorDash — they offer fast delivery from local restaurants with real-time order tracking.";
+
+  // Clear all typing timeouts
+  const clearTypingTimeouts = () => {
+    typingTimeoutsRef.current.forEach(t => clearTimeout(t));
+    typingTimeoutsRef.current = [];
+  };
+
+  // Start typing animation
+  useEffect(() => {
+    if (isActive) {
+      setAiTypedText('');
+      setIsAiTyping(true);
+      setShowSponsored(false);
+      clearTypingTimeouts();
+
+      // Small delay before starting to type
+      const startDelay = setTimeout(() => {
+        fullAiResponse.split('').forEach((_, index) => {
+          const charTimeout = setTimeout(() => {
+            setAiTypedText(fullAiResponse.slice(0, index + 1));
+            if (index === fullAiResponse.length - 1) {
+              setIsAiTyping(false);
+              // Show sponsored label after typing completes
+              setTimeout(() => setShowSponsored(true), 200);
+            }
+          }, index * 18);
+          typingTimeoutsRef.current.push(charTimeout);
+        });
+      }, 300);
+      typingTimeoutsRef.current.push(startDelay);
+    } else {
+      clearTypingTimeouts();
+      setAiTypedText('');
+      setIsAiTyping(false);
+      setShowSponsored(false);
+    }
+
+    return () => clearTypingTimeouts();
+  }, [isActive]);
+
+  // Helper to render AI text with DoorDash link
+  const renderAiText = (text: string) => {
+    if (!text) return null;
+    
+    // Find where "DoorDash" appears in the typed text
+    const doorDashIndex = text.indexOf('DoorDash');
+    
+    if (doorDashIndex === -1) {
+      // DoorDash not typed yet, just render plain text
+      return text.split('\n\n').map((paragraph, i) => (
+        <p key={i} className="text-[14px] text-gray-700 leading-relaxed">{paragraph}</p>
+      ));
+    }
+    
+    // DoorDash has been typed - render with link
+    const beforeDoorDash = text.slice(0, doorDashIndex);
+    const afterDoorDash = text.slice(doorDashIndex + 8); // "DoorDash" is 8 characters
+    
+    const paragraphs = beforeDoorDash.split('\n\n');
+    const lastParagraphIndex = paragraphs.length - 1;
+    
+    return (
+      <>
+        {paragraphs.map((paragraph, i) => {
+          if (i < lastParagraphIndex) {
+            return <p key={i} className="text-[14px] text-gray-700 leading-relaxed">{paragraph}</p>;
+          }
+          // Last paragraph contains DoorDash
+          return (
+            <p key={i} className="text-[14px] text-gray-700 leading-relaxed">
+              {paragraph}
+              <a href="https://www.doordash.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2 font-medium hover:text-blue-700">DoorDash</a>
+              {showSponsored && (
+                <span className="text-[10px] text-gray-400 uppercase tracking-wider ml-1">(Sponsored)</span>
+              )}
+              {afterDoorDash}
+            </p>
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <div className={`relative w-full h-full flex items-center justify-center overflow-hidden transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
       {/* Chat Mockup - Realistic LLM Interface */}
@@ -1051,20 +1258,14 @@ const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
           <div className="flex-1 px-5 py-5 space-y-6">
             {/* User message - right aligned */}
             <div className="flex justify-end">
-              <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
+              <div className="bg-gray-100 rounded-xl rounded-tr-sm px-3 py-2 max-w-[80%]">
+                <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
+              </div>
             </div>
             
-            {/* AI response with inline hyperlink */}
-            <div className="space-y-3">
-              <p className="text-[14px] text-gray-700 leading-relaxed">For quick food delivery, look for services with real-time tracking and a wide restaurant selection.</p>
-              
-              <p className="text-[14px] text-gray-700 leading-relaxed">
-                You might want to try{' '}
-                <a href="https://www.doordash.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2 font-medium hover:text-blue-700">DoorDash</a>
-                {' '}
-                <span className="text-[10px] text-gray-400 uppercase tracking-wider">(Sponsored)</span>
-                {' '}— they offer fast delivery from local restaurants with real-time order tracking.
-              </p>
+            {/* AI response with typing animation */}
+            <div className="space-y-3 min-h-[100px]">
+              {renderAiText(aiTypedText)}
             </div>
           </div>
           
@@ -1084,7 +1285,7 @@ const SolutionVisual = ({ isActive }: { isActive: boolean }) => {
 };
 
 // Visual 04: Infrastructure
-const InfrastructureVisual = ({ isActive }: { isActive: boolean }) => {
+const InfrastructureVisual = ({ isActive }: { isActive: boolean; scrollProgress?: number }) => {
   return (
     <div className="relative w-full h-full flex items-center justify-center min-h-[300px]">
       <svg className="w-full max-w-[500px] h-[240px]" viewBox="0 0 500 240">
@@ -1414,18 +1615,20 @@ const StepContent = ({
       </p>
       
       {/* KPI */}
-      <div 
-        className="flex items-baseline gap-3"
-        style={{ 
-          transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          transitionDelay: isActive ? '300ms' : '0ms',
-          opacity: isActive ? 1 : 0,
-          transform: isActive ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)'
-        }}
-      >
-        <span className="text-4xl lg:text-5xl font-bold text-foreground">{step.kpi.value}</span>
-        <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
-      </div>
+      {step.kpi && (
+        <div 
+          className="flex items-baseline gap-3"
+          style={{ 
+            transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transitionDelay: isActive ? '300ms' : '0ms',
+            opacity: isActive ? 1 : 0,
+            transform: isActive ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)'
+          }}
+        >
+          <span className="text-4xl lg:text-5xl font-bold text-foreground">{step.kpi.value}</span>
+          <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
+        </div>
+      )}
     </div>
   );
 };
@@ -1542,10 +1745,12 @@ export const HowItWorksSimple = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-2">{step.boldStart}</h3>
                 <p className="text-muted-foreground mb-4">{step.description.replace(step.boldStart, '').trim()}</p>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-3xl font-bold">{step.kpi.value}</span>
-                  <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
-                </div>
+                {step.kpi && (
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-3xl font-bold">{step.kpi.value}</span>
+                    <span className="text-sm text-muted-foreground">{step.kpi.label}</span>
+                  </div>
+                )}
                 <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 h-[280px] overflow-hidden">
                   <VisualComponent isActive={true} />
                 </div>
@@ -1640,7 +1845,7 @@ export const HowItWorksSimple = () => {
                       transform: 'translateZ(0)',
                     }}
                   >
-                    <VisualComponent isActive={isActive} />
+                    <VisualComponent isActive={isActive} scrollProgress={index === 0 ? scrollProgress : undefined} />
                   </div>
                 </div>
               );

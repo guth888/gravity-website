@@ -391,8 +391,8 @@ export const Advertisers = () => {
                     <line x1="0" y1="60" x2="240" y2="60" stroke="#e5e7eb" strokeWidth="0.5" />
                     
                     {/* Y-axis labels */}
-                    <text x="5" y="22" fontSize="8" fill="#9ca3af">80K</text>
-                    <text x="5" y="42" fontSize="8" fill="#9ca3af">40K</text>
+                    <text x="5" y="22" fontSize="8" fill="#9ca3af">800K</text>
+                    <text x="5" y="42" fontSize="8" fill="#9ca3af">400K</text>
                     <text x="5" y="62" fontSize="8" fill="#9ca3af">0</text>
                     
                     {/* X-axis date labels */}
@@ -440,12 +440,27 @@ export const Advertisers = () => {
                   <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
                     <span className="text-gray-900 font-medium">page_view</span>
                     <span className="text-gray-900">Pixel</span>
-                    <span className="text-right text-gray-900 font-semibold">91,500</span>
+                    <span className="text-right text-gray-900 font-semibold">910,782</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
                     <span className="text-gray-900 font-medium">click</span>
                     <span className="text-gray-900">Pixel</span>
-                    <span className="text-right text-gray-900 font-semibold">31,000</span>
+                    <span className="text-right text-gray-900 font-semibold">304,517</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
+                    <span className="text-gray-900 font-medium">add_to_cart</span>
+                    <span className="text-gray-900">Pixel</span>
+                    <span className="text-right text-gray-900 font-semibold">87,341</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
+                    <span className="text-gray-900 font-medium">purchase</span>
+                    <span className="text-gray-900">Pixel</span>
+                    <span className="text-right text-gray-900 font-semibold">23,892</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 px-3 py-2 border-t border-gray-100 text-[10px]">
+                    <span className="text-gray-900 font-medium">lead</span>
+                    <span className="text-gray-900">Pixel</span>
+                    <span className="text-right text-gray-900 font-semibold">12,463</span>
                   </div>
                 </div>
               </div>
@@ -487,19 +502,11 @@ export const Advertisers = () => {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              to="/login"
+              to="/signup"
               className="px-5 py-2.5 bg-gray-900 text-white font-medium rounded-full hover:bg-gray-800 transition-colors text-sm"
             >
               Start Advertising
             </Link>
-            <a
-              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 bg-transparent border border-gray-300 text-gray-900 font-medium rounded-full hover:border-gray-400 transition-colors text-sm"
-            >
-              Get a demo
-            </a>
           </div>
         </div>
       </section>
@@ -683,7 +690,9 @@ export const Advertisers = () => {
                 <div className="flex-1 px-5 py-5 space-y-6">
                   {/* User message - right aligned */}
                   <div className="flex justify-end">
-                    <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
+                    <div className="bg-gray-100 rounded-xl rounded-tr-sm px-3 py-2 max-w-[80%]">
+                      <p className="text-[14px] text-gray-900">How can I get food delivered quickly?</p>
+                    </div>
                   </div>
                   
                   {/* AI response - plain text, left aligned */}
@@ -792,9 +801,7 @@ export const Advertisers = () => {
           
           <div className="flex items-center justify-center">
             <a
-              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/signup"
               className="px-8 py-3.5 bg-transparent border border-gray-300 text-gray-900 font-medium rounded-full hover:border-gray-400 transition-colors"
             >
               Sign Up

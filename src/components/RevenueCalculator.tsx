@@ -27,13 +27,13 @@ const formatCurrency = (num: number): string => {
 };
 
 export const RevenueCalculator = () => {
-  const [messages, setMessages] = useState(1000000); // Default 1M messages
+  const [messages, setMessages] = useState(10000000); // Default 10M messages (middle of slider)
   const sliderRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
   const MIN_MESSAGES = 100000;       // 100K (so 10M is at exact middle)
   const MAX_MESSAGES = 1000000000;   // 1B
-  const LOW_CPM = 3;    // $3 per 1000 queries
+  const LOW_CPM = 6;    // $6 per 1000 queries
   const MID_CPM = 20;   // $20 per 1000 queries
   const HIGH_CPM = 150; // $150 per 1000 queries
 

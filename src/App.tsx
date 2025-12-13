@@ -21,6 +21,7 @@ const Publishers = lazy(() => import("./pages/Publishers").then(m => ({ default:
 const Advertisers = lazy(() => import("./pages/Advertisers").then(m => ({ default: m.Advertisers })));
 const Demo = lazy(() => import("./pages/Demo").then(m => ({ default: m.Demo })));
 const Login = lazy(() => import("./pages/Login").then(m => ({ default: m.Login })));
+const SignUp = lazy(() => import("./pages/SignUp").then(m => ({ default: m.SignUp })));
 const Docs = lazy(() => import("./pages/Docs"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -71,6 +72,7 @@ const App = () => (
                 <Route path="/advertisers" element={<Advertisers />} />
                 <Route path="/demo" element={<Demo />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
                 <Route path="/docs" element={<Docs />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />

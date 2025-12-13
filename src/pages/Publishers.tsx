@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { RevenueCalculator } from "@/components/RevenueCalculator";
 
 // Publisher logos
-import iaskLogo from "@/assets/publishers/iask.png";
-import rampLogo from "@/assets/publishers/ramp.png";
-import ampCodeLogo from "@/assets/publishers/sourcegraph.svg";
-import deepaiLogo from "@/assets/publishers/deepai.png";
+import iaskLogo from "@/assets/Iaskpublisherspage.svg";
+import rampLogo from "@/assets/ramppublishers page.svg";
+import ampCodeLogo from "@/assets/amppublisherspage.svg";
+import deepaiLogo from "@/assets/deepaipublishers page.svg";
 
 type UseCaseTab = "chatbots" | "assistants" | "agents" | "search" | "consumer" | "productivity" | "developer" | "autonomous";
 
@@ -17,6 +17,137 @@ export const Publishers = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [dashboardView, setDashboardView] = useState<"chart" | "table">("chart");
   const [isManualDashboardSwitch, setIsManualDashboardSwitch] = useState(false);
+  
+  // Scroll-driven "How It Works" animation
+  const [hiwProgress, setHiwProgress] = useState(0);
+  const [hiwComplete, setHiwComplete] = useState(false);
+  const [hiwHoldScroll, setHiwHoldScroll] = useState(false);
+  const [hiwHeadlineVisible, setHiwHeadlineVisible] = useState(false);
+  const hiwTriggeredRef = useRef(false);
+  const hiwContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Hero headline masking - refs and state for measuring text bounds
+  const heroSvgRef = useRef<SVGSVGElement>(null);
+  const heroLine1Ref = useRef<HTMLSpanElement>(null);
+  const heroLine2Ref = useRef<HTMLSpanElement>(null);
+  const [heroTextBounds, setHeroTextBounds] = useState<{ line1: { x: number; y: number; width: number; height: number } | null; line2: { x: number; y: number; width: number; height: number } | null }>({ line1: null, line2: null });
+  
+  // Fade in headline when section comes into view
+  useEffect(() => {
+    const container = hiwContainerRef.current;
+    if (!container) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHiwHeadlineVisible(true);
+        } else {
+          setHiwHeadlineVisible(false);
+        }
+      },
+      { threshold: 0.1 } // Trigger when 10% of section is visible
+    );
+    
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+  
+  // Measure hero headline text bounds and convert to SVG coordinates
+  useEffect(() => {
+    const measureTextBounds = () => {
+      const svg = heroSvgRef.current;
+      const line1 = heroLine1Ref.current;
+      const line2 = heroLine2Ref.current;
+      
+      if (!svg || !line1 || !line2) return;
+      
+      const svgRect = svg.getBoundingClientRect();
+      const line1Rect = line1.getBoundingClientRect();
+      const line2Rect = line2.getBoundingClientRect();
+      
+      // SVG viewBox is 0 0 1000 600, convert screen coords to SVG coords
+      const scaleX = 1000 / svgRect.width;
+      const scaleY = 600 / svgRect.height;
+      
+      // Padding for tight exclusion zone
+      const padX = 14;
+      const padY = 8;
+      
+      const convertToSvg = (rect: DOMRect) => ({
+        x: (rect.left - svgRect.left) * scaleX - padX,
+        y: (rect.top - svgRect.top) * scaleY - padY,
+        width: rect.width * scaleX + padX * 2,
+        height: rect.height * scaleY + padY * 2,
+      });
+      
+      setHeroTextBounds({
+        line1: convertToSvg(line1Rect),
+        line2: convertToSvg(line2Rect),
+      });
+    };
+    
+    // Initial measurement after render
+    const timer = setTimeout(measureTextBounds, 100);
+    
+    // Re-measure on resize
+    window.addEventListener('resize', measureTextBounds);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measureTextBounds);
+    };
+  }, []);
+  
+  // Detect completion and trigger "MONETIZATION ACTIVE" animation
+  useEffect(() => {
+    // Trigger at 82% - early enough that next section is NOT visible yet
+    if (hiwProgress >= 0.82 && !hiwTriggeredRef.current) {
+      hiwTriggeredRef.current = true;
+      
+      // Hold scroll immediately - freeze viewport (no snap-back to avoid header trigger)
+      setHiwHoldScroll(true);
+      
+      // Show "MONETIZATION ACTIVE" after brief pause
+      setTimeout(() => setHiwComplete(true), 200);
+      
+      // Release scroll: 200ms delay + 500ms fade + 800ms to read = 1500ms
+      setTimeout(() => setHiwHoldScroll(false), 1500);
+      
+    } else if (hiwProgress < 0.75) {
+      hiwTriggeredRef.current = false;
+      setHiwComplete(false);
+      setHiwHoldScroll(false);
+    }
+  }, [hiwProgress]);
+  
+  // Freeze viewport completely during hold (block only downward scroll)
+  useEffect(() => {
+    if (!hiwHoldScroll) return;
+    
+    const handleWheel = (e: WheelEvent) => {
+      // Only block downward scrolling
+      if (e.deltaY > 0) {
+        e.preventDefault();
+      }
+    };
+    const handleTouchMove = (e: TouchEvent) => e.preventDefault();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['ArrowDown', 'Space', 'PageDown'].includes(e.key)) {
+        e.preventDefault();
+      }
+    };
+    
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [hiwHoldScroll]);
+  
   const sectionRefs = {
     chatbots: useRef<HTMLDivElement>(null),
     assistants: useRef<HTMLDivElement>(null),
@@ -88,6 +219,37 @@ export const Publishers = () => {
       return () => clearTimeout(timer);
     }
   }, [isManualDashboardSwitch]);
+
+  // Scroll-driven "How It Works" animation
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!hiwContainerRef.current) return;
+      
+      const container = hiwContainerRef.current;
+      const rect = container.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how far through the container we've scrolled
+      // Container starts when its top reaches the viewport top
+      // Container ends when its bottom leaves the viewport bottom
+      const containerHeight = container.offsetHeight;
+      const scrollableDistance = containerHeight - windowHeight;
+      
+      // How far the top of the container is above the viewport top
+      const scrolledPast = -rect.top;
+      
+      // Calculate progress (0 to 1)
+      let progress = scrolledPast / scrollableDistance;
+      progress = Math.max(0, Math.min(1, progress));
+      
+      setHiwProgress(progress);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const useCases = {
     chatbots: {
@@ -627,7 +789,7 @@ export const Publishers = () => {
     },
     {
       question: "How does monetization work?",
-      answer: "Gravity detects high-intent moments in user conversations, runs a real-time auction among relevant advertisers, and delivers a native suggestion. You earn revenue on every impression and click. Typical CPMs range from $2-5 depending on vertical."
+      answer: "Gravity detects high-intent moments in user conversations, runs a real-time auction among relevant advertisers, and delivers a native suggestion. You earn revenue on every impression and click."
     },
     {
       question: "Will this hurt my user experience?",
@@ -639,7 +801,11 @@ export const Publishers = () => {
     },
     {
       question: "What controls do I have?",
-      answer: "Full control: category blocklists, brand safety modes (strict, moderate, open), and custom styling to match your UI. You send us whatever traffic you want. We don't force anything. You decide what appears."
+      answer: "Full control: category blocklists and custom styling to match your UI. You send us whatever traffic you want. You decide what appears."
+    },
+    {
+      question: "When are payouts released?",
+      answer: "Payouts are released on a monthly basis."
     }
   ];
 
@@ -647,74 +813,257 @@ export const Publishers = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
-      <Header />
+      <Header variant="dark" />
       
-      {/* Hero Section - Centered with Logos on Sides */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0a0a0a] pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="flex items-center justify-between gap-8">
-            
-            {/* Left Side - 2 Publisher Cards */}
-            <div className="hidden lg:flex flex-col gap-8">
-              {/* iAsk */}
-              <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10 w-48">
-                <div className="w-32 h-24 flex items-center justify-center mb-3">
-                  <img src={iaskLogo} alt="iAsk" className="w-full h-full object-contain brightness-0 invert scale-[2]" />
-                </div>
-                <p className="text-xs text-white/50 text-center">Search/Chat Hybrid</p>
-              </div>
+      {/* Hero Section - Vertical Supply Flow with Z-Layered Copy */}
+      <section className="relative h-screen overflow-hidden bg-[#0a0a0a]">
+        
+        {/* ANIMATION LAYER - Full viewport, behind everything */}
+        <div className="absolute inset-0 z-0 pt-16">
+          <svg ref={heroSvgRef} className="w-full h-full" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              {/* Gradient for supply lines - muted blue-gray tone */}
+              <linearGradient id="supplyLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#6b7280" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="#6b7280" stopOpacity="0.2" />
+              </linearGradient>
               
-              {/* Ramp */}
-              <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10 w-48">
-                <div className="w-32 h-24 flex items-center justify-center mb-3">
-                  <img src={rampLogo} alt="Ramp" className="w-full h-full object-contain brightness-0 invert scale-[2]" />
-                </div>
-                <p className="text-xs text-white/50 text-center">Productivity Tools & Copilots</p>
-              </div>
-            </div>
-
-            {/* Center - Headline, Subcopy, CTA */}
-            <div className="flex-1 max-w-2xl mx-auto text-center">
+              {/* Minimal glow - barely perceptible */}
+              <filter id="heroGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              
+              {/* Clip path to hide dots inside Gravity node */}
+              <clipPath id="gravityNodeClip">
+                {/* Full viewport minus Gravity circle (at 500, 100 with r=58 to fully cover) */}
+                <path d="M 0 0 H 1000 V 600 H 0 Z M 500 42 A 58 58 0 1 0 500 158 A 58 58 0 1 0 500 42" fillRule="evenodd" />
+              </clipPath>
+              
+              {/* Mask to dim line/dots behind headline text - white = full opacity, gray = reduced */}
+              {heroTextBounds.line1 && heroTextBounds.line2 && (
+                <mask id="heroTextMask">
+                  {/* Full viewport at full opacity */}
+                  <rect x="0" y="0" width="1000" height="600" fill="white" />
+                  {/* Headline line 1 - reduced opacity zone (~20% visible) */}
+                  <rect 
+                    x={heroTextBounds.line1.x} 
+                    y={heroTextBounds.line1.y} 
+                    width={heroTextBounds.line1.width} 
+                    height={heroTextBounds.line1.height} 
+                    fill="rgb(50, 50, 50)" 
+                  />
+                  {/* Headline line 2 - reduced opacity zone (~20% visible) */}
+                  <rect 
+                    x={heroTextBounds.line2.x} 
+                    y={heroTextBounds.line2.y} 
+                    width={heroTextBounds.line2.width} 
+                    height={heroTextBounds.line2.height} 
+                    fill="rgb(50, 50, 50)" 
+                  />
+                </mask>
+              )}
+            </defs>
+            
+            {/* === MAIN VERTICAL LINE (continuous from top to behind CTA) === */}
+            {/* Render as segments to achieve dimming behind headline without mask issues */}
+            {heroTextBounds.line1 && heroTextBounds.line2 ? (
+              <>
+                {/* Segment 1: From below Gravity node to top of headline */}
+                <line x1="500" y1="140" x2="500" y2={heroTextBounds.line1.y} stroke="#6b7280" strokeWidth="1" opacity="0.35" />
+                {/* Segment 2: Behind headline - dimmed */}
+                <line x1="500" y1={heroTextBounds.line1.y} x2="500" y2={heroTextBounds.line2.y + heroTextBounds.line2.height} stroke="#6b7280" strokeWidth="1" opacity="0.08" />
+                {/* Segment 3: From bottom of headline to CTA */}
+                <line x1="500" y1={heroTextBounds.line2.y + heroTextBounds.line2.height} x2="500" y2="320" stroke="#6b7280" strokeWidth="1" opacity="0.35" />
+              </>
+            ) : (
+              /* Fallback: full line before bounds are measured */
+              <line x1="500" y1="140" x2="500" y2="320" stroke="#6b7280" strokeWidth="1" opacity="0.35" />
+            )}
+            
+            {/* === GRAVITY NODE (top area - moved down for visibility) === */}
+            <g transform="translate(500, 100)">
+              {/* Pulsing outer ring - subtle, muted */}
+              <circle r="50" fill="none" stroke="#6b7280" strokeWidth="1" opacity="0.2">
+                <animate attributeName="r" values="45;55;45" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.2;0.08;0.2" dur="3s" repeatCount="indefinite" />
+              </circle>
+              {/* Main circle - thinner stroke, muted color */}
+              <circle r="40" fill="#0a0a0a" stroke="#6b7280" strokeWidth="1" />
+              <circle r="35" fill="#111111" />
+              <text y="0" textAnchor="middle" fontSize="11" fontWeight="600" fill="#9ca3af" letterSpacing="0.08em">GRAVITY</text>
+              <text y="12" textAnchor="middle" fontSize="7" fontWeight="500" fill="#6b7280" letterSpacing="0.05em">AD NETWORK</text>
+            </g>
+            
+            {/* === BRANCHING LINES (fan out from behind CTA button) === */}
+            {/* Left branch - more to the left */}
+            <path d="M 500 320 Q 280 400 60 485" fill="none" stroke="#6b7280" strokeWidth="1" opacity="0.4" />
+            {/* Center continues straight */}
+            <path d="M 500 320 L 500 485" fill="none" stroke="#6b7280" strokeWidth="1" opacity="0.4" />
+            {/* Right branch - more to the right */}
+            <path d="M 500 320 Q 720 400 940 485" fill="none" stroke="#6b7280" strokeWidth="1" opacity="0.4" />
+            
+            {/* No visible junction dot - CTA button serves as visual junction */}
+            
+            {/* === ANIMATED DOTS - Data packets, muted and subtle === */}
+            
+            {/* Main line dots - flow to behind CTA, clipped to hide inside Gravity node, masked behind headline */}
+            <g clipPath="url(#gravityNodeClip)" mask={heroTextBounds.line1 ? "url(#heroTextMask)" : undefined}>
+              <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+                <animateMotion dur="2.2s" repeatCount="indefinite" path="M 500 50 L 500 320" />
+                <animate attributeName="opacity" values="0.5;0.7;0.7;0.5" dur="2.2s" repeatCount="indefinite" />
+              </circle>
+              <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+                <animateMotion dur="2.2s" repeatCount="indefinite" path="M 500 50 L 500 320" begin="0.7s" />
+                <animate attributeName="opacity" values="0.5;0.7;0.7;0.5" dur="2.2s" repeatCount="indefinite" begin="0.7s" />
+              </circle>
+              <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+                <animateMotion dur="2.2s" repeatCount="indefinite" path="M 500 50 L 500 320" begin="1.4s" />
+                <animate attributeName="opacity" values="0.5;0.7;0.7;0.5" dur="2.2s" repeatCount="indefinite" begin="1.4s" />
+              </circle>
+            </g>
+            
+            {/* Left branch dots - emerge from behind CTA */}
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 320 Q 280 400 60 485" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.6s" repeatCount="indefinite" />
+            </circle>
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 320 Q 280 400 60 485" begin="0.8s" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.6s" repeatCount="indefinite" begin="0.8s" />
+            </circle>
+            
+            {/* Center branch dots */}
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.3s" repeatCount="indefinite" path="M 500 320 L 500 485" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.3s" repeatCount="indefinite" />
+            </circle>
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.3s" repeatCount="indefinite" path="M 500 320 L 500 485" begin="0.65s" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.3s" repeatCount="indefinite" begin="0.65s" />
+            </circle>
+            
+            {/* Right branch dots - emerge from behind CTA */}
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 320 Q 720 400 940 485" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.6s" repeatCount="indefinite" />
+            </circle>
+            <circle r="5" fill="#9ca3af" filter="url(#heroGlow)">
+              <animateMotion dur="1.6s" repeatCount="indefinite" path="M 500 320 Q 720 400 940 485" begin="0.8s" />
+              <animate attributeName="opacity" values="0;0.6;0.6;0" dur="1.6s" repeatCount="indefinite" begin="0.8s" />
+            </circle>
+            
+            {/* === SUPPLY SURFACE CARDS (moved up) === */}
+            {/* AI Apps - Far Left (x=0) */}
+            <g>
+              <rect x="0" y="485" width="120" height="45" rx="8" fill="#111111" stroke="#4b5563" strokeWidth="1" />
+              <text x="60" y="514" textAnchor="middle" fontSize="14" fill="#9ca3af" fontWeight="500">AI Apps</text>
+            </g>
+            
+            {/* AI Chats - Center */}
+            <g>
+              <rect x="440" y="485" width="120" height="45" rx="8" fill="#111111" stroke="#4b5563" strokeWidth="1" />
+              <text x="500" y="514" textAnchor="middle" fontSize="14" fill="#9ca3af" fontWeight="500">AI Chats</text>
+            </g>
+            
+            {/* Agents - Far Right (x=880) */}
+            <g>
+              <rect x="880" y="485" width="120" height="45" rx="8" fill="#111111" stroke="#4b5563" strokeWidth="1" />
+              <text x="940" y="514" textAnchor="middle" fontSize="14" fill="#9ca3af" fontWeight="500">Agents</text>
+            </g>
+          </svg>
+        </div>
+        
+        {/* COPY LAYER - Headline centered between GRAVITY node and CTA */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none" style={{ marginTop: '-5vh' }}>
+          <div className="text-center px-4 sm:px-6 lg:px-8 pointer-events-auto">
+            {/* No background - line shows through at lower opacity behind text */}
+            <div className="px-8 sm:px-12 lg:px-16">
               <h1 
-                className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-[1.1]"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-[1.15] max-w-4xl mx-auto"
                 style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}
               >
-                <span className="text-white">Turn conversational traffic into revenue.</span>
+                <span ref={heroLine1Ref} className="text-white inline-block">Monetize AI conversations</span>
+                <br />
+                <span ref={heroLine2Ref} className="text-white inline-block">natively and context-driven.</span>
               </h1>
               
-              <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto mb-10">
-                Add Gravity to any AI conversational surface and start earning from contextual sponsored suggestions.
-              </p>
-              
-              <a
-                href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex px-8 py-3.5 bg-white text-black font-medium rounded-full hover:bg-gray-100 transition-colors text-sm sm:text-base"
+              <Link
+                to="/signup"
+                className="inline-flex px-8 py-3.5 bg-black text-white font-medium rounded-full border border-white/20 hover:bg-gray-900 transition-colors text-sm sm:text-base"
               >
-                Book a Demo
-              </a>
+                Sign up
+              </Link>
             </div>
+          </div>
+        </div>
+        
+      </section>
 
-            {/* Right Side - 2 Publisher Cards */}
-            <div className="hidden lg:flex flex-col gap-8">
-              {/* Amp Code */}
-              <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10 w-48">
-                <div className="w-32 h-24 flex items-center justify-center mb-3">
-                  <img src={ampCodeLogo} alt="Amp Code" className="w-full h-full object-contain brightness-0 invert scale-[0.85]" />
+      {/* Publishers Using Gravity */}
+      <section className="py-16 bg-[#0a0a0a]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-gray-500 uppercase tracking-widest mb-10">Publishers using Gravity</p>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* iAsk */}
+            <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10">
+              <div className="w-full h-20 flex items-center justify-center mb-4">
+                <div className="w-36 h-18 flex items-center justify-center">
+                  <img 
+                    src={iaskLogo} 
+                    alt="iAsk" 
+                    className="max-w-full max-h-full object-contain brightness-0 invert"
+                  />
                 </div>
-                <p className="text-xs text-white/50 text-center">Developer Tools & IDEs</p>
               </div>
-              
-              {/* DeepAI */}
-              <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10 w-48">
-                <div className="w-32 h-24 flex items-center justify-center mb-3">
-                  <img src={deepaiLogo} alt="DeepAI" className="w-full h-full object-contain brightness-0 invert scale-[2.3]" />
-                </div>
-                <p className="text-xs text-white/50 text-center">AI Consumer Apps</p>
-              </div>
+              <p className="text-xs text-gray-500 text-center">Search/Chat Hybrid</p>
             </div>
-
+            
+            {/* Ramp */}
+            <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10">
+              <div className="w-full h-20 flex items-center justify-center mb-4">
+                <div className="w-36 h-18 flex items-center justify-center">
+                  <img 
+                    src={rampLogo} 
+                    alt="Ramp" 
+                    className="max-w-full max-h-full object-contain brightness-0 invert"
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 text-center">Productivity Tools & Copilots</p>
+            </div>
+            
+            {/* Amp Code / Sourcegraph */}
+            <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10">
+              <div className="w-full h-20 flex items-center justify-center mb-4">
+                <div className="w-36 h-18 flex items-center justify-center">
+                  <img 
+                    src={ampCodeLogo} 
+                    alt="Amp Code" 
+                    className="max-w-full max-h-full object-contain brightness-0 invert"
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 text-center">Developer Tools & IDEs</p>
+            </div>
+            
+            {/* DeepAI */}
+            <div className="flex flex-col items-center p-6 rounded-2xl bg-[#111111] border border-white/10">
+              <div className="w-full h-20 flex items-center justify-center mb-4">
+                <div className="w-36 h-18 flex items-center justify-center">
+                  <img 
+                    src={deepaiLogo} 
+                    alt="DeepAI" 
+                    className="max-w-full max-h-full object-contain brightness-0 invert"
+                  />
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 text-center">AI Consumer Apps</p>
+            </div>
           </div>
         </div>
       </section>
@@ -815,44 +1164,381 @@ export const Publishers = () => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 bg-[#0a0a0a] border-t border-white/10">
-        <style>{`
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .how-it-works-card {
-            animation: fadeInUp 0.5s ease-out forwards;
-            opacity: 0;
-          }
-          .how-it-works-card:nth-child(1) { animation-delay: 0.1s; }
-          .how-it-works-card:nth-child(2) { animation-delay: 0.25s; }
-          .how-it-works-card:nth-child(3) { animation-delay: 0.4s; }
-        `}</style>
-        
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-xs text-gray-100 uppercase tracking-widest mb-4">How it works</p>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
+      {/* How It Works - Scroll-Driven System Assembly */}
+      {/* Mobile: Simple stacked cards (no scroll lock) */}
+      <section className="lg:hidden py-24 bg-[#0a0a0a] border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <p className="text-xs text-gray-400 uppercase tracking-[0.2em] mb-4">How it works</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
               In 3 Steps
             </h2>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="space-y-6">
             {howItWorks.map((item, i) => (
-              <div key={i} className="how-it-works-card">
-                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-white/10 shadow-sm h-full hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
-                  <div className="w-10 h-10 rounded-lg bg-gray-900 text-white flex items-center justify-center text-sm font-bold mb-5 group-hover:bg-gray-800 transition-colors">
-                    {item.step}
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
+              <div key={i} className="relative pl-4">
+                <span className="absolute left-0 top-0 text-[10px] font-mono text-gray-500 tracking-wider">{item.step}</span>
+                <div className="bg-[#141414] rounded-lg p-5 border border-white/15">
+                  <h3 className="text-xl font-semibold text-white mb-3" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
                     {item.title}
                   </h3>
-                  <p className="text-gray-100 text-sm leading-relaxed">{item.description}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Desktop: Scroll-Driven Animation */}
+      <div 
+        ref={hiwContainerRef}
+        className="hidden lg:block bg-[#0a0a0a] border-t border-white/10"
+        style={{ height: '180vh' }} // Tall container for scroll room
+      >
+        <div 
+          className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden"
+        >
+          <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+            {/* Progress bar / Monetization Active indicator */}
+            <div className="relative flex flex-col items-center mb-8">
+              {/* "MONETIZATION ACTIVE" text - fades in on completion */}
+              <span 
+                className="text-xs text-white uppercase tracking-[0.3em] mb-3 transition-all duration-500"
+                style={{ 
+                  opacity: hiwComplete ? 1 : 0,
+                  transform: hiwComplete ? 'translateY(0)' : 'translateY(4px)'
+                }}
+              >
+                Monetization Active
+              </span>
+              
+              {/* Progress bar / underline */}
+              <div 
+                className={`h-0.5 bg-white/10 rounded-full overflow-hidden transition-all duration-500 ${
+                  hiwComplete ? 'w-44' : 'w-32'
+                }`}
+              >
+                <div 
+                  className={`h-full w-full bg-white origin-left ${
+                    hiwComplete ? 'rounded-none' : 'rounded-full'
+                  }`}
+                  style={{ 
+                    transform: `scaleX(${hiwComplete ? 1 : hiwProgress})`,
+                    willChange: 'transform',
+                    transition: hiwComplete ? 'border-radius 0.3s' : 'none'
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Headline - fades in automatically when section enters view */}
+            <div 
+              className="text-center mb-8 transition-all duration-700 ease-out"
+              style={{ 
+                opacity: hiwHeadlineVisible ? 1 : 0,
+                transform: hiwHeadlineVisible ? 'translateY(0)' : 'translateY(20px)'
+              }}
+            >
+              <p className="text-xs text-gray-400 uppercase tracking-[0.2em] mb-3">How it works</p>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
+                In 3 Steps
+              </h2>
+            </div>
+            
+            {/* SVG Animation - Controlled by scroll progress */}
+            <svg 
+              viewBox="-50 -50 1500 720" 
+              className="w-full max-h-[60vh]"
+              style={{ maxWidth: '1600px' }}
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {/* ==================== UNIFIED CONTINUOUS STROKE ==================== */}
+              {/* 
+                Card 01: x=0, y=0, w=480, h=340 (far left)
+                Card 02: x=460, y=380, w=480, h=280 (center bottom)
+                Card 03: x=920, y=0, w=480, h=360 (far right)
+              */}
+              <path
+                d={`
+                  M 480 170 
+                  V 330 Q 480 340 470 340 
+                  H 10 Q 0 340 0 330 
+                  V 10 Q 0 0 10 0 
+                  H 470 Q 480 0 480 10 
+                  V 170
+                  L 510 170 L 510 420 L 460 420
+                  V 390 Q 460 380 470 380 
+                  H 930 Q 940 380 940 390 
+                  V 650 Q 940 660 930 660 
+                  H 470 Q 460 660 460 650 
+                  V 420
+                  V 390 Q 460 380 470 380 
+                  H 930 Q 940 380 940 390 
+                  V 520
+                  L 970 520 L 970 180 L 920 180
+                  V 10 Q 920 0 930 0 
+                  H 1390 Q 1400 0 1400 10 
+                  V 350 Q 1400 360 1390 360 
+                  H 930 Q 920 360 920 350 
+                  V 180
+                `}
+                fill="none"
+                stroke="rgba(255,255,255,0.35)"
+                strokeWidth="1"
+                pathLength="1"
+                strokeDasharray="1"
+                strokeDashoffset={1 - hiwProgress}
+                style={{ willChange: 'stroke-dashoffset' }}
+              />
+              
+              {/* ==================== CARD BACKGROUNDS ==================== */}
+              
+              {/* Card 01 Background - far left */}
+              <rect
+                x="0"
+                y="0"
+                width="480"
+                height="340"
+                rx="12"
+                fill="#111111"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.08) / 0.06))}
+              />
+              
+              {/* Card 02 Background - center bottom */}
+              <rect
+                x="460"
+                y="380"
+                width="480"
+                height="280"
+                rx="12"
+                fill="#111111"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.35) / 0.06))}
+              />
+              
+              {/* Card 03 Background - far right */}
+              <rect
+                x="920"
+                y="0"
+                width="480"
+                height="360"
+                rx="12"
+                fill="#111111"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.72) / 0.06))}
+              />
+              
+              {/* ==================== STEP 01 CONTENT ==================== */}
+              <text 
+                x="0" 
+                y="-20" 
+                fontSize="16" 
+                fontFamily="monospace" 
+                fill="#525252"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.10) / 0.04))}
+              >01</text>
+              <foreignObject 
+                x="0" 
+                y="0" 
+                width="480" 
+                height="120"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.12) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '40px 44px 0 44px' }}>
+                  <h3 style={{ 
+                    fontSize: '42px', 
+                    fontWeight: 400, 
+                    color: 'white',
+                    fontFamily: "'DM Serif Display', Georgia, serif"
+                  }}>
+                    {howItWorks[0].title}
+                  </h3>
+                </div>
+              </foreignObject>
+              <foreignObject 
+                x="0" 
+                y="105" 
+                width="480" 
+                height="235"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.14) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 44px 40px 44px' }}>
+                  <p style={{ fontSize: '24px', color: '#9ca3af', lineHeight: 1.65 }}>
+                    {howItWorks[0].description}
+                  </p>
+                </div>
+              </foreignObject>
+              
+              {/* ==================== STEP 02 CONTENT ==================== */}
+              <text 
+                x="460" 
+                y="360" 
+                fontSize="16" 
+                fontFamily="monospace" 
+                fill="#525252"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.38) / 0.04))}
+              >02</text>
+              <foreignObject 
+                x="460" 
+                y="380" 
+                width="480" 
+                height="120"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.40) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '40px 48px 0 48px' }}>
+                  <h3 style={{ 
+                    fontSize: '42px', 
+                    fontWeight: 400, 
+                    color: 'white',
+                    fontFamily: "'DM Serif Display', Georgia, serif"
+                  }}>
+                    {howItWorks[1].title}
+                  </h3>
+                </div>
+              </foreignObject>
+              <foreignObject 
+                x="460" 
+                y="485" 
+                width="480" 
+                height="175"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.42) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 48px 40px 48px' }}>
+                  <p style={{ fontSize: '24px', color: '#9ca3af', lineHeight: 1.65 }}>
+                    {howItWorks[1].description}
+                  </p>
+                </div>
+              </foreignObject>
+              
+              {/* ==================== STEP 03 CONTENT ==================== */}
+              <text 
+                x="920" 
+                y="-20" 
+                fontSize="16" 
+                fontFamily="monospace" 
+                fill="#525252"
+                opacity={Math.max(0, Math.min(1, (hiwProgress - 0.75) / 0.04))}
+              >03</text>
+              <foreignObject 
+                x="920" 
+                y="0" 
+                width="480" 
+                height="120"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.77) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '40px 44px 0 44px' }}>
+                  <h3 style={{ 
+                    fontSize: '42px', 
+                    fontWeight: 400, 
+                    color: 'white',
+                    fontFamily: "'DM Serif Display', Georgia, serif"
+                  }}>
+                    {howItWorks[2].title}
+                  </h3>
+                </div>
+              </foreignObject>
+              <foreignObject 
+                x="920" 
+                y="105" 
+                width="480" 
+                height="255"
+                style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.79) / 0.05)) }}
+              >
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 44px 40px 44px' }}>
+                  <p style={{ fontSize: '24px', color: '#9ca3af', lineHeight: 1.65 }}>
+                    {howItWorks[2].description}
+                  </p>
+                </div>
+              </foreignObject>
+            </svg>
+            
+            {/* Scroll indicator - positioned below cards, fades at 70% */}
+            <div 
+              className="mt-12 flex flex-col items-center gap-2"
+              style={{ 
+                opacity: hiwProgress >= 0.7 ? 0 : 1,
+                transition: 'opacity 0.4s ease-out'
+              }}
+            >
+              <div className="w-6 h-10 border border-white/30 rounded-full flex justify-center pt-2">
+                <div className="w-1 h-2.5 bg-white/50 rounded-full animate-bounce" />
+              </div>
+              <span className="text-[10px] text-white/30 uppercase tracking-widest">Scroll</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SDK Code Preview */}
+      <section className="py-24 bg-[#0a0a0a] border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <p className="text-xs text-gray-100 uppercase tracking-widest mb-4">Integration</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
+                Live in under an hour
+              </h2>
+              <p className="text-gray-100 mb-8 text-lg">
+                Our React SDK requires just 3 lines of code. We also offer API SDK and REST endpoints for any platform.
+              </p>
+              
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="https://react-sandbox.trygravity.ai/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-100 transition-colors text-sm"
+                >
+                  Try React Sandbox
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+                <Link 
+                  to="/docs#publisher-integrations"
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-gray-600 text-gray-100 font-medium rounded-full hover:border-gray-400 transition-colors text-sm"
+                >
+                  View Docs
+                </Link>
+              </div>
+            </div>
+            
+            <div className="bg-gray-900 rounded-2xl p-6 shadow-xl overflow-hidden">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-blue-500" />
+                <span className="ml-4 text-gray-100 text-sm font-mono">App.tsx</span>
+              </div>
+              <pre className="text-sm font-mono overflow-x-auto">
+                <code>
+                  <span className="text-gray-100">// App.tsx</span>
+                  {"\n\n"}
+                  <span className="text-purple-400">import</span>
+                  <span className="text-white"> {"{ GravityProvider }"} </span>
+                  <span className="text-purple-400">from</span>
+                  <span className="text-blue-400"> '@gravity-ai/react'</span>
+                  <span className="text-white">;</span>
+                  {"\n\n"}
+                  <span className="text-purple-400">function</span>
+                  <span className="text-white"> App() {"{"}</span>
+                  {"\n"}
+                  <span className="text-purple-400">  return</span>
+                  <span className="text-white"> (</span>
+                  {"\n"}
+                  <span className="text-white">    {"<"}GravityProvider apiKey=</span>
+                  <span className="text-yellow-400">{"{process.env.NEXT_PUBLIC_GRAVITY_API_KEY}"}</span>
+                  <span className="text-white">{">"}</span>
+                  {"\n"}
+                  <span className="text-gray-100">      {"{/* Your app with native AI ads */}"}</span>
+                  {"\n"}
+                  <span className="text-white">    {"</GravityProvider>"}</span>
+                  {"\n"}
+                  <span className="text-white">  );</span>
+                  {"\n"}
+                  <span className="text-white">{"}"}</span>
+                </code>
+              </pre>
+            </div>
           </div>
         </div>
       </section>
@@ -977,10 +1663,10 @@ export const Publishers = () => {
                       {[
                         { label: "REVENUE", value: "$2,887,219", active: true },
                         { label: "IMPRESSIONS", value: "444.7M", active: false },
-                        { label: "CLICKS", value: "5.33M", active: false },
-                        { label: "CPM", value: "$3-$10", active: false },
-                        { label: "CTR", value: "1.5%", active: false },
-                        { label: "CPC", value: "$0.54", active: false },
+                        { label: "CLICKS", value: "9.34M", active: false },
+                        { label: "CPM", value: "$6.49", active: false },
+                        { label: "CTR", value: "2.1%", active: false },
+                        { label: "CPC", value: "$0.31", active: false },
                       ].map((metric, i) => (
                         <div key={i} className={`${metric.active ? "border-b-2 border-blue-500 pb-2" : "pb-2"}`}>
                           <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">{metric.label}</p>
@@ -992,13 +1678,13 @@ export const Publishers = () => {
                   
                   {/* Chart */}
                   <div className="p-4 h-64 relative">
-                    <svg viewBox="0 0 400 180" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                    <svg viewBox="0 0 800 180" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
                       {/* Dotted grid lines */}
-                      <line x1="35" y1="20" x2="390" y2="20" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
-                      <line x1="35" y1="55" x2="390" y2="55" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
-                      <line x1="35" y1="90" x2="390" y2="90" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
-                      <line x1="35" y1="125" x2="390" y2="125" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
-                      <line x1="35" y1="160" x2="390" y2="160" stroke="#374151" strokeWidth="0.5" />
+                      <line x1="45" y1="20" x2="790" y2="20" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
+                      <line x1="45" y1="55" x2="790" y2="55" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
+                      <line x1="45" y1="90" x2="790" y2="90" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
+                      <line x1="45" y1="125" x2="790" y2="125" stroke="#374151" strokeWidth="0.5" strokeDasharray="2,2" />
+                      <line x1="45" y1="160" x2="790" y2="160" stroke="#374151" strokeWidth="0.5" />
                       
                       {/* Y-axis labels */}
                       <text x="5" y="24" fontSize="10" fill="#6b7280">$120K</text>
@@ -1008,14 +1694,14 @@ export const Publishers = () => {
                       <text x="5" y="164" fontSize="10" fill="#6b7280">$0</text>
                       
                       {/* X-axis date labels */}
-                      <text x="40" y="175" fontSize="8" fill="#6b7280">Nov 6</text>
-                      <text x="85" y="175" fontSize="8" fill="#6b7280">Nov 9</text>
-                      <text x="130" y="175" fontSize="8" fill="#6b7280">Nov 12</text>
-                      <text x="175" y="175" fontSize="8" fill="#6b7280">Nov 16</text>
-                      <text x="220" y="175" fontSize="8" fill="#6b7280">Nov 20</text>
-                      <text x="265" y="175" fontSize="8" fill="#6b7280">Nov 24</text>
-                      <text x="310" y="175" fontSize="8" fill="#6b7280">Nov 28</text>
-                      <text x="355" y="175" fontSize="8" fill="#6b7280">Dec 2</text>
+                      <text x="55" y="175" fontSize="8" fill="#6b7280">Nov 6</text>
+                      <text x="160" y="175" fontSize="8" fill="#6b7280">Nov 9</text>
+                      <text x="265" y="175" fontSize="8" fill="#6b7280">Nov 12</text>
+                      <text x="370" y="175" fontSize="8" fill="#6b7280">Nov 16</text>
+                      <text x="475" y="175" fontSize="8" fill="#6b7280">Nov 20</text>
+                      <text x="580" y="175" fontSize="8" fill="#6b7280">Nov 24</text>
+                      <text x="685" y="175" fontSize="8" fill="#6b7280">Nov 28</text>
+                      <text x="770" y="175" fontSize="8" fill="#6b7280">Dec 2</text>
                       
                       {/* Gradient fill under the line */}
                       <defs>
@@ -1028,7 +1714,7 @@ export const Publishers = () => {
                       {/* Area fill */}
                       <polygon
                         fill="url(#chartGradient)"
-                        points="45,85 65,78 85,92 105,70 125,82 145,65 165,75 185,58 205,68 225,55 245,62 265,48 285,55 305,45 325,52 345,38 365,45 385,42 385,160 45,160"
+                        points="55,85 107,78 159,92 211,70 263,82 315,65 367,75 419,58 471,68 523,55 575,62 627,48 679,55 731,45 783,42 783,160 55,160"
                       />
                       
                       {/* Chart line */}
@@ -1038,15 +1724,15 @@ export const Publishers = () => {
                         strokeWidth="2.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        points="45,85 65,78 85,92 105,70 125,82 145,65 165,75 185,58 205,68 225,55 245,62 265,48 285,55 305,45 325,52 345,38 365,45 385,42"
+                        points="55,85 107,78 159,92 211,70 263,82 315,65 367,75 419,58 471,68 523,55 575,62 627,48 679,55 731,45 783,42"
                       />
                       
                       {/* Data point markers */}
-                      <circle cx="45" cy="85" r="3" fill="#3b82f6" />
-                      <circle cx="145" cy="65" r="3" fill="#3b82f6" />
-                      <circle cx="225" cy="55" r="3" fill="#3b82f6" />
-                      <circle cx="305" cy="45" r="3" fill="#3b82f6" />
-                      <circle cx="385" cy="42" r="4" fill="#3b82f6" stroke="#1e40af" strokeWidth="2" />
+                      <circle cx="55" cy="85" r="3" fill="#3b82f6" />
+                      <circle cx="315" cy="65" r="3" fill="#3b82f6" />
+                      <circle cx="523" cy="55" r="3" fill="#3b82f6" />
+                      <circle cx="679" cy="48" r="3" fill="#3b82f6" />
+                      <circle cx="783" cy="42" r="4" fill="#3b82f6" stroke="#1e40af" strokeWidth="2" />
                     </svg>
                   </div>
                 </div>
@@ -1082,11 +1768,11 @@ export const Publishers = () => {
                       </thead>
                       <tbody>
                         {[
-                          { date: "Dec 2, 2025", revenue: "$102,847", impressions: "16.2M", clicks: "192.4K", cpm: "$6.44", cpc: "$0.54", ctr: "1.5%" },
-                          { date: "Dec 1, 2025", revenue: "$84,731", impressions: "13.1M", clicks: "156.8K", cpm: "$6.54", cpc: "$0.54", ctr: "1.5%" },
-                          { date: "Nov 30, 2025", revenue: "$91,683", impressions: "14.2M", clicks: "168.3K", cpm: "$6.57", cpc: "$0.55", ctr: "1.5%" },
-                          { date: "Nov 29, 2025", revenue: "$100,847", impressions: "16.1M", clicks: "191.7K", cpm: "$6.31", cpc: "$0.53", ctr: "1.5%" },
-                          { date: "Nov 28, 2025", revenue: "$97,523", impressions: "15.3M", clicks: "180.6K", cpm: "$6.53", cpc: "$0.54", ctr: "1.5%" },
+                          { date: "Dec 2, 2025", revenue: "$102,847", impressions: "16.2M", clicks: "340.2K", cpm: "$6.35", cpc: "$0.30", ctr: "2.1%" },
+                          { date: "Dec 1, 2025", revenue: "$84,731", impressions: "13.1M", clicks: "275.1K", cpm: "$6.47", cpc: "$0.31", ctr: "2.1%" },
+                          { date: "Nov 30, 2025", revenue: "$91,683", impressions: "14.2M", clicks: "298.2K", cpm: "$6.46", cpc: "$0.31", ctr: "2.1%" },
+                          { date: "Nov 29, 2025", revenue: "$100,847", impressions: "16.1M", clicks: "338.1K", cpm: "$6.26", cpc: "$0.30", ctr: "2.1%" },
+                          { date: "Nov 28, 2025", revenue: "$97,523", impressions: "15.3M", clicks: "321.3K", cpm: "$6.37", cpc: "$0.30", ctr: "2.1%" },
                         ].map((row, i) => (
                           <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                             <td className="px-4 py-3 text-sm text-gray-300">{row.date}</td>
@@ -1173,81 +1859,6 @@ export const Publishers = () => {
         </div>
       </section>
 
-      {/* SDK Code Preview */}
-      <section className="py-24 bg-[#0a0a0a] border-t border-white/10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <p className="text-xs text-gray-100 uppercase tracking-widest mb-4">Integration</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6" style={{ fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400 }}>
-                Live in under an hour
-              </h2>
-              <p className="text-gray-100 mb-8 text-lg">
-                Our React SDK requires just 3 lines of code. We also offer API SDK and REST endpoints for any platform.
-              </p>
-              
-              <div className="flex flex-wrap gap-4">
-                <a 
-                  href="https://react-sandbox.trygravity.ai/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-100 transition-colors text-sm"
-                >
-                  Try React Sandbox
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-                <Link 
-                  to="/docs#publisher-integrations"
-                  className="inline-flex items-center gap-2 px-6 py-3 border border-gray-600 text-gray-100 font-medium rounded-full hover:border-gray-400 transition-colors text-sm"
-                >
-                  View Docs
-                </Link>
-              </div>
-            </div>
-            
-            <div className="bg-gray-900 rounded-2xl p-6 shadow-xl overflow-hidden">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-blue-500" />
-                <span className="ml-4 text-gray-100 text-sm font-mono">App.tsx</span>
-              </div>
-              <pre className="text-sm font-mono overflow-x-auto">
-                <code>
-                  <span className="text-gray-100">// App.tsx</span>
-                  {"\n\n"}
-                  <span className="text-purple-400">import</span>
-                  <span className="text-white"> {"{ GravityProvider }"} </span>
-                  <span className="text-purple-400">from</span>
-                  <span className="text-blue-400"> '@gravity-ai/react'</span>
-                  <span className="text-white">;</span>
-                  {"\n\n"}
-                  <span className="text-purple-400">function</span>
-                  <span className="text-white"> App() {"{"}</span>
-                  {"\n"}
-                  <span className="text-purple-400">  return</span>
-                  <span className="text-white"> (</span>
-                  {"\n"}
-                  <span className="text-white">    {"<"}GravityProvider apiKey=</span>
-                  <span className="text-yellow-400">{"{process.env.NEXT_PUBLIC_GRAVITY_API_KEY}"}</span>
-                  <span className="text-white">{">"}</span>
-                  {"\n"}
-                  <span className="text-gray-100">      {"{/* Your app with native AI ads */}"}</span>
-                  {"\n"}
-                  <span className="text-white">    {"</GravityProvider>"}</span>
-                  {"\n"}
-                  <span className="text-white">  );</span>
-                  {"\n"}
-                  <span className="text-white">{"}"}</span>
-                </code>
-              </pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQs */}
       <section className="py-24 bg-[#0a0a0a] border-t border-white/10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1265,7 +1876,7 @@ export const Publishers = () => {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full text-left px-6 py-4 flex items-center justify-between bg-[#111111] hover:bg-[#1a1a1a] transition-colors"
                 >
-                  <span className="font-medium text-white">{faq.question}</span>
+                  <span className="font-medium text-white text-base">{faq.question}</span>
                   <svg 
                     className={`w-5 h-5 text-gray-100 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`}
                     fill="none" 
@@ -1277,7 +1888,7 @@ export const Publishers = () => {
                 </button>
                 {openFaq === i && (
                   <div className="px-6 pb-4 bg-[#111111]">
-                    <p className="text-gray-100">{faq.answer}</p>
+                    <p className="text-gray-100 text-base">{faq.answer}</p>
                   </div>
                 )}
               </div>

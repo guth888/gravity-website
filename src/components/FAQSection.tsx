@@ -96,7 +96,7 @@ export const FAQSection = () => {
     <section
       ref={sectionRef}
       id="faq"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background py-24 sm:py-32 md:py-40"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50/50 py-24 sm:py-32 md:py-40"
     >
       {/* Mesh Animation Background - Same as Hero */}
       <Suspense fallback={null}>

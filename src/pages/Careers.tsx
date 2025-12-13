@@ -148,7 +148,6 @@ const Careers = () => {
               </p>
               
               <div className="space-y-4 py-6 border-l-2 border-gray-300 pl-6">
-                <p className="text-gray-500">Banner ads don't work in chat.</p>
                 <p className="text-gray-500">Interruptive ads break trust.</p>
                 <p className="text-gray-500">Old playbooks don't apply.</p>
               </div>
@@ -170,7 +169,7 @@ const Careers = () => {
                   </li>
                   <li className="flex items-center gap-3 text-gray-700">
                     <span className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
-                    A model that can make AI free for billions
+                    A model that can make AI free for billions of people
                   </li>
                 </ul>
               </div>
@@ -273,15 +272,15 @@ const Careers = () => {
           {/* Contact CTA */}
           <div className="mt-16 pt-12 border-t border-gray-300/50 text-center">
             <p className="text-gray-500 mb-4">Don't see a fit?</p>
-            <a 
-              href="mailto:support@trygravity.ai"
+            <Link 
+              to="/contact"
               className="inline-flex items-center gap-3 text-gray-900 hover:text-gray-600 transition-colors font-medium text-lg group"
             >
               Reach out anyway
               <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

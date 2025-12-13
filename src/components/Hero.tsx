@@ -123,7 +123,7 @@ export const Hero = () => {
         
         {/* CTA Button */}
         <a 
-          href="/login"
+          href="/signup"
           style={{
             display: "inline-block"
           }}

@@ -371,10 +371,10 @@ const PublishersContent = () => {
                   {[
                     { label: "REVENUE", value: "$2,887,219", active: true },
                     { label: "IMPRESSIONS", value: "444.7M", active: false },
-                    { label: "CLICKS", value: "5.33M", active: false },
-                    { label: "CPM", value: "$3-$10", active: false },
-                    { label: "CTR", value: "1.5%", active: false },
-                    { label: "CPC", value: "$0.54", active: false },
+                    { label: "CLICKS", value: "9.34M", active: false },
+                    { label: "CPM", value: "$6.49", active: false },
+                    { label: "CTR", value: "2.1%", active: false },
+                    { label: "CPC", value: "$0.31", active: false },
                   ].map((metric, i) => (
                     <div key={i} className={`${metric.active ? "border-b-2 border-blue-500 pb-1" : "pb-1"}`}>
                       <p className="text-[8px] text-gray-500 uppercase tracking-wider mb-0.5">{metric.label}</p>
@@ -493,7 +493,7 @@ export const DualAudienceSection = () => {
                 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200
                 ${activeTab === "advertisers" 
                   ? "bg-white text-foreground shadow-sm" 
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
                 }
               `}
             >
@@ -505,7 +505,7 @@ export const DualAudienceSection = () => {
                 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200
                 ${activeTab === "publishers" 
                   ? "bg-[#1a1a1a] text-white shadow-sm" 
-                  : "text-foreground hover:bg-white/50"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/50"
                 }
               `}
             >

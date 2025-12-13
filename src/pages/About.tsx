@@ -27,6 +27,7 @@ import caffeinatedLogo from "@/assets/careers/caffeinated (1).png";
 import generalAdvanceLogo from "@/assets/careers/general Advance.png";
 import logosFundLogo from "@/assets/careers/logos Fund.png";
 import nextGenVpLogo from "@/assets/careers/NGVP.png";
+import haystackLogo from "@/assets/careers/Haystack.png";
 
 // Hero team image (optimized)
 import heroTeamImage from "@/assets/about/optimized/team.jpg";
@@ -216,7 +217,7 @@ const About = () => {
       `}</style>
 
       {/* Header */}
-      <Header />
+      <Header variant="dark" />
 
       {/* Hero Section */}
       <section className="relative bg-[#0a0a0a] pt-32 pb-8 px-6 overflow-hidden">
@@ -398,7 +399,7 @@ const About = () => {
                 <div className="bg-white/95 backdrop-blur-sm rounded-lg px-4 py-2 shadow-xl whitespace-nowrap flex items-center gap-3">
                   <div>
                     <p className="text-gray-900 font-semibold text-sm">Josh</p>
-                    <p className="text-gray-500 text-xs">Head of Sales</p>
+                    <p className="text-gray-500 text-xs">Founding GTM</p>
                   </div>
                   <a 
                     href="https://x.com/1joshhamilton" 
@@ -483,26 +484,8 @@ const About = () => {
       {/* Company Stats Section */}
       <section className="py-16 px-6 bg-[#0a0a0a]">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-            {/* Funding Raised - Left Side */}
-            <div className="flex items-center gap-6">
-              <div>
-                <p className="text-5xl sm:text-6xl font-bold text-white tracking-tight">$6M</p>
-                <p className="text-white/50 mt-1">Funding raised</p>
-              </div>
-              {/* Mini Chart SVG */}
-              <svg className="w-20 h-16 text-sky-400" viewBox="0 0 80 50" fill="none">
-                <path
-                  d="M5 45 Q 15 42, 25 38 T 45 30 T 60 15 T 75 5"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
-
-            {/* Stats Pills - Right Side */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-10">
+            {/* Stats Pills */}
             <div className="flex flex-wrap gap-3">
               <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-5 py-3">
                 <span className="w-2 h-2 bg-white/40 rounded-full" />
@@ -526,19 +509,18 @@ const About = () => {
 
       {/* Backed By Section */}
       <section className="py-24 px-6 bg-[#0a0a0a]">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-white mb-16">
             Backed by
           </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-16 items-center justify-items-center">
+          {/* Top row - 4 logos */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 items-center justify-items-center mb-8 lg:mb-12">
             {[
               { name: "Anthropic", logo: anthropicLogo },
               { name: "Basis Set", logo: basisSetLogo },
               { name: "Caffeinated", logo: caffeinatedLogo },
               { name: "General Advance", logo: generalAdvanceLogo },
-              { name: "Logos Fund", logo: logosFundLogo },
-              { name: "NextGen VP", logo: nextGenVpLogo },
             ].map((backer, index) => (
               <div
                 key={index}
@@ -547,7 +529,27 @@ const About = () => {
                 <img 
                   src={backer.logo} 
                   alt={backer.name}
-                  className="h-32 sm:h-40 w-auto object-contain mix-blend-lighten"
+                  className="h-36 sm:h-44 lg:h-52 w-auto object-contain mix-blend-lighten"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom row - 3 logos centered */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 items-center justify-items-center max-w-4xl mx-auto">
+            {[
+              { name: "Haystack", logo: haystackLogo, offset: 'translate-y-2' },
+              { name: "Logos Fund", logo: logosFundLogo, offset: '' },
+              { name: "NextGen VP", logo: nextGenVpLogo, offset: '' },
+            ].map((backer, index) => (
+              <div
+                key={index}
+                className={`flex items-center justify-center w-full ${index === 2 ? 'col-span-2 lg:col-span-1' : ''}`}
+              >
+                <img 
+                  src={backer.logo} 
+                  alt={backer.name}
+                  className={`h-36 sm:h-44 lg:h-52 w-auto object-contain mix-blend-lighten ${backer.offset}`}
                 />
               </div>
             ))}

@@ -12,6 +12,7 @@ import caffeinatedLogo from "@/assets/careers/caffeinated (1).png";
 import generalAdvanceLogo from "@/assets/careers/general Advance.png";
 import logosFundLogo from "@/assets/careers/logos Fund.png";
 import nextGenVpLogo from "@/assets/careers/NGVP.png";
+import haystackLogo from "@/assets/careers/Haystack.png";
 
 // Team image for Office section
 import heroTeamImage from "@/assets/about/optimized/team.jpg";
@@ -58,7 +59,7 @@ const MeetGravitySection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="pb-0 bg-background flex flex-col items-center justify-center"
+      className="pb-0 bg-gray-50/50 flex flex-col items-center justify-center"
     >
       <style>
         {`
@@ -218,18 +219,19 @@ const Index = () => {
         </Suspense>
         
         {/* Backed By Section */}
-        <section className="py-10 sm:py-12 bg-background">
+        <section className="py-10 sm:py-12 bg-gray-50/50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <h2 className="text-xl sm:text-2xl font-headline font-bold text-foreground mb-6 sm:mb-8 text-center">
               Backed by
             </h2>
 
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 sm:gap-6 items-center justify-items-center">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-4 sm:gap-6 items-center justify-items-center">
               {[
                 { name: "Anthropic", logo: anthropicLogo },
                 { name: "Basis Set", logo: basisSetLogo },
                 { name: "Caffeinated", logo: caffeinatedLogo },
                 { name: "General Advance", logo: generalAdvanceLogo },
+                { name: "Haystack", logo: haystackLogo },
                 { name: "Logos Fund", logo: logosFundLogo },
                 { name: "NextGen VP", logo: nextGenVpLogo },
               ].map((backer, index) => (
@@ -240,7 +242,7 @@ const Index = () => {
                   <img 
                     src={backer.logo} 
                     alt={backer.name}
-                    className="h-24 sm:h-[120px] w-auto object-contain invert mix-blend-multiply"
+                    className="h-32 sm:h-44 lg:h-48 w-auto object-contain invert mix-blend-multiply"
                   />
                 </div>
               ))}
@@ -249,7 +251,7 @@ const Index = () => {
         </section>
         
         {/* Vision Statement Section */}
-        <section className="py-16 sm:py-20 bg-background">
+        <section className="py-16 sm:py-20 bg-gray-50/50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <p className="text-2xl sm:text-3xl text-foreground leading-snug">
               We believe AI should be free for everyone.
@@ -265,7 +267,7 @@ const Index = () => {
         <MeetGravitySection />
 
         {/* Office Section */}
-        <section className="relative bg-background">
+        <section className="relative bg-gray-50/50">
           {/* Office Section Header */}
           <div className="px-6 pt-0 pb-4">
             <div className="max-w-5xl mx-auto">
@@ -281,7 +283,7 @@ const Index = () => {
           {/* Full image with gradient overlay */}
           <div className="relative max-w-5xl mx-auto px-6 pb-8">
             {/* Gradient overlay at top */}
-            <div className="absolute top-0 left-6 right-6 h-32 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none rounded-t-xl" />
+            <div className="absolute top-0 left-6 right-6 h-32 bg-gradient-to-b from-gray-50/50 to-transparent z-10 pointer-events-none rounded-t-xl" />
             
             {/* Image container with hover zones */}
             <div className="relative">
@@ -352,7 +354,7 @@ const Index = () => {
                   <div className="bg-white/95 backdrop-blur-sm rounded-lg px-4 py-2 shadow-xl whitespace-nowrap flex items-center gap-3">
                     <div>
                       <p className="text-gray-900 font-semibold text-sm">Josh</p>
-                      <p className="text-gray-500 text-xs">Head of Sales</p>
+                      <p className="text-gray-500 text-xs">Founding GTM</p>
                     </div>
                     <a 
                       href="https://x.com/1joshhamilton" 
@@ -429,28 +431,10 @@ const Index = () => {
         </section>
 
         {/* Company Stats Section */}
-        <section className="pt-0 pb-16 px-6 bg-background">
+        <section className="pt-0 pb-16 px-6 bg-gray-50/50">
           <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-              {/* Funding Raised - Left Side */}
-              <div className="flex items-center gap-6">
-                <div>
-                  <p className="text-5xl sm:text-6xl font-bold text-foreground tracking-tight">$6M</p>
-                  <p className="text-muted-foreground mt-1">Funding raised</p>
-                </div>
-                {/* Mini Chart SVG */}
-                <svg className="w-20 h-16 text-sky-500" viewBox="0 0 80 50" fill="none">
-                  <path
-                    d="M5 45 Q 15 42, 25 38 T 45 30 T 60 15 T 75 5"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                </svg>
-              </div>
-
-              {/* Stats Pills - Right Side */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-10">
+              {/* Stats Pills */}
               <div className="flex flex-wrap gap-3">
                 <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-5 py-3">
                   <span className="w-2 h-2 bg-gray-400 rounded-full" />
@@ -473,7 +457,7 @@ const Index = () => {
         </section>
         
         {/* Testimonials Section */}
-        <section className="py-16 sm:py-20 bg-[#F8F8F8]">
+        <section className="py-16 sm:py-20 bg-gray-50/50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-12">
               <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">
@@ -548,7 +532,7 @@ const Index = () => {
         </section>
         
         {/* Docs CTA Section */}
-        <section className="py-12 sm:py-16 bg-background">
+        <section className="py-12 sm:py-16 bg-gray-50/50">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold text-foreground mb-3">
               Want to learn more?
