@@ -475,7 +475,7 @@ export const DualAudienceSection = () => {
   const [activeTab, setActiveTab] = useState<TabType>("advertisers");
 
   return (
-    <section className="py-12 sm:py-16 bg-gray-50/50">
+    <section className="pt-24 sm:pt-32 pb-12 sm:pb-16 bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-8">

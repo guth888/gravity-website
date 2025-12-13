@@ -65,7 +65,7 @@ const FAQItem = ({ question, answer, isOpen, onClick, index, isVisible }: FAQIte
         ${isOpen ? "max-h-[500px] pb-6 sm:pb-8" : "max-h-0"}
       `}
     >
-      <p className="text-sm sm:text-base text-foreground/50 leading-relaxed pr-12">
+      <p className="text-sm sm:text-base text-foreground leading-relaxed pr-12">
         {answer}
       </p>
     </div>
@@ -96,7 +96,7 @@ export const FAQSection = () => {
     <section
       ref={sectionRef}
       id="faq"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50/50 py-24 sm:py-32 md:py-40"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50/50 py-20 sm:py-24 md:py-28"
     >
       {/* Mesh Animation Background - Same as Hero */}
       <Suspense fallback={null}>
@@ -110,7 +110,7 @@ export const FAQSection = () => {
         
         {/* Header - Hero-style */}
         <div className={`
-          text-center mb-16 sm:mb-20 md:mb-24
+          text-center mb-16 sm:mb-20 md:mb-24 pt-8 sm:pt-12
           ${isInView ? "opacity-100" : "opacity-0"}
           transition-opacity duration-700
         `}>

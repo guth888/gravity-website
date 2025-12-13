@@ -58,7 +58,7 @@ export const FAQAccordion = ({ items, allowMultiple = false }: FAQAccordionProps
             `}
           >
             <div className="overflow-hidden">
-              <div className="px-6 pb-5 text-muted-foreground leading-relaxed">
+              <div className="px-6 pb-5 text-foreground leading-relaxed">
                 {item.answer}
               </div>
             </div>

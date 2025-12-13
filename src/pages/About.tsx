@@ -60,7 +60,7 @@ const MeetGravitySection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="pb-24 bg-[#0a0a0a] flex flex-col items-center justify-center"
+      className="pb-0 bg-[#0a0a0a] flex flex-col items-center justify-center"
     >
       {/* Bouncing arrow */}
       <div className={`mb-6 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
@@ -130,21 +130,15 @@ const MeetGravitySection = () => {
 };
 
 const About = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    // Simulate loading and trigger animations
-    const loadTimer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-
+    // Trigger content animations on mount
     const contentTimer = setTimeout(() => {
       setShowContent(true);
-    }, 900);
+    }, 100);
 
     return () => {
-      clearTimeout(loadTimer);
       clearTimeout(contentTimer);
     };
   }, []);
@@ -180,42 +174,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* Loading Screen */}
-      <div 
-        className={`fixed inset-0 z-[100] bg-[#0a0a0a] flex items-center justify-center transition-all duration-500 ${
-          isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="flex flex-col items-center gap-6">
-          {/* Animated logo/text */}
-          <div className="relative">
-            <span className="text-3xl font-headline font-bold text-white">Gravity</span>
-            {/* Animated underline */}
-            <div className="absolute -bottom-2 left-0 h-[2px] bg-white animate-pulse" 
-              style={{ 
-                width: '100%',
-                animation: 'loadingBar 0.8s ease-in-out'
-              }} 
-            />
-          </div>
-          {/* Loading dots */}
-          <div className="flex gap-1.5">
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-            <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-          </div>
-        </div>
-      </div>
-
-      {/* CSS for loading animation */}
-      <style>{`
-        @keyframes loadingBar {
-          0% { width: 0%; opacity: 0; }
-          50% { opacity: 1; }
-          100% { width: 100%; opacity: 1; }
-        }
-      `}</style>
-
       {/* Header */}
       <Header variant="dark" />
 

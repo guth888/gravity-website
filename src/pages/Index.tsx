@@ -219,7 +219,7 @@ const Index = () => {
         </Suspense>
         
         {/* Backed By Section */}
-        <section className="py-10 sm:py-12 bg-gray-50/50">
+        <section className="pt-20 sm:pt-24 pb-8 sm:pb-10 bg-gray-50/50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <h2 className="text-xl sm:text-2xl font-headline font-bold text-foreground mb-6 sm:mb-8 text-center">
               Backed by
@@ -251,7 +251,7 @@ const Index = () => {
         </section>
         
         {/* Vision Statement Section */}
-        <section className="py-16 sm:py-20 bg-gray-50/50">
+        <section className="pt-0 pb-16 sm:pb-20 bg-gray-50/50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
             <p className="text-2xl sm:text-3xl text-foreground leading-snug">
               We believe AI should be free for everyone.
@@ -269,7 +269,7 @@ const Index = () => {
         {/* Office Section */}
         <section className="relative bg-gray-50/50">
           {/* Office Section Header */}
-          <div className="px-6 pt-0 pb-4">
+          <div className="px-6 pt-20 pb-10">
             <div className="max-w-5xl mx-auto">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-headline font-bold text-foreground mb-3">
                 Our Office
@@ -532,7 +532,7 @@ const Index = () => {
         </section>
         
         {/* Docs CTA Section */}
-        <section className="py-12 sm:py-16 bg-gray-50/50">
+        <section className="py-16 sm:py-20 bg-gray-50/50">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-headline font-bold text-foreground mb-3">
               Want to learn more?

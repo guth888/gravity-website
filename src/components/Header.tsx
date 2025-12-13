@@ -125,7 +125,7 @@ export const Header = ({ className, variant = 'light' }: HeaderProps) => {
             </a>
             <a 
               href="/signup"
-              className={isDark ? "px-[36px] py-[14px] bg-white text-[#0a0a0a] font-medium rounded-full hover:bg-white/90 transition-colors" : "metallic-button"}
+              className={isDark ? "px-[24px] py-[10px] bg-white text-[#0a0a0a] font-medium rounded-full hover:bg-white/90 transition-colors" : "metallic-button"}
               style={{ fontSize: '15px', display: 'inline-block', textDecoration: 'none' }}
             >
               <span>Sign up</span>

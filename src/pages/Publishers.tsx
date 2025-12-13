@@ -23,8 +23,10 @@ export const Publishers = () => {
   const [hiwComplete, setHiwComplete] = useState(false);
   const [hiwHoldScroll, setHiwHoldScroll] = useState(false);
   const [hiwHeadlineVisible, setHiwHeadlineVisible] = useState(false);
+  const [publishersVisible, setPublishersVisible] = useState(false);
   const hiwTriggeredRef = useRef(false);
   const hiwContainerRef = useRef<HTMLDivElement>(null);
+  const publishersSectionRef = useRef<HTMLElement>(null);
   
   // Hero headline masking - refs and state for measuring text bounds
   const heroSvgRef = useRef<SVGSVGElement>(null);
@@ -219,6 +221,24 @@ export const Publishers = () => {
       return () => clearTimeout(timer);
     }
   }, [isManualDashboardSwitch]);
+
+  // Publishers section fade-in on scroll
+  useEffect(() => {
+    const section = publishersSectionRef.current;
+    if (!section) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPublishersVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+    
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   // Scroll-driven "How It Works" animation
   useEffect(() => {
@@ -735,7 +755,7 @@ export const Publishers = () => {
     {
       step: "03",
       title: "Start Earning",
-      description: "Gravity's real-time auction matches the conversational traffic you choose to send with relevant advertisers. Track impressions, clicks, revenue + more in real time."
+      description: "Gravity's real-time auction matches the conversational traffic you choose to send with relevant advertisers. Track impressions, clicks, revenue + more."
     }
   ];
 
@@ -1004,7 +1024,14 @@ export const Publishers = () => {
       </section>
 
       {/* Publishers Using Gravity */}
-      <section className="py-16 bg-[#0a0a0a]">
+      <section 
+        ref={publishersSectionRef}
+        className="py-16 bg-[#0a0a0a] transition-all duration-700 ease-out"
+        style={{
+          opacity: publishersVisible ? 1 : 0,
+          transform: publishersVisible ? 'translateY(0)' : 'translateY(20px)'
+        }}
+      >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-500 uppercase tracking-widest mb-10">Publishers using Gravity</p>
           
@@ -1069,7 +1096,7 @@ export const Publishers = () => {
       </section>
 
       {/* Testimonial Banner */}
-      <section className="py-16 bg-[#0a0a0a] border-y border-white/10">
+      <section className="py-16 bg-[#0a0a0a] border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             <div className="flex-1">
@@ -1077,10 +1104,12 @@ export const Publishers = () => {
                 "Gravity allowed us to monetize our AI assistant without compromising the experience our users love. It's hard to imagine running without it now."
               </blockquote>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600" />
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
+                  <img src={iaskLogo} alt="iAsk" className="w-24 h-24 object-contain brightness-0 invert" />
+                </div>
                 <div>
-                  <p className="font-medium text-white">AI Platform Team</p>
-                  <p className="text-sm text-gray-100">Early Partner Publisher</p>
+                  <p className="font-medium text-white text-sm">iAsk Team</p>
+                  <p className="text-xs text-gray-100">Early Partner Publisher</p>
                 </div>
               </div>
             </div>
@@ -1234,7 +1263,7 @@ export const Publishers = () => {
             
             {/* Headline - fades in automatically when section enters view */}
             <div 
-              className="text-center mb-8 transition-all duration-700 ease-out"
+              className="text-center mb-6 transition-all duration-700 ease-out"
               style={{ 
                 opacity: hiwHeadlineVisible ? 1 : 0,
                 transform: hiwHeadlineVisible ? 'translateY(0)' : 'translateY(20px)'
@@ -1248,40 +1277,37 @@ export const Publishers = () => {
             
             {/* SVG Animation - Controlled by scroll progress */}
             <svg 
-              viewBox="-50 -50 1500 720" 
+              viewBox="-150 -120 1700 700" 
               className="w-full max-h-[60vh]"
               style={{ maxWidth: '1600px' }}
               preserveAspectRatio="xMidYMid meet"
             >
               {/* ==================== UNIFIED CONTINUOUS STROKE ==================== */}
               {/* 
-                Card 01: x=0, y=0, w=480, h=340 (far left)
-                Card 02: x=460, y=380, w=480, h=280 (center bottom)
-                Card 03: x=920, y=0, w=480, h=360 (far right)
+                Card 01: x=-100, y=-60, w=480, h=340 (far left)
+                Card 02: x=460, y=180, w=480, h=280 (center, higher up)
+                Card 03: x=1020, y=-60, w=480, h=340 (far right, same baseline as Card 01)
               */}
               <path
                 d={`
-                  M 480 170 
-                  V 330 Q 480 340 470 340 
-                  H 10 Q 0 340 0 330 
-                  V 10 Q 0 0 10 0 
-                  H 470 Q 480 0 480 10 
-                  V 170
-                  L 510 170 L 510 420 L 460 420
-                  V 390 Q 460 380 470 380 
-                  H 930 Q 940 380 940 390 
-                  V 650 Q 940 660 930 660 
-                  H 470 Q 460 660 460 650 
-                  V 420
-                  V 390 Q 460 380 470 380 
-                  H 930 Q 940 380 940 390 
-                  V 520
-                  L 970 520 L 970 180 L 920 180
-                  V 10 Q 920 0 930 0 
-                  H 1390 Q 1400 0 1400 10 
-                  V 350 Q 1400 360 1390 360 
-                  H 930 Q 920 360 920 350 
-                  V 180
+                  M 380 110 
+                  V 270 Q 380 280 370 280 
+                  H -90 Q -100 280 -100 270 
+                  V -50 Q -100 -60 -90 -60 
+                  H 370 Q 380 -60 380 -50 
+                  V 110
+                  L 420 110 L 420 200 L 460 200
+                  V 190 Q 460 180 470 180 
+                  H 930 Q 940 180 940 190 
+                  V 450 Q 940 460 930 460 
+                  H 470 Q 460 460 460 450 
+                  V 200
+                  L 980 200 L 980 110 L 1020 110
+                  V -50 Q 1020 -60 1030 -60 
+                  H 1490 Q 1500 -60 1500 -50 
+                  V 270 Q 1500 280 1490 280 
+                  H 1030 Q 1020 280 1020 270 
+                  V 110
                 `}
                 fill="none"
                 stroke="rgba(255,255,255,0.35)"
@@ -1296,8 +1322,8 @@ export const Publishers = () => {
               
               {/* Card 01 Background - far left */}
               <rect
-                x="0"
-                y="0"
+                x="-100"
+                y="-60"
                 width="480"
                 height="340"
                 rx="12"
@@ -1305,10 +1331,10 @@ export const Publishers = () => {
                 opacity={Math.max(0, Math.min(1, (hiwProgress - 0.08) / 0.06))}
               />
               
-              {/* Card 02 Background - center bottom */}
+              {/* Card 02 Background - center (higher up) */}
               <rect
                 x="460"
-                y="380"
+                y="180"
                 width="480"
                 height="280"
                 rx="12"
@@ -1318,10 +1344,10 @@ export const Publishers = () => {
               
               {/* Card 03 Background - far right */}
               <rect
-                x="920"
-                y="0"
+                x="1020"
+                y="-60"
                 width="480"
-                height="360"
+                height="340"
                 rx="12"
                 fill="#111111"
                 opacity={Math.max(0, Math.min(1, (hiwProgress - 0.72) / 0.06))}
@@ -1329,16 +1355,16 @@ export const Publishers = () => {
               
               {/* ==================== STEP 01 CONTENT ==================== */}
               <text 
-                x="0" 
-                y="-20" 
+                x="-100" 
+                y="-80" 
                 fontSize="16" 
                 fontFamily="monospace" 
                 fill="#525252"
                 opacity={Math.max(0, Math.min(1, (hiwProgress - 0.10) / 0.04))}
               >01</text>
               <foreignObject 
-                x="0" 
-                y="0" 
+                x="-100" 
+                y="-60" 
                 width="480" 
                 height="120"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.12) / 0.05)) }}
@@ -1355,8 +1381,8 @@ export const Publishers = () => {
                 </div>
               </foreignObject>
               <foreignObject 
-                x="0" 
-                y="105" 
+                x="-100" 
+                y="45" 
                 width="480" 
                 height="235"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.14) / 0.05)) }}
@@ -1371,7 +1397,7 @@ export const Publishers = () => {
               {/* ==================== STEP 02 CONTENT ==================== */}
               <text 
                 x="460" 
-                y="360" 
+                y="160" 
                 fontSize="16" 
                 fontFamily="monospace" 
                 fill="#525252"
@@ -1379,12 +1405,12 @@ export const Publishers = () => {
               >02</text>
               <foreignObject 
                 x="460" 
-                y="380" 
+                y="180" 
                 width="480" 
                 height="120"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.40) / 0.05)) }}
               >
-                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '40px 48px 0 48px' }}>
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '40px 44px 0 44px' }}>
                   <h3 style={{ 
                     fontSize: '42px', 
                     fontWeight: 400, 
@@ -1397,12 +1423,12 @@ export const Publishers = () => {
               </foreignObject>
               <foreignObject 
                 x="460" 
-                y="485" 
+                y="285" 
                 width="480" 
                 height="175"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.42) / 0.05)) }}
               >
-                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 48px 40px 48px' }}>
+                <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 44px 40px 44px' }}>
                   <p style={{ fontSize: '24px', color: '#9ca3af', lineHeight: 1.65 }}>
                     {howItWorks[1].description}
                   </p>
@@ -1411,16 +1437,16 @@ export const Publishers = () => {
               
               {/* ==================== STEP 03 CONTENT ==================== */}
               <text 
-                x="920" 
-                y="-20" 
+                x="1020" 
+                y="-80" 
                 fontSize="16" 
                 fontFamily="monospace" 
                 fill="#525252"
                 opacity={Math.max(0, Math.min(1, (hiwProgress - 0.75) / 0.04))}
               >03</text>
               <foreignObject 
-                x="920" 
-                y="0" 
+                x="1020" 
+                y="-60" 
                 width="480" 
                 height="120"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.77) / 0.05)) }}
@@ -1437,10 +1463,10 @@ export const Publishers = () => {
                 </div>
               </foreignObject>
               <foreignObject 
-                x="920" 
-                y="105" 
+                x="1020" 
+                y="45" 
                 width="480" 
-                height="255"
+                height="235"
                 style={{ opacity: Math.max(0, Math.min(1, (hiwProgress - 0.79) / 0.05)) }}
               >
                 <div xmlns="http://www.w3.org/1999/xhtml" style={{ padding: '0 44px 40px 44px' }}>
@@ -1451,18 +1477,17 @@ export const Publishers = () => {
               </foreignObject>
             </svg>
             
-            {/* Scroll indicator - positioned below cards, fades at 70% */}
-            <div 
-              className="mt-12 flex flex-col items-center gap-2"
-              style={{ 
-                opacity: hiwProgress >= 0.7 ? 0 : 1,
-                transition: 'opacity 0.4s ease-out'
-              }}
-            >
-              <div className="w-6 h-10 border border-white/30 rounded-full flex justify-center pt-2">
-                <div className="w-1 h-2.5 bg-white/50 rounded-full animate-bounce" />
-              </div>
-              <span className="text-[10px] text-white/30 uppercase tracking-widest">Scroll</span>
+            {/* Scroll indicator - always visible */}
+            <div className="mt-12 flex flex-col items-center gap-2">
+              <span className="text-xs text-white/30 uppercase tracking-[0.3em]">Scroll</span>
+              <svg 
+                className="w-4 h-4 text-white/30" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
           </div>
         </div>
@@ -1909,12 +1934,10 @@ export const Publishers = () => {
           
           <div className="flex items-center justify-center">
             <a
-              href="https://calendly.com/zachtheoldham/iris-discovery?month=2025-11"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/signup"
               className="px-8 py-3.5 bg-transparent border border-gray-600 text-white font-medium rounded-full hover:border-gray-400 transition-colors"
             >
-              Book a Demo
+              Sign up
             </a>
           </div>
         </div>
